@@ -422,6 +422,6 @@ Verify SSH Allow ACL
 
 Run BASH Echo Test
     [Documentation]    Issues a BASH command and looks for the proper response inside of an existing SSH session
-    ${BASH_ECHO_RESPONSE}    Execute Command    bash -c\\ echo 'BASH TEST'
+    ${BASH_ECHO_RESPONSE}    Execute Command    bash -c echo\\ 'BASH TEST'
     Should Be Equal    ${BASH_ECHO_RESPONSE}    BASH TEST
     [Return]    ${BASH_ECHO_RESPONSE}
