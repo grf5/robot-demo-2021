@@ -49,7 +49,7 @@ printf "##############################\n"
 start_time=`date`
 
 # Execute tests in order via this array
-tests=('000a-reset_environment' '0010-basic_connectivity' '0020-sys_global_settings' '0030-ntp')
+tests=('000a-reset_environment' '0010-basic_connectivity' '0020-sys_global_settings' '0030-ntp' '0040-net_interface')
 
 # Cycle through list of tests and create a per-test report in /reports
 for current_test in "${tests[@]}"
