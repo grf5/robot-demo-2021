@@ -23,31 +23,43 @@ export SECONDARY_SSH_PASSWORD='f5r0b0t!'
 export SECONDARY_HTTP_USERNAME='admin'
 export SECONDARY_HTTP_PASSWORD='f5r0b0t!'
 
+# Base provisioning UCS (reset to this before test)
+export PRIMARY_BASE_UCS_FILENAME='/var/local/ucs/firstboot_licensed.ucs'
+export SECONDARY_BASE_UCS_FILENAME='/var/local/ucs/firstboot_licensed.ucs'
+
 # NTP
 export NTP_SERVER_LIST='["0.pool.ntp.org","1.pool.ntp.org","2.pool.ntp.org","3.pool.ntp.org"]'
+
+# Delete existing reports
+rm -f ./reports/*.html
+rm -f ./reports/*.xml
+
+# When developing, load base configs; when running full test, load the default
+# ONLY ENABLE ONE OF THE FOLLOWING TWO LINES AT ANY TIME!
+test=DCNETARCH-SLB-LOAD-SYS-UCS-BASEPROVISIONING; $robot_fullpath --noncritical non_critical  --outputdir ./reports -o $test.xml -l $test.log.html -r $test.report.html ./bin/$test.robot
+# test=DCNETARCH-SLB-LOAD-SYS-CONFIG-DEFAULT; $robot_fullpath --noncritical non_critical  --outputdir ./reports -o $test.xml -l $test.log.html -r $test.report.html ./bin/$test.robot
 
 printf "##############################\n"
 printf "## Starting script execution  \n"
 printf "##############################\n"
 start_time=`date`
-printf "Starting at $start_time\n"
 
-tests=('0010-basic_connectivity' '0020-sys_global_settings' '0030-ntp')
+# Execute tests in order via this array
+tests=('000a-reset_environment' '0010-basic_connectivity' '0020-sys_global_settings' '0030-ntp')
 
+# Cycle through list of tests and create a per-test report in /reports
 for current_test in "${tests[@]}"
 do 
     robot --noncritical non_critical --outputdir ./reports -o $current_test.xml -l $current_test.log.html -r $current_test.report.html ./$current_test.robot
 done
 
-########################################
-# Executing Rebot Report Summarization
-########################################
-
+# Executing Rebot Report Summarization, which combines all single reports into a master report
 printf "Running Rebot Report Summarization"
-# Compile all output into a single report
 rebot --name "F5 Robot Framework Test Report" -l ./reports/COMBINED-LOG.html -r ./reports/COMBINED-REPORT.html ./reports/*.xml
+
 # Remove raw output files
-rm -f ./*.xml
+rm -f ./reports/*.html
+rm -f ./reports/*.xml
 
 printf "##############################\n"
 printf "## Script execution complete  \n"
