@@ -28,7 +28,7 @@ export PRIMARY_BASE_UCS_FILENAME='/var/local/ucs/firstboot_licensed.ucs'
 export SECONDARY_BASE_UCS_FILENAME='/var/local/ucs/firstboot_licensed.ucs'
 
 # NTP
-export NTP_SERVER_LIST='["0.pool.ntp.org","1.pool.ntp.org","2.pool.ntp.org","3.pool.ntp.org"]'
+export NTP_SERVER_LIST='["52.0.56.137","45.63.54.13","204.11.201.12","172.98.193.44"]'
 
 # Delete existing reports
 rm -f ./reports/*.html
