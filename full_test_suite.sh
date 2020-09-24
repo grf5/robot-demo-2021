@@ -7,16 +7,21 @@ export PYTHONWARNINGS='ignore:Unverified HTTPS request'
 export ROBOT_HOST_IP=`hostname -I`
 
 # BIG-IP Devices
-export PRIMARY_HOSTNAME=''
-export PRIMARY_MGMT_IP=''
-export SECONDARY_HOSTNAME=''
-export SECONDARY_MGMT_IP=''
+export PRIMARY_HOSTNAME='ip-10-1-1-5.us-west-2.compute.internal'
+export PRIMARY_MGMT_IP='10.1.1.5'
+export SECONDARY_HOSTNAME='ip-10-1-1-6.us-west-2.compute.internal'
+export SECONDARY_MGMT_IP='10.1.1.6'
 
 # Device Credentials
-export PRIMARY_SSH_USERNAME=''
-export PRIMARY_SSH_PASSWORD=''
-export PRIMARY_HTTP_USERNAME=''
-export PRIMARY_HTTP_PASSWORD=''
+export PRIMARY_SSH_USERNAME='admin'
+export PRIMARY_SSH_PASSWORD='f5r0b0t!'
+export PRIMARY_HTTP_USERNAME='admin'
+export PRIMARY_HTTP_PASSWORD='f5r0b0t!'
+export SECONDARY_SSH_USERNAME='admin'
+export SECONDARY_SSH_PASSWORD='f5r0b0t!'
+export SECONDARY_HTTP_USERNAME='admin'
+export SECONDARY_HTTP_PASSWORD='f5r0b0t!'
+
 
 printf "##############################\n"
 printf "## Starting script execution  \n"
