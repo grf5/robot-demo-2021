@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Environmental variables
-robot_fullpath=/home/centos/f5_robot_testing/f5_robot_venv/bin/python
+robot_fullpath=/home/centos/f5_robot_testing/f5_robot_venv/bin/robot
 export PYTHONWARNINGS='ignore:Unverified HTTPS request'
 
 # Test case variables
@@ -31,3 +31,15 @@ for current_test in tests
 do 
     $robot_fullpath --noncritical non_critical --outputdir ./reports -o $test.xml -l $test.log.html -r $test.report.html ./bin/$test.robot
 done
+
+########################################
+# Executing Rebot Report Summarization
+########################################
+
+printf "Running Rebot Report Summarization"
+rebot --name "F5 Robot Framework Test Report" -l ./COMBINED-LOG.html -r ./COMBINED-REPORT.html ./*.xml
+fm -f ./*.xml
+
+printf "Started: $start_time\n"
+printf "Completed: `date`\n"
+printf "### Script execution complete.\n"
