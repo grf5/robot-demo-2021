@@ -52,23 +52,25 @@ Configure F5 BIG-IP Data Plane Interfaces
     [Documentation]    Configures the BIG-IP interfaces (not including the management interface)
     set log level    trace
     ${PHYS_INTERFACE_LIST}    to json    ${PRIMARY_PHYS_INTERFACE_DETAILS}
-    :FOR    ${current_interface}    IN    @{PHYS_INTERFACE_LIST}
-    \   ${current_interface_name}    get from dictionary    ${current_interface}    name
-    \   ${current_interface_description}    get from dictionary    ${current_interface}    description
-    \   ${current_interface_lldpadmin}    get from dictionary    ${current_interface}    lldpAdmin
-    \   Configure BIG-IP Interface Description    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    interface_name=${current_interface_name}    interface_description=${current_interface_description}
-    \   run keyword if    '${current_interface_lldpadmin}'=='txrx'    Set BIG-IP Interface LLDP to Transmit and Receive   bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}   interface_name=${current_interface_name}
-    \   run keyword if    '${current_interface_lldpadmin}'=='txonly'    Set BIG-IP Interface LLDP to Transmit Only    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}   interface_name=${current_interface_name}
-    \   run keyword if    '${current_interface_lldpadmin}'=='rxonly'    Set BIG-IP Interface LLDP to Receive Only    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}   interface_name=${current_interface_name}
-    \   run keyword if    '${current_interface_lldpadmin}'=='disable'   Disable BIG-IP LLDP on Interface    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}   interface_name=${current_interface_name}
+    FOR    ${current_interface}    IN    @{PHYS_INTERFACE_LIST}
+       ${current_interface_name}    get from dictionary    ${current_interface}    name
+       ${current_interface_description}    get from dictionary    ${current_interface}    description
+       ${current_interface_lldpadmin}    get from dictionary    ${current_interface}    lldpAdmin
+       Configure BIG-IP Interface Description    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    interface_name=${current_interface_name}    interface_description=${current_interface_description}
+       run keyword if    '${current_interface_lldpadmin}'=='txrx'    Set BIG-IP Interface LLDP to Transmit and Receive   bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}   interface_name=${current_interface_name}
+       run keyword if    '${current_interface_lldpadmin}'=='txonly'    Set BIG-IP Interface LLDP to Transmit Only    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}   interface_name=${current_interface_name}
+       run keyword if    '${current_interface_lldpadmin}'=='rxonly'    Set BIG-IP Interface LLDP to Receive Only    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}   interface_name=${current_interface_name}
+       run keyword if    '${current_interface_lldpadmin}'=='disable'   Disable BIG-IP LLDP on Interface    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}   interface_name=${current_interface_name}
+    END
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
     ${PHYS_INTERFACE_LIST}    to json    ${SECONDARY_PHYS_INTERFACE_DETAILS}
-    :FOR    ${current_interface}    IN    @{PHYS_INTERFACE_LIST}
-    \   ${current_interface_name}    get from dictionary    ${current_interface}    name
-    \   ${current_interface_description}    get from dictionary    ${current_interface}    description
-    \   ${current_interface_lldpadmin}    get from dictionary    ${current_interface}    lldpAdmin
-    \   Configure BIG-IP Interface Description    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    interface_name=${current_interface_name}    interface_description=${current_interface_description}
-    \   run keyword if    '${current_interface_lldpadmin}'=='txrx'    Set BIG-IP Interface LLDP to Transmit and Receive   bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}   interface_name=${current_interface_name}
-    \   run keyword if    '${current_interface_lldpadmin}'=='txonly'    Set BIG-IP Interface LLDP to Transmit Only    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}   interface_name=${current_interface_name}
-    \   run keyword if    '${current_interface_lldpadmin}'=='rxonly'    Set BIG-IP Interface LLDP to Receive Only    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}   interface_name=${current_interface_name}
-    \   run keyword if    '${current_interface_lldpadmin}'=='disable'   Disable BIG-IP LLDP on Interface    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}   interface_name=${current_interface_name}
+    FOR    ${current_interface}    IN    @{PHYS_INTERFACE_LIST}
+       ${current_interface_name}    get from dictionary    ${current_interface}    name
+       ${current_interface_description}    get from dictionary    ${current_interface}    description
+       ${current_interface_lldpadmin}    get from dictionary    ${current_interface}    lldpAdmin
+       Configure BIG-IP Interface Description    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    interface_name=${current_interface_name}    interface_description=${current_interface_description}
+       run keyword if    '${current_interface_lldpadmin}'=='txrx'    Set BIG-IP Interface LLDP to Transmit and Receive   bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}   interface_name=${current_interface_name}
+       run keyword if    '${current_interface_lldpadmin}'=='txonly'    Set BIG-IP Interface LLDP to Transmit Only    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}   interface_name=${current_interface_name}
+       run keyword if    '${current_interface_lldpadmin}'=='rxonly'    Set BIG-IP Interface LLDP to Receive Only    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}   interface_name=${current_interface_name}
+       run keyword if    '${current_interface_lldpadmin}'=='disable'   Disable BIG-IP LLDP on Interface    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}   interface_name=${current_interface_name}
+    END
