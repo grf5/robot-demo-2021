@@ -5,8 +5,9 @@ Library    Collections
 Library    RequestsLibrary
 Library    String
 Library    SnmpLibrary
-Library    SSHLibrary  30 seconds
+Library    SSHLibrary
 
+*** Keywords ***
 
 #############################
 ## Generic Testing Keywords
