@@ -22,7 +22,7 @@ Perform BIG-IP Quick Check
     Wait until Keyword Succeeds    50x    5 seconds    Verify All BIG-IP Ready States    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}
     Wait until Keyword Succeeds    50x    5 seconds    Check for BIG-IP Services Waiting to Restart    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    Wait until Keyword Succeeds    50x    5 seconds    Verify All BIG-IP Ready States    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${HTTP_USERNAME}    bigip_password=${HTTP_PASSWORD}
+    Wait until Keyword Succeeds    50x    5 seconds    Verify All BIG-IP Ready States    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
     Wait until Keyword Succeeds    50x    5 seconds    Check for BIG-IP Services Waiting to Restart    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
 
 Reset Statistics on the BIG-IP
@@ -51,8 +51,8 @@ Gather Interface Media Capabilities
 Configure F5 BIG-IP Data Plane Interfaces
     [Documentation]    Configures the BIG-IP interfaces (not including the management interface)
     set log level    trace
-    ${PHYS_INTERFACE_LIST}    to json    ${PRIMARY_PHYS_INTERFACE_DETAILS}
-    FOR    ${current_interface}    IN    @{PHYS_INTERFACE_LIST}
+    ${INTERFACE_LIST}    to json    ${PRIMARY_INTERFACE_DETAILS}
+    FOR    ${current_interface}    IN    @{INTERFACE_LIST}
        ${current_interface_name}    get from dictionary    ${current_interface}    name
        ${current_interface_description}    get from dictionary    ${current_interface}    description
        ${current_interface_lldpadmin}    get from dictionary    ${current_interface}    lldpAdmin
@@ -63,8 +63,8 @@ Configure F5 BIG-IP Data Plane Interfaces
        run keyword if    '${current_interface_lldpadmin}'=='disable'   Disable BIG-IP LLDP on Interface    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}   interface_name=${current_interface_name}
     END
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    ${PHYS_INTERFACE_LIST}    to json    ${SECONDARY_PHYS_INTERFACE_DETAILS}
-    FOR    ${current_interface}    IN    @{PHYS_INTERFACE_LIST}
+    ${INTERFACE_LIST}    to json    ${SECONDARY_INTERFACE_DETAILS}
+    FOR    ${current_interface}    IN    @{INTERFACE_LIST}
        ${current_interface_name}    get from dictionary    ${current_interface}    name
        ${current_interface_description}    get from dictionary    ${current_interface}    description
        ${current_interface_lldpadmin}    get from dictionary    ${current_interface}    lldpAdmin
