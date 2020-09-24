@@ -17,6 +17,7 @@ ${SECONDARY_SSH_PASSWORD}               %{SECONDARY_SSH_PASSWORD}
 ${SECONDARY_HTTP_USERNAME}              %{SECONDARY_HTTP_USERNAME}
 ${SECONDARY_HTTP_PASSWORD}              %{SECONDARY_HTTP_PASSWORD}
 ${NTP_SERVER_LIST}                      %{NTP_SERVER_LIST}
+${MGMT_NETWORK_GATEWAY}                 %{MGMT_NETWORK_GATEWAY}
 
 *** Test Cases ***
 Create Management Route for NTP Servers
