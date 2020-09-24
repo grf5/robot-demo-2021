@@ -46,10 +46,8 @@ rebot --name "F5 Robot Framework Test Report" -l ./reports/COMBINED-LOG.html -r 
 # Remove raw output files
 rm -f ./*.xml
 
-############################################
-# Print the start and finish time and exit
-############################################
-
+printf "##############################\n"
+printf "## Script execution complete  \n"
+printf "##############################\n"
 printf "Started: $start_time\n"
 printf "Completed: `date`\n"
-printf "### Script execution complete.\n"
