@@ -57,6 +57,6 @@ Test IPv4 iControlREST API Connectivity
 Test IPv4 iControlREST Token Authentication
     [Documentation]    Verifies HTTP header auth token functionality on the BIG-IP iControl REST API
     set log level    trace
-    Retrieve BIG-IP Version using Token Authentication    bigip_host=${BIGIP_PRIMARY_MGMT_IP}    bigip_username=${HTTP_USERNAME}    bigip_password=${HTTP_PASSWORD}
-    Return from Keyword If    '${BIGIP_SECONDARY_MGMT_IP}' == 'false'
-    Retrieve BIG-IP Version using Token Authentication    bigip_host=${BIGIP_SECONDARY_MGMT_IP}    bigip_username=${HTTP_USERNAME}    bigip_password=${HTTP_PASSWORD}
+    Retrieve BIG-IP Version using Token Authentication    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}
+    Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
+    Retrieve BIG-IP Version using Token Authentication    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
