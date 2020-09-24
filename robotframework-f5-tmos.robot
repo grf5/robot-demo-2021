@@ -277,7 +277,7 @@ Verify All BIG-IP Ready States
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
     ${api_uri}    set variable    /mgmt/tm/sys/ready    
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_dict}    To Json    ${api_response.content}
     ${ready_states}    get from dictionary    ${api_response_dict}    entries
     ${ready_states}    get from dictionary    ${ready_states}    https://localhost/mgmt/tm/sys/ready/0
@@ -300,7 +300,7 @@ Verify BIG-IP Configuration Ready State
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
     ${api_uri}    set variable    /mgmt/tm/sys/ready    
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_dict}    To Json    ${api_response.content}
     ${config_ready_state}    get from dictionary    ${api_response_dict}    entries
     ${config_ready_state}    get from dictionary    ${config_ready_state}    https://localhost/mgmt/tm/sys/ready/0
@@ -316,7 +316,7 @@ Verify BIG-IP License Ready State
     [Documentation]    Verifies that the BIG-IP is in a licensed state - used by bigip_wait in Ansible (https://clouddocs.f5.com/products/orchestration/ansible/devel/modules/bigip_wait_module.html)    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
     ${api_uri}    set variable    /mgmt/tm/sys/ready    
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_dict}    To Json    ${api_response.content}
     ${license_ready_state}    get from dictionary    ${api_response_dict}    entries
     ${license_ready_state}    get from dictionary    ${license_ready_state}    https://localhost/mgmt/tm/sys/ready/0
@@ -333,7 +333,7 @@ Verify BIG-IP Provision Ready State
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
     ${api_uri}    set variable    /mgmt/tm/sys/ready    
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_dict}    To Json    ${api_response.content}
     ${provision_ready_state}    get from dictionary    ${api_response_dict}    entries
     ${provision_ready_state}    get from dictionary    ${provision_ready_state}    https://localhost/mgmt/tm/sys/ready/0

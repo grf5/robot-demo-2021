@@ -2279,7 +2279,7 @@ Verify Static Route Deletion on the BIG-IP
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${name}    ${partition}
     ${api_uri}    set variable    /mgmt/tm/net/route/~${partition}~${name}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    should be equal as strings    ${api_response.status_code}    ${HTTP_RESPONSE_NOT_FOUND}
+    should be equal as strings    ${api_response.status_code}    400
     [Return]    ${api_response}
 
 Verify Static Route Removal in BIG-IP Route Table
