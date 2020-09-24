@@ -27,3 +27,29 @@ Perform BIG-IP Quick Check
     Verify All BIG-IP Ready States    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
     Check for BIG-IP Services Waiting to Restart    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
 
+Verify SSH Connectivity
+    [Documentation]    Logs into the BIG-IP via SSH, executes a BASH command and validates the expected response
+    set log level    trace
+    Wait until Keyword Succeeds    3x    5 seconds    Open Connection    ${PRIMARY_MGMT_IP}
+    Log In    ${PRIMARY_SSH_USERNAME}    ${PRIMARY_SSH_PASSWORD}
+    Run BASH Echo Test
+    Close All Connections
+    Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
+    Wait until Keyword Succeeds    3x    5 seconds    Open Connection    ${SECONDARY_MGMT_IP}
+    Log In    ${SECONDARY_SSH_USERNAME}    ${SECONDARY_SSH_PASSWORD}
+    Run BASH Echo Test
+    Close All Connections
+
+Test BIG-IP Web UI Connectivity
+    [Documentation]    Verifies that the BIG-IP is presenting the Web UI login page
+    set log level    trace
+    Wait until Keyword Succeeds    6x    5 seconds    Retrieve BIG-IP Login Page   bigip_host=${PRIMARY_MGMT_IP}
+    Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
+    Wait until Keyword Succeeds    6x    5 seconds    Retrieve BIG-IP Login Page   bigip_host=${SECONDARY_MGMT_IP}
+
+Test IPv4 iControlREST API Connectivity
+    [Documentation]    Tests BIG-IP iControl REST API connectivity using basic authentication
+    set log level    trace
+    Wait until Keyword Succeeds    6x    5 seconds    Retrieve BIG-IP Version    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}
+    Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
+    Wait until Keyword Succeeds    6x    5 seconds    Retrieve BIG-IP Version    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
