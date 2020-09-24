@@ -64,15 +64,6 @@ Create the Outside VLAN on the BIG-IP
     Create A Vlan on the BIG-IP    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    vlan_name=${OUTSIDE_VLAN_NAME}    vlan_tag=${${OUTSIDE_VLAN_TAG}}
     Verify dot1q Tag on BIG-IP VLAN    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    vlan_name=${OUTSIDE_VLAN_NAME}    vlan_tag=${${OUTSIDE_VLAN_TAG}}
 
-Create the HA VLAN on the BIG-IP
-    [Documentation]    Creates an HA VLAN on the BIG-IP
-    set log level    trace
-    Create A Vlan on the BIG-IP    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    vlan_name=${HA_VLAN_NAME}    vlan_tag=${${HA_VLAN_TAG}}
-    Verify dot1q Tag on BIG-IP VLAN    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    vlan_name=${HA_VLAN_NAME}    vlan_tag=${${HA_VLAN_TAG}}
-    Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    Create A Vlan on the BIG-IP    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    vlan_name=${HA_VLAN_NAME}    vlan_tag=${${HA_VLAN_TAG}}
-    Verify dot1q Tag on BIG-IP VLAN    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    vlan_name=${HA_VLAN_NAME}    vlan_tag=${${HA_VLAN_TAG}}
-
 Map the Outside VLAN to the Outside Trunk
     [Documentation]    Maps the outside/uplink VLAN to the logical trunk
     set log level    trace
@@ -102,21 +93,6 @@ Map the Inside VLAN to the Inside Trunk
     Verify VLAN Mapping on a BIG-IP VLAN    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    vlan_name=${INSIDE_VLAN_NAME}    interface_name=${INSIDE_TRUNK_NAME}
     Run Keyword If    '${INSIDE_VLAN_TAGGED}' == 'True'    Enable dot1q Tagging on a BIG-IP VLAN Interface    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    vlan_name=${INSIDE_VLAN_NAME}    interface_name=${INSIDE_TRUNK_NAME}
     Run Keyword If    '${INSIDE_VLAN_TAGGED}' == 'True'    Verify dot1q Tagging Enabled on BIG-IP Vlan Interface    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    vlan_name=${INSIDE_VLAN_NAME}    interface_name=${INSIDE_TRUNK_NAME}
-
-Map the HA VLAN to the HA Trunk
-    [Documentation]    Maps the HA VLAN to the logical trunk
-    set log level    trace
-    ${interface_list}    Create List    ${HA_TRUNK_NAME}
-    Modify VLAN Mapping on BIG-IP VLAN    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    vlan_name=${HA_VLAN_NAME}    vlan_interface_list=${interface_list}
-    Verify VLAN Mapping on a BIG-IP VLAN    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    vlan_name=${HA_VLAN_NAME}    interface_name=${HA_TRUNK_NAME}
-    Run Keyword If    '${HA_VLAN_TAGGED}' == 'True'    Enable dot1q Tagging on a BIG-IP VLAN Interface    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    vlan_name=${HA_VLAN_NAME}    interface_name=${HA_TRUNK_NAME}
-    Run Keyword If    '${HA_VLAN_TAGGED}' == 'True'    Verify dot1q Tagging Enabled on BIG-IP Vlan Interface    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    vlan_name=${HA_VLAN_NAME}    interface_name=${HA_TRUNK_NAME}
-    Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    ${interface_list}    Create List    ${HA_TRUNK_NAME}
-    Modify VLAN Mapping on BIG-IP VLAN    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    vlan_name=${HA_VLAN_NAME}    vlan_interface_list=${interface_list}
-    Verify VLAN Mapping on a BIG-IP VLAN    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    vlan_name=${HA_VLAN_NAME}    interface_name=${HA_TRUNK_NAME}
-    Run Keyword If    '${HA_VLAN_TAGGED}' == 'True'    Enable dot1q Tagging on a BIG-IP VLAN Interface    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    vlan_name=${HA_VLAN_NAME}    interface_name=${HA_TRUNK_NAME}
-    Run Keyword If    '${HA_VLAN_TAGGED}' == 'True'    Verify dot1q Tagging Enabled on BIG-IP Vlan Interface    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    vlan_name=${HA_VLAN_NAME}    interface_name=${HA_TRUNK_NAME}
 
 Log All BIG-IP VLAN Configurations via TMSH
     [Documentation]    Gather a snapshot of the VLAN configurations post-configuration

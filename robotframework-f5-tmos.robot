@@ -425,3 +425,227 @@ Run BASH Echo Test
     ${BASH_ECHO_RESPONSE}    Execute Command    bash -c echo\\ 'BASH TEST'
     Should Be Equal    ${BASH_ECHO_RESPONSE}    BASH TEST
     [Return]    ${BASH_ECHO_RESPONSE}
+
+##################
+## net interface
+##################
+
+Reset Interface Stats
+    [Documentation]    Resets interface counters on a particular interface (https://support.f5.com/csp/article/K3628)
+    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${name}
+    ${api_payload}    Create Dictionary    command=reset-stats    name=${name}
+    ${api_uri}    set variable    /mgmt/tm/net/interface
+    ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
+    Should Be Equal As Strings    ${api_response.status_code}    200
+    [Return]    ${api_response}
+
+Reset All Interface Stats
+    [Documentation]    Resets interface counters on all interfaces (https://support.f5.com/csp/article/K3628)
+    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
+    ${api_payload}    Create Dictionary    command=reset-stats
+    ${api_uri}    set variable    /mgmt/tm/net/interface
+    ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
+    Should Be Equal As Strings    ${api_response.status_code}    200
+    [Return]    ${api_response}
+
+Enable a BIG-IP physical interface
+    [Documentation]    Enables a particular BIG-IP physical interface (https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/tmos-routing-administration-13-1-0/3.html)
+    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${interface_name}
+    ${api_payload}    create dictionary    kind=tm:net:interface:interfacestate    name=${interface_name}    enabled=${True}
+    ${api_uri}    set variable    /mgmt/tm/net/interface/${interface_name}
+    ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
+    Should Be Equal As Strings    ${api_response.status_code}    200
+    ${api_response_dict}    to json    ${api_response.content}
+    dictionary should contain item  ${api_response_dict}    enabled    True
+    [Return]    ${api_response}
+
+Verify enabled state of BIG-IP physical interface
+    [Documentation]    Verifies that a BIG-IP interface is enabled (https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/tmos-routing-administration-13-1-0/3.html)
+    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${interface_name}
+    ${api_uri}    set variable    /mgmt/tm/net/interface/${interface_name}
+    ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
+    should be equal as strings    ${api_response.status_code}    200
+    ${api_response_dict}    to json    ${api_response.content}
+    dictionary should contain item  ${api_response_dict}    enabled    True
+    [Return]    ${api_response}
+
+Verify up state of BIG-IP physical interface
+    [Documentation]    Verifies that a physical interface is UP (https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/tmos-routing-administration-13-1-0/3.html)
+    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${interface_name}
+    ${api_uri}    set variable    /mgmt/tm/net/interface/stats
+    ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
+    Should Be Equal As Strings    ${api_response.status_code}    200
+    ${api_response_dict}    to json    ${api_response.content}
+    ${interface_stats_entries}    get from dictionary   ${api_response_dict}    entries
+    ${interface_stats_dict}    get from dictionary   ${interface_stats_entries}   https://localhost/mgmt/tm/net/interface/${interface_name}/stats
+    ${interface_stats_dict}    get from dictionary   ${interface_stats_dict}    nestedStats
+    ${interface_stats_dict}    get from dictionary   ${interface_stats_dict}    entries
+    ${interface_status_dict}    get from dictionary   ${interface_stats_dict}    status
+    ${interface_status}    get from dictionary   ${interface_status_dict}    description
+    ${interface_tmname}    get from dictionary   ${interface_stats_dict}    tmName
+    ${interface_tmname}    get from dictionary   ${interface_tmname}    description
+    should be equal as strings    ${interface_status}   enabled
+    [Return]    ${api_response}
+
+Disable a BIG-IP physical interface
+    [Documentation]    Disables a BIG-IP physical interface (https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/tmos-routing-administration-13-1-0/3.html)
+    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${interface_name}
+    ${api_payload}    create dictionary    kind=tm:net:interface:interfacestate    name=${interface_name}    disabled=${True}
+    ${api_uri}    set variable    /mgmt/tm/net/interface/${interface_name}
+    ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
+    Should Be Equal As Strings    ${api_response.status_code}    200
+    ${api_response_dict}    to json    ${api_response.content}
+    dictionary should contain item    ${api_response_dict}    disabled    True
+    [Return]    ${api_response}
+
+Verify disabled state of BIG-IP physical interface
+    [Documentation]    Verifies that a BIG-IP interface is disabled (https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/tmos-routing-administration-13-1-0/3.html)
+    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${interface_name}
+    ${api_uri}    set variable    /mgmt/tm/net/interface/${interface_name}
+    ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
+    should be equal as strings    ${api_response.status_code}    200
+    ${api_response_dict}    to json    ${api_response.content}
+    dictionary should contain item  ${api_response_dict}    disabled    True
+    [Return]    ${api_response}
+
+Verify down state of BIG-IP physical interface
+    [Documentation]    Verifies that a BIG-IP interface is DOWN (https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/tmos-routing-administration-13-1-0/3.html)
+    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${interface_name}
+    ${api_uri}    set variable    /mgmt/tm/net/interface/stats
+    ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
+    Should Be Equal As Strings    ${api_response.status_code}    200
+    ${api_response_dict}    to json    ${api_response.content}
+    ${interface_stats_entries}    get from dictionary  ${api_response_dict}    entries
+    ${interface_stats_dict}    get from dictionary  ${interface_stats_entries}    https://localhost/mgmt/tm/net/interface/${interface_name}/stats
+    ${interface_stats_dict}    get from dictionary  ${interface_stats_dict}    nestedStats
+    ${interface_stats_dict}    get from dictionary  ${interface_stats_dict}    entries
+    ${interface_status_dict}    get from dictionary  ${interface_stats_dict}    status
+    ${interface_status}    get from dictionary  ${interface_status_dict}    description
+    ${interface_tmname}    get from dictionary  ${interface_stats_dict}    tmName
+    ${interface_tmname}    get from dictionary  ${interface_tmname}    description
+    should be equal as strings    ${interface_status}  disabled
+    [Return]    ${api_response}
+
+Configure BIG-IP Interface Description
+    [Documentation]    Configures the description on a BIG-IP interface (https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/tmos-routing-administration-13-1-0/3.html)
+    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${interface_name}    ${interface_description}
+    ${api_uri}    set variable    /mgmt/tm/net/interface/${interface_name}
+    ${api_payload}    create dictionary    description=${interface_description}
+    ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
+    Should Be Equal As Strings    ${api_response.status_code}    200
+    [Return]    ${api_response}
+
+Set BIG-IP Interface LLDP to Transmit Only
+    [Documentation]    Changes the LLDP mode on a single BIG-IP interface (https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/tmos-implementations-13-0-0/5.html)
+    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${interface_name}
+    ${api_uri}    set variable    /mgmt/tm/net/interface/${interface_name}
+    ${api_payload}    create dictionary    lldpAdmin=txonly
+    ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
+    Should Be Equal As Strings    ${api_response.status_code}    200
+    [Return]    ${api_response}
+
+Set BIG-IP Interface LLDP to Receive Only
+    [Documentation]    Changes the LLDP mode on a single BIG-IP interface (https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/tmos-implementations-13-0-0/5.html)
+    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${interface_name}
+    ${api_uri}    set variable    /mgmt/tm/net/interface/${interface_name}
+    ${api_payload}    create dictionary    lldpAdmin=rxonly
+    ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
+    Should Be Equal As Strings    ${api_response.status_code}    200
+    [Return]    ${api_response}
+
+Set BIG-IP Interface LLDP to Transmit and Receive
+    [Documentation]    Changes the LLDP mode on a single BIG-IP interface (https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/tmos-implementations-13-0-0/5.html)
+    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${interface_name}
+    ${api_uri}    set variable    /mgmt/tm/net/interface/${interface_name}
+    ${api_payload}    create dictionary    lldpAdmin=txrx
+    ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
+    Should Be Equal As Strings    ${api_response.status_code}    200
+    [Return]    ${api_response}
+
+Disable BIG-IP LLDP on Interface
+    [Documentation]    Changes the LLDP mode on a single BIG-IP interface (https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/tmos-implementations-13-0-0/5.html)
+    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${interface_name}
+    ${api_uri}    set variable    /mgmt/tm/net/interface/${interface_name}
+    ${api_payload}    create dictionary    lldpAdmin=disable
+    ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
+    Should Be Equal As Strings    ${api_response.status_code}    200
+    [Return]    ${api_response}
+
+List all BIG-IP Interfaces
+    [Documentation]    Retrieves a list of all BIG-IP interfaces (https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/tmos-routing-administration-13-1-0/3.html)
+    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
+    ${api_uri}    set variable    /mgmt/tm/net/interface
+    ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
+    Should Be Equal As Strings    ${api_response.status_code}    200
+    ${api_response_dict}    to json    ${api_response.content}
+    ${interface_list}    get from dictionary    ${api_response_dict}    items
+    [Return]    ${interface_list}
+
+Verify Interface Drop Counters on the BIG-IP
+    [Documentation]    Verifies that interface drops are below a certain threshold (defaults to 1000) (https://support.f5.com/csp/article/K10191) Note that frames marked with a dot1q VLAN tag that is not configured on the BIG-IP will result in this counter incrementing with the "vlan unknown" status. See https://support.f5.com/csp/article/K10191.
+    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${interface_drops_threshold}=0.01
+    ${api_uri}    set variable    /mgmt/tm/net/interface/stats
+    ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
+    Should Be Equal As Strings    ${api_response.status_code}    200
+    ${api_response_dict}    to json    ${api_response.content}
+    ${interface_stats_entries}    get from dictionary    ${api_response_dict}    entries
+    FOR    ${current_interface}    IN  @{interface_stats_entries}
+       ${interface_stats_dict}    get from dictionary    ${interface_stats_entries}    ${current_interface}
+       ${interface_stats_dict}    get from dictionary    ${interface_stats_dict}    nestedStats
+       ${interface_stats_dict}    get from dictionary    ${interface_stats_dict}    entries
+       ${counters_drops_dict}    get from dictionary    ${interface_stats_dict}    counters.dropsAll
+       ${counters_drops_count}    get from dictionary    ${counters_drops_dict}    value
+       ${counters_pkts_in_dict}    get from dictionary    ${interface_stats_dict}    counters.pktsIn
+       ${counters_pkts_in_count}    get from dictionary    ${counters_pkts_in_dict}    value
+       ${interface_tmname}    get from dictionary    ${interface_stats_dict}    tmName
+       ${interface_tmname}    get from dictionary    ${interface_tmname}    description
+       continue for loop if    '${counters_pkts_in_count}' == '0'
+       continue for loop if    '${counters_drops_count}' == '0'
+       log    Interface drops found on ${interface_tmname} - Drops: ${counters_drops_count}
+       should be true    (${counters_drops_count}/${counters_pkts_in_count})*100 < ${interface_drops_threshold}
+    END
+    [Return]    ${api_response}
+
+Verify Interface Error Counters on the BIG-IP
+    [Documentation]    Verifies that interface errors are below a certain threshold (defaults to 1000) (https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/tmos-routing-administration-13-1-0/3.html)
+    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${interface_errors_threshold}=0.01
+    ${api_uri}    set variable    /mgmt/tm/net/interface/stats
+    ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
+    Should Be Equal As Strings    ${api_response.status_code}    200
+    ${api_response_dict}    to json    ${api_response.content}
+    ${interface_stats_entries}    get from dictionary    ${api_response_dict}    entries
+    FOR    ${current_interface}    IN  @{interface_stats_entries}
+       ${interface_stats_dict}    get from dictionary    ${interface_stats_entries}    ${current_interface}
+       ${interface_stats_dict}    get from dictionary    ${interface_stats_dict}    nestedStats
+       ${interface_stats_dict}    get from dictionary    ${interface_stats_dict}    entries
+       ${counters_errors_dict}    get from dictionary    ${interface_stats_dict}    counters.errorsAll
+       ${counters_errors_count}    get from dictionary    ${counters_errors_dict}    value
+       ${counters_pkts_in_dict}    get from dictionary    ${interface_stats_dict}    counters.pktsIn
+       ${counters_pkts_in_count}    get from dictionary    ${counters_pkts_in_dict}    value
+       continue for loop if    '${counters_pkts_in_count}' == '0'
+       continue for loop if    '${counters_errors_count}' == '0'
+       ${interface_tmname}    get from dictionary    ${interface_stats_dict}    tmName
+       ${interface_tmname}    get from dictionary    ${interface_tmname}    description
+       log    Interface ${interface_tmname} - Errors: ${counters_errors_count}
+       should be true    (${counters_errors_count}/${counters_pkts_in_count})*100 < ${interface_errors_threshold}
+    END
+    [Return]    ${api_response}
+
+Retrieve BIG-IP Interface Media Capabilities
+    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${interface}=all
+    ${tmsh_command}    set variable    tmsh list net interface ${interface} media-capabilities
+    Wait until Keyword Succeeds    3x    5 seconds    Open Connection    ${bigip_host}
+    Log In    ${bigip_username}    ${bigip_password}
+    ${tmsh_result}    Execute Command    ${tmsh_command}
+    Close All Connections
+    [Return]    ${tmsh_result}
+    
+Retrieve BIG-IP Interface Configuration via TMSH
+    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${interface}=all
+    ${tmsh_command}    set variable    tmsh list net interface ${interface} all-properties
+    Wait until Keyword Succeeds    3x    5 seconds    Open Connection    ${bigip_host}
+    Log In    ${bigip_username}    ${bigip_password}
+    ${tmsh_result}    Execute Command    ${tmsh_command}
+    Close All Connections
+    [Return]    ${tmsh_result}
+    
