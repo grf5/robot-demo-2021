@@ -93,10 +93,11 @@ Get IPv4 Received Routes from Nexus Router
     Close All Connections
     ${peer_adv_routes_raw}    get regexp matches    ${peer_adv_routes_raw}    (?:[0-9]{1,3}\.){3}[0-9]{1,3}\/[0-9]{1,2}
     ${peer_adv_routes}    create list
-    :FOR   ${current_adv_route}   IN    @{peer_adv_routes_raw}
-    \    ${current_adv_route_network}    fetch from left    ${current_adv_route}    /
-    \    ${current_adv_route_mask}    fetch from right    ${current_adv_route}    /
-    \    append to list    ${peer_adv_routes}    ${current_adv_route_network}/${current_adv_route_mask}
+    FOR   ${current_adv_route}   IN    @{peer_adv_routes_raw}
+        ${current_adv_route_network}    fetch from left    ${current_adv_route}    /
+        ${current_adv_route_mask}    fetch from right    ${current_adv_route}    /
+        append to list    ${peer_adv_routes}    ${current_adv_route_network}/${current_adv_route_mask}
+    END
     [Return]    ${peer_adv_routes}
 
 Get IPv6 Received Routes from Nexus Router
@@ -114,10 +115,11 @@ Get IPv6 Received Routes from Nexus Router
     Close All Connections
     ${peer_adv_routes_raw}    get regexp matches    ${peer_adv_routes_raw}    (([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))\/[0-9]{1,3}
     ${peer_adv_routes}    create list
-    :FOR   ${current_adv_route}   IN    @{peer_adv_routes_raw}
-    \    ${current_adv_route_network}    fetch from left    ${current_adv_route}    /
-    \    ${current_adv_route_mask}    fetch from right    ${current_adv_route}    /
-    \    append to list    ${peer_adv_routes}    ${current_adv_route_network}/${current_adv_route_mask}
+    FOR   ${current_adv_route}   IN    @{peer_adv_routes_raw}
+        ${current_adv_route_network}    fetch from left    ${current_adv_route}    /
+        ${current_adv_route_mask}    fetch from right    ${current_adv_route}    /
+        append to list    ${peer_adv_routes}    ${current_adv_route_network}/${current_adv_route_mask}
+    END
     [Return]    ${peer_adv_routes}
 
 Set BGP Max-Path on Cisco Nexus
@@ -376,13 +378,14 @@ Retrieve BGP Peer Advertised IPv4 Routes
     ${peer_adv_routes_raw}    get from dictionary    ${api_response.json}    commandResult
     ${peer_adv_routes_raw}    get regexp matches    ${peer_adv_routes_raw}    (?:[0-9]{1,3}\.){3}[0-9]{1,3}\/[0-9]{1,2}
     ${peer_adv_routes}    create list
-    :FOR   ${current_adv_route}   IN    @{peer_adv_routes_raw}
-    \    ${current_adv_route_network}    fetch from left    ${current_adv_route}    /
-    \    ${current_adv_route_mask}    fetch from right    ${current_adv_route}    /
-    \    ${current_adv_route_mask}    evaluate    (0xffffffff >> (${32} - ${${current_adv_route_mask}})) << (${32} - ${${current_adv_route_mask}})
-    \    ${current_adv_route_mask}    evaluate    (str((0xff000000 & ${current_adv_route_mask}) >> 24) + '.' + str((0x00ff0000 & ${current_adv_route_mask}) >> 16) + '.' + str((0x0000ff00 & ${current_adv_route_mask}) >> 8) + '.' + str((0x000000ff & ${current_adv_route_mask})))
-    \    ${current_adv_route_dict}    create dictionary    prefix=${current_adv_route_network}    mask=${current_adv_route_mask}
-    \    append to list    ${peer_adv_routes}    ${current_adv_route_dict}
+    FOR   ${current_adv_route}   IN    @{peer_adv_routes_raw}
+        ${current_adv_route_network}    fetch from left    ${current_adv_route}    /
+        ${current_adv_route_mask}    fetch from right    ${current_adv_route}    /
+        ${current_adv_route_mask}    evaluate    (0xffffffff >> (${32} - ${${current_adv_route_mask}})) << (${32} - ${${current_adv_route_mask}})
+        ${current_adv_route_mask}    evaluate    (str((0xff000000 & ${current_adv_route_mask}) >> 24) + '.' + str((0x00ff0000 & ${current_adv_route_mask}) >> 16) + '.' + str((0x0000ff00 & ${current_adv_route_mask}) >> 8) + '.' + str((0x000000ff & ${current_adv_route_mask})))
+        ${current_adv_route_dict}    create dictionary    prefix=${current_adv_route_network}    mask=${current_adv_route_mask}
+        append to list    ${peer_adv_routes}    ${current_adv_route_dict}
+    END
     [Return]    ${peer_adv_routes}
 
 Retrieve BGP Peer Advertised IPv4 Routes in CIDR Format
@@ -880,12 +883,13 @@ Enable BFD GTSM on the BIG-IP
 
 Create IPv4 Prefix List
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${prefix_list_name}    ${entries_list}    ${route_domain_id}=0
-    :FOR    ${current_entry}    IN    @{entries_list}
-    \    ${sequence}    get from dictionary    ${current_entry}    sequence    
-    \    ${action}    get from dictionary    ${current_entry}    action
-    \    ${subnet_string}    get from dictionary    ${current_entry}    subnetString
-    \    ${bgp_commands}    set variable    configure terminal,ip prefix-list ${prefix_list_name} seq ${sequence} ${action} ${subnet_string},end,copy running-config startup-config
-    \    ${api_response}    Run BGP Commands on BIG-IP    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    commands=${bgp_commands}    route_domain_id=${route_domain_id}
+    FOR    ${current_entry}    IN    @{entries_list}
+        ${sequence}    get from dictionary    ${current_entry}    sequence    
+        ${action}    get from dictionary    ${current_entry}    action
+        ${subnet_string}    get from dictionary    ${current_entry}    subnetString
+        ${bgp_commands}    set variable    configure terminal,ip prefix-list ${prefix_list_name} seq ${sequence} ${action} ${subnet_string},end,copy running-config startup-config
+        ${api_response}    Run BGP Commands on BIG-IP    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    commands=${bgp_commands}    route_domain_id=${route_domain_id}
+    END
     [Return]    ${api_response}
 
 Verify IPv4 Prefix List
@@ -893,21 +897,23 @@ Verify IPv4 Prefix List
     ${bgp_commands}    set variable    show running-config prefix-list
     ${api_response}    Run BGP Commands on BIG-IP    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    commands=${bgp_commands}    route_domain_id=${route_domain_id}
     ${prefix_list_configuration}    get from dictionary    ${api_response.json}    commandResult
-    :FOR    ${current_entry}    IN    @{entries_list}
-    \    ${sequence}    get from dictionary    ${current_entry}    sequence    
-    \    ${action}    get from dictionary    ${current_entry}    action
-    \    ${subnet_string}    get from dictionary    ${current_entry}    subnetString
-    \    should contain    ${prefix_list_configuration}    ip prefix-list ${prefix_list_name} seq ${sequence} ${action} ${subnet_string}
+    FOR    ${current_entry}    IN    @{entries_list}
+        ${sequence}    get from dictionary    ${current_entry}    sequence    
+        ${action}    get from dictionary    ${current_entry}    action
+        ${subnet_string}    get from dictionary    ${current_entry}    subnetString
+        should contain    ${prefix_list_configuration}    ip prefix-list ${prefix_list_name} seq ${sequence} ${action} ${subnet_string}
+    END
     [Return]    ${api_response}
 
 Create IPv6 Prefix List
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${prefix_list_name}    ${entries_list}    ${route_domain_id}=0
-    :FOR    ${current_entry}    IN    @{entries_list}
-    \    ${sequence}    get from dictionary    ${current_entry}    sequence    
-    \    ${action}    get from dictionary    ${current_entry}    action
-    \    ${subnet_string}    get from dictionary    ${current_entry}    subnetString
-    \    ${bgp_commands}    set variable    configure terminal,ipv6 prefix-list ${prefix_list_name} seq ${sequence} ${action} ${subnet_string},end,copy running-config startup-config
-    \    ${api_response}    Run BGP Commands on BIG-IP    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    commands=${bgp_commands}    route_domain_id=${route_domain_id}
+    FOR    ${current_entry}    IN    @{entries_list}
+        ${sequence}    get from dictionary    ${current_entry}    sequence    
+        ${action}    get from dictionary    ${current_entry}    action
+        ${subnet_string}    get from dictionary    ${current_entry}    subnetString
+        ${bgp_commands}    set variable    configure terminal,ipv6 prefix-list ${prefix_list_name} seq ${sequence} ${action} ${subnet_string},end,copy running-config startup-config
+        ${api_response}    Run BGP Commands on BIG-IP    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    commands=${bgp_commands}    route_domain_id=${route_domain_id}
+    END
     [Return]    ${api_response}
 
 Verify IPv6 Prefix List
@@ -915,21 +921,23 @@ Verify IPv6 Prefix List
     ${bgp_commands}    set variable    show running-config ipv6 prefix-list
     ${api_response}    Run BGP Commands on BIG-IP    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    commands=${bgp_commands}    route_domain_id=${route_domain_id}
     ${prefix_list_configuration}    get from dictionary    ${api_response.json}    commandResult
-    :FOR    ${current_entry}    IN    @{entries_list}
-    \    ${sequence}    get from dictionary    ${current_entry}    sequence    
-    \    ${action}    get from dictionary    ${current_entry}    action
-    \    ${subnet_string}    get from dictionary    ${current_entry}    subnetString
-    \    should contain    ${prefix_list_configuration}    ipv6 prefix-list ${prefix_list_name} seq ${sequence} ${action} ${subnet_string}
+    FOR    ${current_entry}    IN    @{entries_list}
+        ${sequence}    get from dictionary    ${current_entry}    sequence    
+        ${action}    get from dictionary    ${current_entry}    action
+        ${subnet_string}    get from dictionary    ${current_entry}    subnetString
+        should contain    ${prefix_list_configuration}    ipv6 prefix-list ${prefix_list_name} seq ${sequence} ${action} ${subnet_string}
+    END
     [Return]    ${api_response}
     
 Create ZebOS Route-Map
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${route_map_name}    ${route_map_entries_dictionary}    ${route_domain_id}=0
-    :FOR    ${current_entry}    IN    @{route_map_entries_dictionary}
-    \    ${sequence}    get from dictionary    ${current_entry}    sequence    
-    \    ${action}    get from dictionary    ${current_entry}    action
-    \    ${match_statement}    get from dictionary    ${current_entry}    match
-    \    ${bgp_commands}    set variable if    '${match_statement' == 'all'    configure terminal,route-map ${route_map_name} ${action} ${sequence},end,copy running-config startup-config    configure terminal,route-map ${route_map_name} ${action} ${sequence},match ${match_statement},end,copy running-config startup-config
-    \    ${api_response}    Run BGP Commands on BIG-IP    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    commands=${bgp_commands}    route_domain_id=${route_domain_id}
+    FOR    ${current_entry}    IN    @{route_map_entries_dictionary}
+        ${sequence}    get from dictionary    ${current_entry}    sequence    
+        ${action}    get from dictionary    ${current_entry}    action
+        ${match_statement}    get from dictionary    ${current_entry}    match
+        ${bgp_commands}    set variable if    '${match_statement' == 'all'    configure terminal,route-map ${route_map_name} ${action} ${sequence},end,copy running-config startup-config    configure terminal,route-map ${route_map_name} ${action} ${sequence},match ${match_statement},end,copy running-config startup-config
+        ${api_response}    Run BGP Commands on BIG-IP    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    commands=${bgp_commands}    route_domain_id=${route_domain_id}
+    END
     [Return]    ${api_response}
 
 Verify ZebOS Route-Map
@@ -937,13 +945,14 @@ Verify ZebOS Route-Map
     ${bgp_commands}    set variable    show running-config route-map
     ${api_response}    Run BGP Commands on BIG-IP    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    commands=${bgp_commands}    route_domain_id=${route_domain_id}
     ${route_map_configuration}    get from dictionary    ${api_response.json}    commandResult
-    :FOR    ${current_entry}    IN    @{route_map_entries_dictionary}
-    \    ${sequence}    get from dictionary    ${current_entry}    sequence    
-    \    ${action}    get from dictionary    ${current_entry}    action
-    \    ${match_statement}    get from dictionary    ${current_entry}    match
-    \    ${route_map_entry}    set variable    route-map ${route_map_name} ${action} ${sequence}
-    \    should contain    ${route_map_configuration}    ${route_map_entry}
-    \    run keyword if    '${match_statement}' != 'all'    should contain    ${route_map_configuration}    match ${match_statement}
+    FOR    ${current_entry}    IN    @{route_map_entries_dictionary}
+        ${sequence}    get from dictionary    ${current_entry}    sequence    
+        ${action}    get from dictionary    ${current_entry}    action
+        ${match_statement}    get from dictionary    ${current_entry}    match
+        ${route_map_entry}    set variable    route-map ${route_map_name} ${action} ${sequence}
+        should contain    ${route_map_configuration}    ${route_map_entry}
+        run keyword if    '${match_statement}' != 'all'    should contain    ${route_map_configuration}    match ${match_statement}
+    END
     [Return]    ${route_map_configuration}
      
 Clear BGP Max-Path on F5 BIG-IP
@@ -1013,10 +1022,11 @@ Get CM Self Device
     ${api_response_json}    to Json    ${api_response.text}
     ${api_response_dict}    Convert to Dictionary    ${api_response_json}
     ${items_list}    Get from Dictionary    ${api_response_dict}    items
-    :FOR    ${current_device}    IN    @{items_list}
-    \    ${self_device_flag}    Get from Dictionary    ${current_device}    selfDevice
-    \    ${cm_self_device}    Set Variable If    '${self_device_flag}' == 'true'    ${current_device}
-    \    return from keyword if    '${self_device_flag}' == 'true'    ${cm_self_device}
+    FOR    ${current_device}    IN    @{items_list}
+        ${self_device_flag}    Get from Dictionary    ${current_device}    selfDevice
+        ${cm_self_device}    Set Variable If    '${self_device_flag}' == 'true'    ${current_device}
+        return from keyword if    '${self_device_flag}' == 'true'    ${cm_self_device}
+    END
     [Return]    ${cm_self_device}
 
 Retrieve BIG-IP CM Hostname
@@ -1333,18 +1343,19 @@ Retrieve the HA Status of a Traffic-Group Member
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
     Should Be Equal As Strings    ${api_response.status_code}    200
     ${cm_device_status_dict}    get from dictionary    ${api_response.json}    entries
-    :FOR    ${key}    IN    @{cm_device_status_dict.keys()}
-    \    ${current_device}    get from dictionary    ${cm_device_status_dict}    ${key}
-    \    ${current_device_hostname_nestedStats}    get from dictionary    ${current_device}    nestedStats
-    \    ${current_device_hostname_entries}    get from dictionary    ${current_device_hostname_nestedStats}    entries
-    \    ${current_device_hostname_deviceName}    get from dictionary    ${current_device_hostname_entries}    deviceName
-    \    ${current_device_hostname}    get from dictionary    ${current_device_hostname_deviceName}    description
-    \    ${current_device_status_nestedStats}    get from dictionary    ${current_device}    nestedStats
-    \    ${current_device_status_entries}    get from dictionary    ${current_device_status_nestedStats}    entries
-    \    ${current_device_status_failoverState}    get from dictionary    ${current_device_status_entries}    failoverState
-    \    ${current_device_status}    get from dictionary    ${current_device_status_failoverState}    description
-    \    ${cm_device_status}    set variable if    '${current_device_hostname}' == '\/${partition}\/${cm_device_name}'    ${current_device_status}    device not found
-    \    Return from keyword if    '${current_device_hostname}' == '\/${partition}\/${cm_device_name}'    ${cm_device_status}    
+    FOR    ${key}    IN    @{cm_device_status_dict.keys()}
+        ${current_device}    get from dictionary    ${cm_device_status_dict}    ${key}
+        ${current_device_hostname_nestedStats}    get from dictionary    ${current_device}    nestedStats
+        ${current_device_hostname_entries}    get from dictionary    ${current_device_hostname_nestedStats}    entries
+        ${current_device_hostname_deviceName}    get from dictionary    ${current_device_hostname_entries}    deviceName
+        ${current_device_hostname}    get from dictionary    ${current_device_hostname_deviceName}    description
+        ${current_device_status_nestedStats}    get from dictionary    ${current_device}    nestedStats
+        ${current_device_status_entries}    get from dictionary    ${current_device_status_nestedStats}    entries
+        ${current_device_status_failoverState}    get from dictionary    ${current_device_status_entries}    failoverState
+        ${current_device_status}    get from dictionary    ${current_device_status_failoverState}    description
+        ${cm_device_status}    set variable if    '${current_device_hostname}' == '\/${partition}\/${cm_device_name}'    ${current_device_status}    device not found
+        Return from keyword if    '${current_device_hostname}' == '\/${partition}\/${cm_device_name}'    ${cm_device_status}    
+    END
     [Return]    ${cm_device_status}
 
 Assign HA Group to Traffic Group
@@ -1596,30 +1607,32 @@ Verify an LTM IPv6 Pool Member
 Add an LTM Pool Member to a Pool in Bulk
     [Documentation]    Adds a node to an existing pool (https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/ltm-basics-13-0-0/4.html#guid-c8d28345-0337-484e-ad92-cf3f21d638f1)
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${pool_name}    ${pool_partition}    ${member_list}
-    :FOR    ${current_member}    IN    @{member_list}
-    \    ${pool_member_partition}    get from dictionary    ${current_member}    partition
-    \    ${address}    get from dictionary    ${current_member}    address
-    \    ${port}    get from dictionary    ${current_member}    port
-    \    ${monitor}    get from dictionary    ${current_member}    monitor
-    \    ${api_payload}    create dictionary   name=${address}:${port}    address=${address}    partition=${pool_member_partition}    monitor=${monitor}
-    \    ${api_uri}    set variable    /mgmt/tm/ltm/pool/~${pool_partition}~${pool_name}/members
-    \    ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    \    Should Be Equal As Strings    ${api_response.status_code}    200
+    FOR    ${current_member}    IN    @{member_list}
+        ${pool_member_partition}    get from dictionary    ${current_member}    partition
+        ${address}    get from dictionary    ${current_member}    address
+        ${port}    get from dictionary    ${current_member}    port
+        ${monitor}    get from dictionary    ${current_member}    monitor
+        ${api_payload}    create dictionary   name=${address}:${port}    address=${address}    partition=${pool_member_partition}    monitor=${monitor}
+        ${api_uri}    set variable    /mgmt/tm/ltm/pool/~${pool_partition}~${pool_name}/members
+        ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
+        Should Be Equal As Strings    ${api_response.status_code}    200
+    END
     [Return]    ${api_response.json}
 
 Verify an LTM Pool Member in Bulk
     [Documentation]    Adds a node to an existing pool (https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/ltm-basics-13-0-0/4.html#guid-c8d28345-0337-484e-ad92-cf3f21d638f1)
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${pool_name}    ${pool_partition}    ${member_list}
-    :FOR    ${current_member}    IN    @{member_list}
-    \    ${pool_member_partition}    get from dictionary    ${current_member}    partition
-    \    ${address}    get from dictionary    ${current_member}    address
-    \    ${port}    get from dictionary    ${current_member}    port
-    \    ${monitor}    get from dictionary    ${current_member}    monitor
-    \    ${expected_configuration}    create dictionary   name=${address}:${port}    address=${address}    partition=${pool_member_partition}    monitor=${monitor}
-    \    ${api_uri}    set variable    /mgmt/tm/ltm/pool/~${pool_partition}~${pool_name}/members/~${pool_member_partition}~${address}:${port}
-    \    ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    \    Should Be Equal As Strings    ${api_response.status_code}    200
-    \    Dictionary should contain subdictionary    ${api_response.json}    ${expected_configuration}
+    FOR    ${current_member}    IN    @{member_list}
+        ${pool_member_partition}    get from dictionary    ${current_member}    partition
+        ${address}    get from dictionary    ${current_member}    address
+        ${port}    get from dictionary    ${current_member}    port
+        ${monitor}    get from dictionary    ${current_member}    monitor
+        ${expected_configuration}    create dictionary   name=${address}:${port}    address=${address}    partition=${pool_member_partition}    monitor=${monitor}
+        ${api_uri}    set variable    /mgmt/tm/ltm/pool/~${pool_partition}~${pool_name}/members/~${pool_member_partition}~${address}:${port}
+        ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
+        Should Be Equal As Strings    ${api_response.status_code}    200
+        Dictionary should contain subdictionary    ${api_response.json}    ${expected_configuration}
+    END
     [Return]    ${api_response.json}
 
 Enable an LTM Pool Member
@@ -2113,11 +2126,12 @@ List all BIG-IP Interfaces
     Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_dict}    to json    ${api_response.content}
     ${interface_list}    get from dictionary    ${api_response_dict}    items
-    :FOR    ${current_interface}    IN  @{interface_list}
-    \   ${interface_name}    get from dictionary    ${current_interface}    name
-    \   ${interface_media_active}   get from dictionary    ${current_interface}    mediaActive
-    \   ${interface_media_max}    get from dictionary    ${current_interface}    mediaMax
-    \   log    Name: ${interface_name} Media Active: ${interface_media_active} Fastest Optic Supported: ${interface_media_max}
+    FOR    ${current_interface}    IN  @{interface_list}
+       ${interface_name}    get from dictionary    ${current_interface}    name
+       ${interface_media_active}   get from dictionary    ${current_interface}    mediaActive
+       ${interface_media_max}    get from dictionary    ${current_interface}    mediaMax
+       log    Name: ${interface_name} Media Active: ${interface_media_active} Fastest Optic Supported: ${interface_media_max}
+    END
     [Return]    ${api_response}
 
 Verify Interface Drop Counters on the BIG-IP
@@ -2128,20 +2142,21 @@ Verify Interface Drop Counters on the BIG-IP
     Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_dict}    to json    ${api_response.content}
     ${interface_stats_entries}    get from dictionary    ${api_response_dict}    entries
-    :FOR    ${current_interface}    IN  @{interface_stats_entries}
-    \   ${interface_stats_dict}    get from dictionary    ${interface_stats_entries}    ${current_interface}
-    \   ${interface_stats_dict}    get from dictionary    ${interface_stats_dict}    nestedStats
-    \   ${interface_stats_dict}    get from dictionary    ${interface_stats_dict}    entries
-    \   ${counters_drops_dict}    get from dictionary    ${interface_stats_dict}    counters.dropsAll
-    \   ${counters_drops_count}    get from dictionary    ${counters_drops_dict}    value
-    \   ${counters_pkts_in_dict}    get from dictionary    ${interface_stats_dict}    counters.pktsIn
-    \   ${counters_pkts_in_count}    get from dictionary    ${counters_pkts_in_dict}    value
-    \   ${interface_tmname}    get from dictionary    ${interface_stats_dict}    tmName
-    \   ${interface_tmname}    get from dictionary    ${interface_tmname}    description
-    \   continue for loop if    '${counters_pkts_in_count}' == '0'
-    \   continue for loop if    '${counters_drops_count}' == '0'
-    \   log    Interface drops found on ${interface_tmname} - Drops: ${counters_drops_count}
-    \   should be true    (${counters_drops_count}/${counters_pkts_in_count})*100 < ${interface_drops_threshold}
+    FOR    ${current_interface}    IN  @{interface_stats_entries}
+       ${interface_stats_dict}    get from dictionary    ${interface_stats_entries}    ${current_interface}
+       ${interface_stats_dict}    get from dictionary    ${interface_stats_dict}    nestedStats
+       ${interface_stats_dict}    get from dictionary    ${interface_stats_dict}    entries
+       ${counters_drops_dict}    get from dictionary    ${interface_stats_dict}    counters.dropsAll
+       ${counters_drops_count}    get from dictionary    ${counters_drops_dict}    value
+       ${counters_pkts_in_dict}    get from dictionary    ${interface_stats_dict}    counters.pktsIn
+       ${counters_pkts_in_count}    get from dictionary    ${counters_pkts_in_dict}    value
+       ${interface_tmname}    get from dictionary    ${interface_stats_dict}    tmName
+       ${interface_tmname}    get from dictionary    ${interface_tmname}    description
+       continue for loop if    '${counters_pkts_in_count}' == '0'
+       continue for loop if    '${counters_drops_count}' == '0'
+       log    Interface drops found on ${interface_tmname} - Drops: ${counters_drops_count}
+       should be true    (${counters_drops_count}/${counters_pkts_in_count})*100 < ${interface_drops_threshold}
+    END
     [Return]    ${api_response}
 
 Verify Interface Error Counters on the BIG-IP
@@ -2152,20 +2167,21 @@ Verify Interface Error Counters on the BIG-IP
     Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_dict}    to json    ${api_response.content}
     ${interface_stats_entries}    get from dictionary    ${api_response_dict}    entries
-    :FOR    ${current_interface}    IN  @{interface_stats_entries}
-    \   ${interface_stats_dict}    get from dictionary    ${interface_stats_entries}    ${current_interface}
-    \   ${interface_stats_dict}    get from dictionary    ${interface_stats_dict}    nestedStats
-    \   ${interface_stats_dict}    get from dictionary    ${interface_stats_dict}    entries
-    \   ${counters_errors_dict}    get from dictionary    ${interface_stats_dict}    counters.errorsAll
-    \   ${counters_errors_count}    get from dictionary    ${counters_errors_dict}    value
-    \   ${counters_pkts_in_dict}    get from dictionary    ${interface_stats_dict}    counters.pktsIn
-    \   ${counters_pkts_in_count}    get from dictionary    ${counters_pkts_in_dict}    value
-    \   continue for loop if    '${counters_pkts_in_count}' == '0'
-    \   continue for loop if    '${counters_errors_count}' == '0'
-    \   ${interface_tmname}    get from dictionary    ${interface_stats_dict}    tmName
-    \   ${interface_tmname}    get from dictionary    ${interface_tmname}    description
-    \   log    Interface ${interface_tmname} - Errors: ${counters_errors_count}
-    \   should be true    (${counters_errors_count}/${counters_pkts_in_count})*100 < ${interface_errors_threshold}
+    FOR    ${current_interface}    IN  @{interface_stats_entries}
+       ${interface_stats_dict}    get from dictionary    ${interface_stats_entries}    ${current_interface}
+       ${interface_stats_dict}    get from dictionary    ${interface_stats_dict}    nestedStats
+       ${interface_stats_dict}    get from dictionary    ${interface_stats_dict}    entries
+       ${counters_errors_dict}    get from dictionary    ${interface_stats_dict}    counters.errorsAll
+       ${counters_errors_count}    get from dictionary    ${counters_errors_dict}    value
+       ${counters_pkts_in_dict}    get from dictionary    ${interface_stats_dict}    counters.pktsIn
+       ${counters_pkts_in_count}    get from dictionary    ${counters_pkts_in_dict}    value
+       continue for loop if    '${counters_pkts_in_count}' == '0'
+       continue for loop if    '${counters_errors_count}' == '0'
+       ${interface_tmname}    get from dictionary    ${interface_stats_dict}    tmName
+       ${interface_tmname}    get from dictionary    ${interface_tmname}    description
+       log    Interface ${interface_tmname} - Errors: ${counters_errors_count}
+       should be true    (${counters_errors_count}/${counters_pkts_in_count})*100 < ${interface_errors_threshold}
+    END
     [Return]    ${api_response}
 
 Retrieve BIG-IP Interface Media Capabilities
@@ -3221,18 +3237,19 @@ Verify NTP Server Associations
     ${ntpq_output_values_list}    Split String    ${ntpq_output_clean}
     ${ntpq_output_length}    get length    ${ntpq_output_values_list}
     ${ntpq_output_server_count}    evaluate    ${ntpq_output_length} / 10 + 1
-    :FOR    ${current_ntp_server}  IN RANGE    1   ${ntpq_output_server_count}
-    \   ${ntp_server_ip}    remove from list    ${ntpq_output_values_list}  0
-    \   ${ntp_server_reference}    remove from list    ${ntpq_output_values_list}  0
-    \   ${ntp_server_stratum}    remove from list    ${ntpq_output_values_list}  0
-    \   ${ntp_server_type}    remove from list    ${ntpq_output_values_list}  0
-    \   ${ntp_server_when}    remove from list    ${ntpq_output_values_list}  0
-    \   ${ntp_server_poll}    remove from list    ${ntpq_output_values_list}  0
-    \   ${ntp_server_reach}    remove from list    ${ntpq_output_values_list}  0
-    \   ${ntp_server_delay}    remove from list    ${ntpq_output_values_list}  0
-    \   ${ntp_server_offset}    remove from list    ${ntpq_output_values_list}  0
-    \   ${ntp_server_jitter}    remove from list    ${ntpq_output_values_list}  0
-    \   log    NTP server status: IP: ${ntp_server_ip} Reference IP: ${ntp_server_reference} Stratum: ${ntp_server_stratum} Type: ${ntp_server_type} Last Poll: ${ntp_server_when} Poll Interval: ${ntp_server_poll} Successes: ${ntp_server_reach} Delay: ${ntp_server_delay} Offset: ${ntp_server_offset} Jitter: ${ntp_server_jitter}
+    FOR    ${current_ntp_server}  IN RANGE    1   ${ntpq_output_server_count}
+       ${ntp_server_ip}    remove from list    ${ntpq_output_values_list}  0
+       ${ntp_server_reference}    remove from list    ${ntpq_output_values_list}  0
+       ${ntp_server_stratum}    remove from list    ${ntpq_output_values_list}  0
+       ${ntp_server_type}    remove from list    ${ntpq_output_values_list}  0
+       ${ntp_server_when}    remove from list    ${ntpq_output_values_list}  0
+       ${ntp_server_poll}    remove from list    ${ntpq_output_values_list}  0
+       ${ntp_server_reach}    remove from list    ${ntpq_output_values_list}  0
+       ${ntp_server_delay}    remove from list    ${ntpq_output_values_list}  0
+       ${ntp_server_offset}    remove from list    ${ntpq_output_values_list}  0
+       ${ntp_server_jitter}    remove from list    ${ntpq_output_values_list}  0
+       log    NTP server status: IP: ${ntp_server_ip} Reference IP: ${ntp_server_reference} Stratum: ${ntp_server_stratum} Type: ${ntp_server_type} Last Poll: ${ntp_server_when} Poll Interval: ${ntp_server_poll} Successes: ${ntp_server_reach} Delay: ${ntp_server_delay} Offset: ${ntp_server_offset} Jitter: ${ntp_server_jitter}
+    END
     should not be equal as integers    ${ntp_server_reach}    0
     should not be equal as strings    ${ntp_server_when}    -
     should not be equal as strings    ${ntp_server_reference}    .STEP.
