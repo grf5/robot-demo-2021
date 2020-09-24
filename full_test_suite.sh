@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 # Environmental variables
-robot_fullpath=/home/centos/f5_robot_testing/f5_robot_venv/bin/robot
 export PYTHONWARNINGS='ignore:Unverified HTTPS request'
 
 # Test case variables
@@ -29,7 +28,7 @@ tests=('0010-basic-connectivity')
 
 for current_test in tests
 do 
-    $robot_fullpath --noncritical non_critical --outputdir ./reports -o $test.xml -l $test.log.html -r $test.report.html ./bin/$test.robot
+    robot --noncritical non_critical --outputdir ./reports -o $test.xml -l $test.log.html -r $test.report.html ./bin/$test.robot
 done
 
 ########################################
