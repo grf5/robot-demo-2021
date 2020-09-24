@@ -24,7 +24,7 @@ export SECONDARY_HTTP_USERNAME='admin'
 export SECONDARY_HTTP_PASSWORD='f5r0b0t!'
 
 # NTP
-export NTP_SERVER_LIST='["172.30.105.134"]'
+export NTP_SERVER_LIST='["0.pool.ntp.org","1.pool.ntp.org","2.pool.ntp.org","3.pool.ntp.org"]'
 
 printf "##############################\n"
 printf "## Starting script execution  \n"
