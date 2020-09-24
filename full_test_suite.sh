@@ -61,10 +61,6 @@ done
 printf "Running Rebot Report Summarization"
 rebot --name "F5 Robot Framework Test Report" -l ./reports/COMBINED-LOG.html -r ./reports/COMBINED-REPORT.html ./reports/*.xml
 
-# Remove raw output files
-rm -f ./reports/*.html
-rm -f ./reports/*.xml
-
 printf "##############################\n"
 printf "## Script execution complete  \n"
 printf "##############################\n"
