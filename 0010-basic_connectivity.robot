@@ -16,16 +16,14 @@ ${SECONDARY_SSH_USERNAME}               %{SECONDARY_SSH_USERNAME}
 ${SECONDARY_SSH_PASSWORD}               %{SECONDARY_SSH_PASSWORD}
 ${SECONDARY_HTTP_USERNAME}              %{SECONDARY_HTTP_USERNAME}
 ${SECONDARY_HTTP_PASSWORD}              %{SECONDARY_HTTP_PASSWORD}
-${ROBOT_HOST_IP}                        %{ROBOT_HOST_IP}
 
 *** Test Cases ***
 Perform BIG-IP Quick Check
     [Documentation]    Verifies that key BIG-IP services are in a ready state
     set log level    trace
-    Verify All BIG-IP Ready States    host=${PRIMARY_MGMT_IP}    username=${PRIMARY_HTTP_USERNAME}    password=${PRIMARY_HTTP_PASSWORD}
-    Check for BIG-IP Services Waiting to Restart    host=${PRIMARY_MGMT_IP}    username=${PRIMARY_HTTP_USERNAME}    password=${PRIMARY_HTTP_PASSWORD}
+    Verify All BIG-IP Ready States    bigip_host=${PRIMARY_MGMT_IP}    username=${PRIMARY_HTTP_USERNAME}    password=${PRIMARY_HTTP_PASSWORD}
+    Check for BIG-IP Services Waiting to Restart    bigip_host=${PRIMARY_MGMT_IP}    username=${PRIMARY_HTTP_USERNAME}    password=${PRIMARY_HTTP_PASSWORD}
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    Verify All BIG-IP Ready States    host=${SECONDARY_MGMT_IP}    username=${SECONDARY_HTTP_USERNAME}    password=${SECONDARY_HTTP_PASSWORD}
-    Check for BIG-IP Services Waiting to Restart    host=${SECONDARY_MGMT_IP}    username=${SECONDARY_HTTP_USERNAME}    password=${SECONDARY_HTTP_PASSWORD}
-
+    Verify All BIG-IP Ready States    bigip_host=${SECONDARY_MGMT_IP}    username=${SECONDARY_HTTP_USERNAME}    password=${SECONDARY_HTTP_PASSWORD}
+    Check for BIG-IP Services Waiting to Restart    bigip_comhost=${SECONDARY_MGMT_IP}    username=${SECONDARY_HTTP_USERNAME}    password=${SECONDARY_HTTP_PASSWORD}
 
