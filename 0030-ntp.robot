@@ -23,12 +23,14 @@ Create Management Route for NTP Servers
     [Documentation]    Routes NTP traffic through the management network
     set log level    trace
     ${defined_ntp_server_list}    to json    ${NTP_SERVER_LIST}
-    :FOR    ${current_ntp_server}    IN    @{defined_ntp_server_list}
-    \    Create Management Network Route    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${HTTP_PASSWORD}    name=${current_ntp_server}    network=${current_ntp_server}    gateway=${MGMT_NETWORK_GATEWAY}
+    FOR    ${current_ntp_server}    IN    @{defined_ntp_server_list}
+        Create Management Network Route    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${HTTP_PASSWORD}    name=${current_ntp_server}    network=${current_ntp_server}    gateway=${MGMT_NETWORK_GATEWAY}
+    END
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    :FOR    ${current_ntp_server}    IN    @{defined_ntp_server_list}
-    \    Create Management Network Route    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    name=${current_ntp_server}    network=${current_ntp_server}    gateway=${MGMT_NETWORK_GATEWAY}
-      
+    FOR    ${current_ntp_server}    IN    @{defined_ntp_server_list}
+        Create Management Network Route    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    name=${current_ntp_server}    network=${current_ntp_server}    gateway=${MGMT_NETWORK_GATEWAY}
+    END
+    
 Configure NTP Servers
     [Documentation]    Configures NTP servers on the BIG-IP
     set log level    trace
