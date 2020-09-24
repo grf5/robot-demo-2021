@@ -11,6 +11,7 @@ export PRIMARY_HOSTNAME='ip-10-1-1-5.us-west-2.compute.internal'
 export PRIMARY_MGMT_IP='10.1.1.5'
 export SECONDARY_HOSTNAME='ip-10-1-1-6.us-west-2.compute.internal'
 export SECONDARY_MGMT_IP='10.1.1.6'
+export MGMT_NETWORK_GATEWAY='10.1.1.1'
 
 # Device Credentials
 export PRIMARY_SSH_USERNAME='admin'
@@ -22,6 +23,8 @@ export SECONDARY_SSH_PASSWORD='f5r0b0t!'
 export SECONDARY_HTTP_USERNAME='admin'
 export SECONDARY_HTTP_PASSWORD='f5r0b0t!'
 
+# NTP
+export NTP_SERVER_LIST='["172.30.105.134"]'
 
 printf "##############################\n"
 printf "## Starting script execution  \n"
@@ -29,7 +32,7 @@ printf "##############################\n"
 start_time=`date`
 printf "Starting at $start_time\n"
 
-tests=('0010-basic_connectivity')
+tests=('0010-basic_connectivity' '0020-sys_global_settings' '0030-ntp')
 
 for current_test in "${tests[@]}"
 do 
