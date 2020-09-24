@@ -21,14 +21,14 @@ export PRIMARY_HTTP_PASSWORD=''
 printf "##############################\n"
 printf "## Starting script execution  \n"
 printf "##############################\n"
-date
 start_time=`date`
+printf "Starting at $start_time\n"
 
 tests=('0010-basic-connectivity')
 
 for current_test in tests
 do 
-    robot --noncritical non_critical --outputdir ./reports -o $test.xml -l $test.log.html -r $test.report.html ./bin/$test.robot
+    robot --noncritical non_critical --outputdir ./reports -o $test.xml -l $test.log.html -r $test.report.html ./$test.robot
 done
 
 ########################################
@@ -36,8 +36,14 @@ done
 ########################################
 
 printf "Running Rebot Report Summarization"
+# Compile all output into a single report
 rebot --name "F5 Robot Framework Test Report" -l ./COMBINED-LOG.html -r ./COMBINED-REPORT.html ./*.xml
+# Remove raw output files
 fm -f ./*.xml
+
+############################################
+# Print the start and finish time and exit
+############################################
 
 printf "Started: $start_time\n"
 printf "Completed: `date`\n"
