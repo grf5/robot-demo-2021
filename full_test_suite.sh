@@ -27,12 +27,22 @@ export SECONDARY_HTTP_PASSWORD='f5r0b0t!'
 export PRIMARY_BASE_UCS_FILENAME='/var/local/ucs/firstboot_licensed.ucs'
 export SECONDARY_BASE_UCS_FILENAME='/var/local/ucs/firstboot_licensed.ucs'
 
-# NTP
+# sys ntp
 export NTP_SERVER_LIST='["52.0.56.137","45.63.54.13","204.11.201.12","172.98.193.44"]'
 
-# Interface configurations
+# net interface
 export PRIMARY_INTERFACE_DETAILS='[{"name":"1.1","description":"Configured by Robot Framework","lldpAdmin":"txrx"},{"name":"1.2","description":"Configured by Robot Framework","lldpAdmin":"txrx"}]'
 export SECONDARY_INTERFACE_DETAILS='[{"name":"1.1","description":"Configured by Robot Framework","lldpAdmin":"txrx"},{"name":"1.2","description":"Configured by Robot Framework","lldpAdmin":"txrx"}]'
+
+# net vlan
+export OUTSIDE_VLAN_NAME='uplink'
+export OUTSIDE_VLAN_TAG='none'
+export OUTSIDE_VLAN_TAGGED='False'
+export OUTSIDE_INTERFACE_NAME='1.1'
+export INSIDE_VLAN_NAME='downlink'
+export INSIDE_VLAN_TAG='none'
+export INSIDE_VLAN_TAGGED='False'
+export INSIDE_INTERFACE_NAME='1.2'
 
 # Delete existing reports
 rm -f ./reports/*.html
