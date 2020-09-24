@@ -22,10 +22,10 @@ ${ROBOT_HOST_IP}                        %{ROBOT_HOST_IP}
 Perform BIG-IP Quick Check
     [Documentation]    Verifies that key BIG-IP services are in a ready state
     set log level    trace
-    Verify All BIG-IP Ready States    host=${PRIMARY_MGMT_IP}    username=${HTTP_USERNAME}    password=${HTTP_PASSWORD}
-    Check for BIG-IP Services Waiting to Restart    host=${PRIMARY_MGMT_IP}    username=${HTTP_USERNAME}    password=${HTTP_PASSWORD}
+    Verify All BIG-IP Ready States    host=${PRIMARY_MGMT_IP}    username=${PRIMARY_HTTP_USERNAME}    password=${PRIMARY_HTTP_PASSWORD}
+    Check for BIG-IP Services Waiting to Restart    host=${PRIMARY_MGMT_IP}    username=${PRIMARY_HTTP_USERNAME}    password=${PRIMARY_HTTP_PASSWORD}
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    Verify All BIG-IP Ready States    host=${SECONDARY_MGMT_IP}    username=${HTTP_USERNAME}    password=${HTTP_PASSWORD}
-    Check for BIG-IP Services Waiting to Restart    host=${SECONDARY_MGMT_IP}    username=${HTTP_USERNAME}    password=${HTTP_PASSWORD}
+    Verify All BIG-IP Ready States    host=${SECONDARY_MGMT_IP}    username=${SECONDARY_HTTP_USERNAME}    password=${SECONDARY_HTTP_PASSWORD}
+    Check for BIG-IP Services Waiting to Restart    host=${SECONDARY_MGMT_IP}    username=${SECONDARY_HTTP_USERNAME}    password=${SECONDARY_HTTP_PASSWORD}
 
 
