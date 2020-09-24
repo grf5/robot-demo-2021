@@ -19,7 +19,7 @@ Ping Host from BIG-IP
     ${api_payload}    Create Dictionary    command=run    utilCmdArgs=-c ${count} -i ${interval} -s ${packetsize} ${host}
     ${api_uri}    set variable    /mgmt/tm/util/ping
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_json}    To Json    ${api_response.content}
     ${ping_output}    Get from Dictionary    ${api_response_json}    commandResult
     log    ${ping_output}
@@ -32,7 +32,7 @@ Ping IPv6 Host from BIG-IP
     ${api_payload}    Create Dictionary    command=run    utilCmdArgs=-c ${count} -i ${interval} -s ${packetsize} ${host}
     ${api_uri}    set variable    /mgmt/tm/util/ping6
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_json}    To Json    ${api_response.content}
     ${ping_output}    Get from Dictionary    ${api_response_json}    commandResult
     log    ${ping_output}
@@ -44,7 +44,7 @@ Retrieve BIG-IP Login Page
     [Arguments]    ${bigip_host}
     RequestsLibrary.Create Session    webui    https://${bigip_host}
     ${api_response}    get request    webui    /tmui/login.jsp
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     Log    Web UI HTTP RESPONSE: ${api_response.text}
     should contain    ${api_response.text}    <meta name="description" content="BIG-IP&reg; Configuration Utility" />
     [Teardown]    Delete All Sessions
@@ -270,7 +270,7 @@ Run BGP Commands on BIG-IP
     ${api_payload}    create dictionary    command=run    utilCmdArgs=-c "zebos -r ${route_domain_id} cmd terminal length 0,${commands}"
     ${api_uri}    set variable    /mgmt/tm/util/bash
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Create BGP IPv4 Neighbor
@@ -1009,7 +1009,7 @@ Get CM Self Device
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
     ${api_uri}    Set Variable    /mgmt/tm/cm/device
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_json}    to Json    ${api_response.text}
     ${api_response_dict}    Convert to Dictionary    ${api_response_json}
     ${items_list}    Get from Dictionary    ${api_response_dict}    items
@@ -1136,7 +1136,7 @@ Add Device to CM Trust
     ${api_payload}    Create Dictionary    command    run    name    Root    caDevice    ${True}    device    ${peer_bigip_host}    deviceName    ${peer_bigip_cm_name}    username    ${peer_bigip_username}    password    ${peer_bigip_password}
     ${api_uri}    Set Variable    /mgmt/tm/cm/add-to-trust
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Verify Trust Sync Status 13.1.1.4
@@ -1161,7 +1161,7 @@ Create CM Device Group
     ${api_uri}    Set Variable    /mgmt/tm/cm/device-group
     ${api_payload}    Create Dictionary    name    ${cm_device_group_name}    type    sync-failover
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response.text}
 
 Add Device to CM Device Group
@@ -1170,7 +1170,7 @@ Add Device to CM Device Group
     ${api_uri}    Set Variable    /mgmt/tm/cm/device-group/~Common~${cm_device_group_name}/devices
     ${api_payload}    Create Dictionary    name    ${cm_device_name}
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Enable CM Auto Sync
@@ -1179,7 +1179,7 @@ Enable CM Auto Sync
     ${api_uri}    Set Variable    /mgmt/tm/cm/device-group/~Common~${cm_device_group_name}/
     ${api_payload}    Create Dictionary    autoSync    enabled
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Disable CM Auto Sync
@@ -1188,7 +1188,7 @@ Disable CM Auto Sync
     ${api_uri}    Set Variable    /mgmt/tm/cm/device-group/~Common~${cm_device_group_name}/
     ${api_payload}    Create Dictionary    autoSync    disabled
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Manually Sync BIG-IP Configurations
@@ -1197,7 +1197,7 @@ Manually Sync BIG-IP Configurations
     ${api_uri}    Set Variable    /mgmt/tm/cm/config-sync
     ${api_payload}    Create Dictionary    command    run    utilCmdArgs    to-group ${cm_device_group_name}
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     Sleep    3s
     [Return]    ${api_response}
 
@@ -1207,7 +1207,7 @@ Move CM Device to New Hostname
     ${api_uri}    Set Variable    /mgmt/tm/cm/device
     ${api_payload}    Create Dictionary    command    mv    name    ${current_name}    target    ${target}
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Configure CM Device Unicast Address
@@ -1218,7 +1218,7 @@ Configure CM Device Unicast Address
     ${unicast_address_list}    Create List    ${unicast_address_dict}
     ${api_payload}    Create Dictionary    unicast-address    ${unicast_address_list}
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Configure CM Device Mirror IP
@@ -1227,7 +1227,7 @@ Configure CM Device Mirror IP
     ${api_uri}    Set Variable    /mgmt/tm/cm/device/~Common~${device_name}
     ${api_payload}    Create Dictionary    mirrorIp    ${mirror_ip}
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Configure CM Device Configsync IP
@@ -1236,7 +1236,7 @@ Configure CM Device Configsync IP
     ${api_uri}    Set Variable    /mgmt/tm/cm/device/~Common~${device_name}
     ${api_payload}    Create Dictionary    configsyncIp    ${configsync_ip}
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Retrieve CM Sync Mode
@@ -1244,7 +1244,7 @@ Retrieve CM Sync Mode
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
     ${api_uri}    set variable    /mgmt/tm/cm/sync-status
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${cm_sync_mode}    set variable    ${api_response.json['entries']['https://localhost/mgmt/tm/cm/sync-status/0']['nestedStats']['entries']['mode']['description']}
     [Return]    ${cm_sync_mode}
             
@@ -1253,7 +1253,7 @@ Retrieve CM Sync LED Color
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
     ${api_uri}    set variable    /mgmt/tm/cm/sync-status
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${cm_sync_led_color}    set variable    ${api_response.json['entries']['https://localhost/mgmt/tm/cm/sync-status/0']['nestedStats']['entries']['color']['description']}
     [Return]    ${cm_sync_led_color}
 
@@ -1262,7 +1262,7 @@ Verify CM Sync LED Color is Green
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
     ${api_uri}    set variable    /mgmt/tm/cm/sync-status
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${cm_sync_led_color}    set variable    ${api_response.json['entries']['https://localhost/mgmt/tm/cm/sync-status/0']['nestedStats']['entries']['color']['description']}
     should be equal as strings    '${cm_sync_led_color}'    'green'
     [Return]    ${cm_sync_led_color}
@@ -1272,7 +1272,7 @@ Verify CM Sync LED Color is Blue
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
     ${api_uri}    set variable    /mgmt/tm/cm/sync-status
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${cm_sync_led_color}    set variable    ${api_response.json['entries']['https://localhost/mgmt/tm/cm/sync-status/0']['nestedStats']['entries']['color']['description']}
     should be equal as strings    '${cm_sync_led_color}'    'blue'
     [Return]    ${cm_sync_led_color}
@@ -1282,7 +1282,7 @@ Retrieve CM Sync Status
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
     ${api_uri}    set variable    /mgmt/tm/cm/sync-status
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${cm_sync_status}    set variable    ${api_response.json['entries']['https://localhost/mgmt/tm/cm/sync-status/0']['nestedStats']['entries']['status']['description']}
     [Return]    ${cm_sync_status}
 
@@ -1291,7 +1291,7 @@ Retrieve CM Sync Summary
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
     ${api_uri}    set variable    /mgmt/tm/cm/sync-status
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${cm_sync_summary}    set variable    ${api_response.json['entries']['https://localhost/mgmt/tm/cm/sync-status/0']['nestedStats']['entries']['summary']['description']}
     [Return]    ${cm_sync_summary}
 
@@ -1305,7 +1305,7 @@ Create a Traffic Group
     ${api_uri}    set variable    /mgmt/tm/cm/traffic-group
     ${api_payload}    Create Dictionary    name=${name}    autoFailbackEnabled=${autoFailbackEnabled}    autoFailbackTime=${autoFailbackTime}    defaultDevice=${defaultDevice}    description=${description}    failoverMethod=${failoverMethod}    haLoadFactor=${haLoadFactor}    haOrder=${haOrder}    mac=${mac}    monitor=${monitor}
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Verify a Traffic Group
@@ -1317,7 +1317,7 @@ Verify a Traffic Group
     ${monitor}    set variable if    '${monitor}' == '${EMPTY}'    ${defaultMonitor}    ${monitor}
     ${api_uri}    set variable    /mgmt/tm/cm/traffic-group/~${partition}~${name}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${actual_configuration}    set variable    ${api_response.json}
     ${expected_configuration}    Create Dictionary    name=${name}    autoFailbackEnabled=${autoFailbackEnabled}    autoFailbackTime=${autoFailbackTime}    defaultDevice=${defaultDevice}    description=${description}    failoverMethod=${failoverMethod}    haLoadFactor=${haLoadFactor}    haOrder=${haOrder}    mac=${mac}    monitor=${monitor}    
     run keyword if    '${haOrder}' == 'none'   remove from dictionary    ${expected_configuration}    haOrder
@@ -1331,7 +1331,7 @@ Retrieve the HA Status of a Traffic-Group Member
     ${cm_device_status}    set variable    device not found
     ${api_uri}    set variable    /mgmt/tm/cm/traffic-group/~${partition}~${traffic_group}/stats
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${cm_device_status_dict}    get from dictionary    ${api_response.json}    entries
     :FOR    ${key}    IN    @{cm_device_status_dict.keys()}
     \    ${current_device}    get from dictionary    ${cm_device_status_dict}    ${key}
@@ -1354,7 +1354,7 @@ Assign HA Group to Traffic Group
     ${api_uri}    set variable    /mgmt/tm/cm/traffic-group/~${partition}~${traffic_group}
     ${api_payload}    create dictionary    kind=tm:cm:traffic-group:traffic-groupstate    monitor=${monitor_dict}    failover-method=ha-score    
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Remove HA Group from Traffic Group
@@ -1364,7 +1364,7 @@ Remove HA Group from Traffic Group
     ${api_uri}    set variable    /mgmt/tm/cm/traffic-group/~${partition}~${traffic_group}
     ${api_payload}    create dictionary    kind=tm:cm:traffic-group:traffic-groupstate    monitor=${monitor_dict}    failover-method=ha-order            
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Enable Auto Failback on a BIG-IP Traffic Group
@@ -1373,7 +1373,7 @@ Enable Auto Failback on a BIG-IP Traffic Group
     ${api_uri}    set variable    /mgmt/tm/cm/traffic-group/~${partition}~${traffic_group}
     ${api_payload}    create dictionary    autoFailbackEnabled=${true}
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Disable Auto Failback on a BIG-IP Traffic Group
@@ -1382,7 +1382,7 @@ Disable Auto Failback on a BIG-IP Traffic Group
     ${api_uri}    set variable    /mgmt/tm/cm/traffic-group/~${partition}~${traffic_group}
     ${api_payload}    create dictionary    autoFailbackEnabled=${false}
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Configure BIG-IP Traffic Group HA Device Order
@@ -1392,7 +1392,7 @@ Configure BIG-IP Traffic Group HA Device Order
     ${ha_device_order}    convert to list    ${ha_device_order}
     ${api_payload}    create dictionary    haOrder=${ha_device_order}
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Retrieve a BIG-IP Traffic Group Configuration
@@ -1400,7 +1400,7 @@ Retrieve a BIG-IP Traffic Group Configuration
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${traffic_group}    ${partition}=Common
     ${api_uri}    set variable    /mgmt/tm/cm/traffic-group/~${partition}~${traffic_group}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
     
 ########
@@ -1413,7 +1413,7 @@ Create BIG-IP DNS Listener
     ${api_uri}    Set Variable    /mgmt/tm/gtm/listener
     ${api_payload}    Create Dictionary    name=${name}    address=${address}    mask=${mask}    partition=${partition}    ipProtocol=${ip-protocol}
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Create a BIG-IP DNS Data Center
@@ -1422,7 +1422,7 @@ Create a BIG-IP DNS Data Center
     ${api_uri}    Set Variable    /mgmt/tm/gtm/datacenter
     ${api_payload}    Create Dictionary    name=${name}    location=${location}    description=${description}    partition=${partition}
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Create a BIG-IP DNS Server
@@ -1431,7 +1431,7 @@ Create a BIG-IP DNS Server
     ${api_uri}    Set Variable    /mgmt/tm/gtm/server
     ${api_payload}    Create Dictionary    name=${name}    partition=${partition}    datacenter=${datacenter}    exposeRouteDomains=${expose-route-domains}    description=${description}    virtualServerDiscovery=${virtualServerDiscovery}    product=${product}    devices=${devices}
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Add Devices to a BIG-IP DNS Server
@@ -1440,7 +1440,7 @@ Add Devices to a BIG-IP DNS Server
     ${api_uri}    Set Variable    /mgmt/tm/gtm/server/~${partition}~${server_name}/devices
     ${api_payload}    Create Dictionary    name=${name}    partition=${partition}    addresses=${addresses}
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 #############
@@ -1453,7 +1453,7 @@ Create an LTM Node
     ${api_payload}    create dictionary   name=${name}   address=${address}%${route_domain_id}    partition=${partition}    connectionLimit=${connectionLimit}   dynamicRatio=${dynamicRatio}    description=${description}  monitor=${monitor}  rateLimit=${rateLimit}
     ${api_uri}    set variable    /mgmt/tm/ltm/node
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 List LTM Node Configuration
@@ -1461,7 +1461,7 @@ List LTM Node Configuration
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${node_name}    ${node_partition}=Common
     ${api_uri}    set variable    /mgmt/tm/ltm/node/~${node_partition}~${node_name}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Show LTM Node Statistics
@@ -1469,7 +1469,7 @@ Show LTM Node Statistics
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${node_name}    ${node_partition}=Common
     ${api_uri}    set variable    /mgmt/tm/ltm/node/~${node_partition}~${node_name}/stats
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Enable an LTM Node
@@ -1478,7 +1478,7 @@ Enable an LTM Node
     ${api_uri}    set variable    /mgmt/tm/ltm/node/~${node_partition}~${node_name}/stats
     ${api_payload}    Create Dictionary    session=user-enabled
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Disable an LTM Node
@@ -1504,7 +1504,7 @@ Verify an LTM Node Exists
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${node_name}    ${node_partition}=Common
     ${api_uri}    set variable    /mgmt/tm/ltm/node/~${node_partition}~${node_name}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should be Equal As Strings    ${api_response.status_code}    200
     ${api_expected_response_dict}    create dictionary    kind=tm:ltm:node:nodestate    name=${node_name}    partition=${node_partition}
     ${api_response_dict}    to json    ${api_response.content}
     Dictionary should contain subdictionary    ${api_response_dict}    ${api_expected_response_dict}
@@ -1515,7 +1515,7 @@ Delete an LTM Node
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${node_name}    ${node_partition}
     ${api_uri}    set variable    /mgmt/tm/ltm/node/~${node_partition}~${node_name}
     ${api_response}    BIG-IP iControl BasicAuth DELETE
-    Should be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Reset All Node Stats
@@ -1524,7 +1524,7 @@ Reset All Node Stats
     ${api_payload}    Create Dictionary    command=reset-stats
     ${api_uri}    set variable    /mgmt/tm/ltm/node
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 #############
@@ -1537,7 +1537,7 @@ Create an LTM Pool
     ${api_payload}    create dictionary   name=${name}    partition=${partition}  allowNat=${allowNat}    allowSnat=${allowSnat}    ignorePersistedWeight=${ignorePersistedWeight}  loadBalancingMode=${loadBalancingMode}    minActiveMembers=${minActiveMembers}  minUpMembers=${minUpMembers}    minUpMembersAction=${minUpMembersAction}    minUpMembersChecking=${minUpMembersChecking}    queueDepthLimit=${queueDepthLimit}  queueOnConnectionLimit=${queueOnConnectionLimit}    queueTimeLimit=${queueTimeLimit}    reselectTries=${reselectTries}  serviceDownAction=${serviceDownAction}    slowRampTime=${slowRampTime}    monitor=${monitor}
     ${api_uri}    set variable    /mgmt/tm/ltm/pool
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Verify an LTM Pool
@@ -1546,7 +1546,7 @@ Verify an LTM Pool
     ${expected_configuration}    create dictionary   name=${name}    partition=${partition}  allowNat=${allowNat}    allowSnat=${allowSnat}    ignorePersistedWeight=${ignorePersistedWeight}  loadBalancingMode=${loadBalancingMode}    minActiveMembers=${minActiveMembers}  minUpMembers=${minUpMembers}    minUpMembersAction=${minUpMembersAction}    minUpMembersChecking=${minUpMembersChecking}    queueDepthLimit=${queueDepthLimit}  queueOnConnectionLimit=${queueOnConnectionLimit}    queueTimeLimit=${queueTimeLimit}    reselectTries=${reselectTries}  serviceDownAction=${serviceDownAction}    slowRampTime=${slowRampTime}    monitor=${monitor}
     ${api_uri}    set variable    /mgmt/tm/ltm/pool/~${partition}~${name}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${config_json}    set variable    ${api_response.json}
     ${monitor_configured}    evaluate    $config_json.get("monitor","none")
     ${monitor_configured}    remove string using regexp   ${monitor_configured}    (\ \{|\ \})
@@ -1561,7 +1561,7 @@ Add an LTM Pool Member to a Pool
     ${api_payload}    create dictionary   name=${pool_member_name}:${port}    address=${address}    partition=${pool_member_partition}    connectionLimit=${connectionLimit}  dynamicRatio=${dynamicRatio}    inheritProfile=${inheritProfile}    monitor=${monitor}    priorityGroup=${priorityGroup}    rateLimit=${rateLimit}  ratio=${ratio}  session=${session}    state=${state}
     ${api_uri}    set variable    /mgmt/tm/ltm/pool/~${pool_partition}~${pool_name}/members
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Add an LTM IPv6 Pool Member to a Pool
@@ -1570,7 +1570,7 @@ Add an LTM IPv6 Pool Member to a Pool
     ${api_payload}    create dictionary   name=${pool_member_name}.${port}    address=${address}    partition=${pool_member_partition}    connectionLimit=${connectionLimit}  dynamicRatio=${dynamicRatio}    inheritProfile=${inheritProfile}    monitor=${monitor}    priorityGroup=${priorityGroup}    rateLimit=${rateLimit}  ratio=${ratio}  session=${session}    state=${state}
     ${api_uri}    set variable    /mgmt/tm/ltm/pool/~${pool_partition}~${pool_name}/members
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Verify an LTM Pool Member
@@ -1579,7 +1579,7 @@ Verify an LTM Pool Member
     ${expected_configuration}    create dictionary    name=${pool_member_name}:${port}    address=${address}    partition=${pool_member_partition}    connectionLimit=${connectionLimit}  dynamicRatio=${dynamicRatio}    inheritProfile=${inheritProfile}    monitor=${monitor}    priorityGroup=${priorityGroup}    rateLimit=${rateLimit}    ratio=${ratio}
     ${api_uri}    set variable    /mgmt/tm/ltm/pool/~${pool_partition}~${pool_name}/members/~${pool_member_partition}~${pool_member_name}:${port}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     Dictionary Should Contain Subdictionary    ${api_response.json}    ${expected_configuration}
     [Return]    ${api_response}        
 
@@ -1589,7 +1589,7 @@ Verify an LTM IPv6 Pool Member
     ${expected_configuration}    create dictionary    name=${pool_member_name}.${port}    address=${address}    partition=${pool_member_partition}    connectionLimit=${connectionLimit}  dynamicRatio=${dynamicRatio}    inheritProfile=${inheritProfile}    monitor=${monitor}    priorityGroup=${priorityGroup}    rateLimit=${rateLimit}    ratio=${ratio}
     ${api_uri}    set variable    /mgmt/tm/ltm/pool/~${pool_partition}~${pool_name}/members/~${pool_member_partition}~${pool_member_name}.${port}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     Dictionary Should Contain Subdictionary    ${api_response.json}    ${expected_configuration}
     [Return]    ${api_response}        
 
@@ -1604,7 +1604,7 @@ Add an LTM Pool Member to a Pool in Bulk
     \    ${api_payload}    create dictionary   name=${address}:${port}    address=${address}    partition=${pool_member_partition}    monitor=${monitor}
     \    ${api_uri}    set variable    /mgmt/tm/ltm/pool/~${pool_partition}~${pool_name}/members
     \    ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    \    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    \    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response.json}
 
 Verify an LTM Pool Member in Bulk
@@ -1618,7 +1618,7 @@ Verify an LTM Pool Member in Bulk
     \    ${expected_configuration}    create dictionary   name=${address}:${port}    address=${address}    partition=${pool_member_partition}    monitor=${monitor}
     \    ${api_uri}    set variable    /mgmt/tm/ltm/pool/~${pool_partition}~${pool_name}/members/~${pool_member_partition}~${address}:${port}
     \    ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    \    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    \    Should Be Equal As Strings    ${api_response.status_code}    200
     \    Dictionary should contain subdictionary    ${api_response.json}    ${expected_configuration}
     [Return]    ${api_response.json}
 
@@ -1628,7 +1628,7 @@ Enable an LTM Pool Member
     ${api_payload}    Create Dictionary    session=user-enabled
     ${api_uri}    set variable    /mgmt/tm/ltm/pool/~${pool_partition}~${pool_name}/members/~${pool_member_partition}~${pool_member_name}
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Disable an LTM Pool Member
@@ -1637,7 +1637,7 @@ Disable an LTM Pool Member
     ${api_payload}    Create Dictionary    session=user-disabled
     ${api_uri}    set variable    /mgmt/tm/ltm/pool/~${pool_partition}~${pool_name}/members/~${pool_member_partition}~${pool_member_name}
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Mark an LTM Pool Member as Down
@@ -1646,7 +1646,7 @@ Mark an LTM Pool Member as Down
     ${api_payload}    Create Dictionary    state=user-down
     ${api_uri}    set variable    /mgmt/tm/ltm/pool/~${pool_partition}~${pool_name}/members/~${pool_member_partition}~${pool_member_name}
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Mark an LTM Pool Member as Up
@@ -1655,7 +1655,7 @@ Mark an LTM Pool Member as Up
     ${api_payload}    Create Dictionary    state=user-up
     ${api_uri}    set variable    /mgmt/tm/ltm/pool/~${pool_partition}~${pool_name}/members/~${pool_member_partition}~${pool_member_name}
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Remove an LTM Pool Member from a Pool
@@ -1663,7 +1663,7 @@ Remove an LTM Pool Member from a Pool
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${pool_name}    ${pool_member_name}    ${pool_partition}=Common    ${pool_member_partition}=Common
     ${api_uri}    set variable    /mgmt/tm/ltm/pool/~${pool_partition}~{pool_name}/members/~${pool_member_partition}~${pool_member_name}
     ${api_response}    BIG-IP iControl BasicAuth DELETE
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Verify an LTM Pool Exists
@@ -1671,7 +1671,7 @@ Verify an LTM Pool Exists
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${pool_name}    ${pool_partition}=Common
     ${api_uri}    set variable    /mgmt/tm/ltm/pool/~${pool_partition}~${pool_name}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should be Equal As Strings    ${api_response.status_code}    200
     ${api_expected_response_dict}    create dictionary    kind=tm:ltm:pool:poolstate    name=${pool_name}    partition=${pool_partition}
     ${api_response_dict}    to json    ${api_response.content}
     Dictionary should contain subdictionary    ${api_response_dict}    ${api_expected_response_dict}
@@ -1682,7 +1682,7 @@ Delete an LTM Pool
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${name}    ${partition}=Common
     ${api_uri}    set variable    /mgmt/tm/ltm/pool/~${partition}~${name}
     ${api_response}    BIG-IP iControl BasicAuth DELETE
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Retrieve All LTM Pool Statistics
@@ -1690,7 +1690,7 @@ Retrieve All LTM Pool Statistics
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
     ${api_uri}    set variable    /mgmt/tm/ltm/pool/stats
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Retrieve LTM Pool Statistics
@@ -1698,7 +1698,7 @@ Retrieve LTM Pool Statistics
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${name}    ${partition}=Common
     ${api_uri}    set variable    /mgmt/tm/ltm/pool/~${partition}~${name}/stats
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Retrieve LTM Pool Member Statistics
@@ -1706,7 +1706,7 @@ Retrieve LTM Pool Member Statistics
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${pool_name}    ${partition}=Common
     ${api_uri}    set variable    /mgmt/tm/ltm/pool/~${partition}~${pool_name}/members/stats
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Reset All Pool Stats
@@ -1715,7 +1715,7 @@ Reset All Pool Stats
     ${api_payload}    Create Dictionary    command=reset-stats
     ${api_uri}    set variable    /mgmt/tm/ltm/pool
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 
@@ -1731,7 +1731,7 @@ Create a BIG-IP Client SSL Profile
     ${api_uri}    set variable    /mgmt/tm/ltm/profile/client-ssl
     set test variable   ${api_uri}
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 ################
@@ -1744,7 +1744,7 @@ Reset Virtual Stats
     ${api_payload}    Create Dictionary    command=reset-stats    name=${name}
     ${api_uri}    set variable    /mgmt/tm/ltm/virtual
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Reset All Virtual Stats
@@ -1753,7 +1753,7 @@ Reset All Virtual Stats
     ${api_payload}    Create Dictionary    command=reset-stats
     ${api_uri}    set variable    /mgmt/tm/ltm/virtual
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Create an LTM FastL4 Virtual Server
@@ -1763,7 +1763,7 @@ Create an LTM FastL4 Virtual Server
     ${api_payload}    create dictionary    name=${name}    destination=${destination}    partition=${partition}    addressStatus=${addressStatus}    autoLasthop=${autoLasthop}  connectionLimit=${connectionLimit}    ipProtocol=${ipProtocol}   mask=${mask}    source=${source}    sourcePort=${sourcePort}    translateAddress=${translateAddress}    translatePort=${translatePort}    pool=${pool}    sourceAddressTranslation=${sourceAddressTranslation}
     ${api_uri}    set variable    /mgmt/tm/ltm/virtual
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Verify an LTM FastL4 Virtual Server    
@@ -1774,7 +1774,7 @@ Verify an LTM FastL4 Virtual Server
     ${expected_configuration}    create dictionary    name=${name}    destination=/${partition}/${destination}    partition=${partition}    addressStatus=${addressStatus}    autoLasthop=${autoLasthop}  connectionLimit=${connectionLimit}    ipProtocol=${ipProtocol}   mask=${mask}    source=${source}    sourcePort=${sourcePort}    translateAddress=${translateAddress}    translatePort=${translatePort}    pool=/${partition}/${pool}    sourceAddressTranslation=${sourceAddressTranslation}
     ${api_uri}    set variable    /mgmt/tm/ltm/virtual/~${partition}~${name}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     Dictionary Should Contain Subdictionary    ${api_response.json}    ${expected_configuration}
     [Return]    ${api_response}    
 
@@ -1785,7 +1785,7 @@ Create an LTM FastL4 IPv6 Virtual Server
     ${api_payload}    create dictionary    name=${name}    destination=${destination}    partition=${partition}    addressStatus=${addressStatus}    autoLasthop=${autoLasthop}  connectionLimit=${connectionLimit}    ipProtocol=${ipProtocol}   mask=${mask}    source=${source}    sourcePort=${sourcePort}    translateAddress=${translateAddress}    translatePort=${translatePort}    pool=${pool}    sourceAddressTranslation=${sourceAddressTranslation}
     ${api_uri}    set variable    /mgmt/tm/ltm/virtual
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Verify an LTM FastL4 IPv6 Virtual Server    
@@ -1796,7 +1796,7 @@ Verify an LTM FastL4 IPv6 Virtual Server
     ${expected_configuration}    create dictionary    name=${name}    destination=/${partition}/${destination}    partition=${partition}    addressStatus=${addressStatus}    autoLasthop=${autoLasthop}  connectionLimit=${connectionLimit}    ipProtocol=${ipProtocol}   mask=${mask}    source=${source}    sourcePort=${sourcePort}    translateAddress=${translateAddress}    translatePort=${translatePort}    pool=/${partition}/${pool}    sourceAddressTranslation=${sourceAddressTranslation}
     ${api_uri}    set variable    /mgmt/tm/ltm/virtual/~${partition}~${name}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     Dictionary Should Contain Subdictionary    ${api_response.json}    ${expected_configuration}
     [Return]    ${api_response}    
 
@@ -1807,7 +1807,7 @@ Create an LTM IP Forwarding Virtual Server
     ${api_payload}    create dictionary    name=${name}    destination=${destination}    partition=${partition}    addressStatus=${addressStatus}    autoLasthop=${autoLasthop}  connectionLimit=${connectionLimit}    ipProtocol=${ipProtocol}   mask=${mask}    source=${source}    sourcePort=${sourcePort}    translateAddress=${translateAddress}    translatePort=${translatePort}    pool=${pool}    sourceAddressTranslation=${sourceAddressTranslation}
     ${api_uri}    set variable    /mgmt/tm/ltm/virtual
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Create an LTM IP Forwarding IPv6 Virtual Server
@@ -1817,7 +1817,7 @@ Create an LTM IP Forwarding IPv6 Virtual Server
     ${api_payload}    create dictionary    name=${name}    destination=${destination}    partition=${partition}    addressStatus=${addressStatus}    autoLasthop=${autoLasthop}  connectionLimit=${connectionLimit}    ipProtocol=${ipProtocol}   mask=${mask}    source=${source}    sourcePort=${sourcePort}    translateAddress=${translateAddress}    translatePort=${translatePort}    pool=${pool}    sourceAddressTranslation=${sourceAddressTranslation}
     ${api_uri}    set variable    /mgmt/tm/ltm/virtual
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Create an LTM Standard Virtual Server
@@ -1827,7 +1827,7 @@ Create an LTM Standard Virtual Server
     ${api_payload}    create dictionary    name=${name}    destination=${destination}    partition=${partition}    addressStatus=${addressStatus}    autoLasthop=${autoLasthop}  connectionLimit=${connectionLimit}    ipProtocol=${ipProtocol}   mask=${mask}    source=${source}    sourcePort=${sourcePort}    translateAddress=${translateAddress}    translatePort=${translatePort}    pool=${pool}    sourceAddressTranslation=${sourceAddressTranslation}
     ${api_uri}    set variable    /mgmt/tm/ltm/virtual
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Create an LTM Standard IPv6 Virtual Server
@@ -1837,7 +1837,7 @@ Create an LTM Standard IPv6 Virtual Server
     ${api_payload}    create dictionary    name=${name}    destination=${destination}    partition=${partition}    addressStatus=${addressStatus}    autoLasthop=${autoLasthop}  connectionLimit=${connectionLimit}    ipProtocol=${ipProtocol}   mask=${mask}    source=${source}    sourcePort=${sourcePort}    translateAddress=${translateAddress}    translatePort=${translatePort}    pool=${pool}    sourceAddressTranslation=${sourceAddressTranslation}
     ${api_uri}    set variable    /mgmt/tm/ltm/virtual
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Verify an LTM Virtual Server Exists
@@ -1845,7 +1845,7 @@ Verify an LTM Virtual Server Exists
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${virtual_server_name}    ${virtual_server_partition}=Common
     ${api_uri}    set variable    /mgmt/tm/ltm/virtual/~${virtual_server_partition}~${virtual_server_name}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should be Equal As Strings    ${api_response.status_code}    200
     ${api_expected_response_dict}    create dictionary    kind=tm:ltm:virtual:virtualstate    name=${virtual_server_name}    partition=${virtual_server_partition}
     ${api_response_dict}    to json    ${api_response.content}
     Dictionary should contain subdictionary    ${api_response_dict}    ${api_expected_response_dict}
@@ -1856,7 +1856,7 @@ Delete an LTM Virtual Server
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${name}    ${partition}=Common
     ${api_uri}    set variable    /mgmt/tm/ltm/virtual/~${partition}~${name}
     ${api_response}    BIG-IP iControl BasicAuth DELETE
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Add a Profile to an LTM Virtual Server
@@ -1872,7 +1872,7 @@ Retrieve LTM Virtual Server Statistics
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${name}    ${partition}=Common
     ${api_uri}    set variable    /mgmt/tm/ltm/virtual/~${partition}~${name}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Retrieve All LTM Virtual Servers Statistics
@@ -1880,7 +1880,7 @@ Retrieve All LTM Virtual Servers Statistics
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
     ${api_uri}    set variable    /mgmt/tm/ltm/virtual/stats
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Get LTM Virtual Server Availability State
@@ -1888,7 +1888,7 @@ Get LTM Virtual Server Availability State
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${name}    ${partition}=Common
     ${api_uri}    set variable    /mgmt/tm/ltm/virtual/~${partition}~${name}/stats
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${virtual_server_stats_dict}    to json    ${api_response.content}
     ${virtual_server_status}    get from dictionary    ${virtual_server_stats_dict}    entries
     ${virtual_server_status}    get from dictionary    ${virtual_server_status}    https:\/\/localhost\/mgmt\/tm\/ltm\/virtual\/~${partition}~${name}\/~${partition}~${name}\/stats
@@ -1903,7 +1903,7 @@ Get LTM Virtual Server Enabled State
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${name}    ${partition}=Common
     ${api_uri}    set variable    /mgmt/tm/ltm/virtual/~${partition}~${name}/stats
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${virtual_server_stats_dict}    to json    ${api_response.content}
     ${virtual_server_status}    get from dictionary    ${virtual_server_stats_dict}    entries
     ${virtual_server_status}    get from dictionary    ${virtual_server_status}    https:\/\/localhost\/mgmt\/tm\/ltm\/virtual\/~${partition}~${name}\/~${partition}~${name}\/stats
@@ -1919,7 +1919,7 @@ Apply Firewall Policy to Virtual Server
     ${api_uri}    set variable    /mgmt/tm/ltm/virtual/~${virtual_partition}~${virtual_name}
     ${api_payload}    create dictionary    fwEnforcedPolicy=/${policy_partition}/${policy_name}
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Retrieve the Firewall Policy Attached to a Virtual Server
@@ -1927,7 +1927,7 @@ Retrieve the Firewall Policy Attached to a Virtual Server
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${virtual_name}    ${partition}=Common
     ${api_uri}    set variable    /mgmt/tm/ltm/virtual/~${partition}~${virtual_name}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Configure Session Mirroring on a Virtual Server
@@ -1936,7 +1936,7 @@ Configure Session Mirroring on a Virtual Server
     ${api_uri}    set variable    /mgmt/tm/ltm/virtual/~${partition}~${name}
     ${api_payload}    create dictionary    mirror=${mirroring}
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Retrieve a Virtual Server Configuration
@@ -1944,7 +1944,7 @@ Retrieve a Virtual Server Configuration
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${name}    ${partition}=Common
     ${api_uri}    set variable    /mgmt/tm/ltm/virtual/~${partition}~${name}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 ########################
@@ -1957,7 +1957,7 @@ Configure Route Health Injection on a Virtual Address
     ${api_payload}    create dictionary    route-advertisement=${route-advertisement}
     ${api_uri}    set variable    /mgmt/tm/ltm/virtual-address/~${partition}~${address}
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings  ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings  ${api_response.status_code}    200
     [Return]    ${api_response}
 
 ##################
@@ -1970,7 +1970,7 @@ Reset Interface Stats
     ${api_payload}    Create Dictionary    command=reset-stats    name=${name}
     ${api_uri}    set variable    /mgmt/tm/net/interface
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Reset All Interface Stats
@@ -1979,7 +1979,7 @@ Reset All Interface Stats
     ${api_payload}    Create Dictionary    command=reset-stats
     ${api_uri}    set variable    /mgmt/tm/net/interface
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Enable a BIG-IP physical interface
@@ -1988,7 +1988,7 @@ Enable a BIG-IP physical interface
     ${api_payload}    create dictionary    kind=tm:net:interface:interfacestate    name=${interface_name}    enabled=${True}
     ${api_uri}    set variable    /mgmt/tm/net/interface/${interface_name}
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_dict}    to json    ${api_response.content}
     dictionary should contain item  ${api_response_dict}    enabled    True
     [Return]    ${api_response}
@@ -1998,7 +1998,7 @@ Verify enabled state of BIG-IP physical interface
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${interface_name}
     ${api_uri}    set variable    /mgmt/tm/net/interface/${interface_name}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    should be equal as strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    should be equal as strings    ${api_response.status_code}    200
     ${api_response_dict}    to json    ${api_response.content}
     dictionary should contain item  ${api_response_dict}    enabled    True
     [Return]    ${api_response}
@@ -2008,7 +2008,7 @@ Verify up state of BIG-IP physical interface
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${interface_name}
     ${api_uri}    set variable    /mgmt/tm/net/interface/stats
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_dict}    to json    ${api_response.content}
     ${interface_stats_entries}    get from dictionary   ${api_response_dict}    entries
     ${interface_stats_dict}    get from dictionary   ${interface_stats_entries}   https://localhost/mgmt/tm/net/interface/${interface_name}/stats
@@ -2027,7 +2027,7 @@ Disable a BIG-IP physical interface
     ${api_payload}    create dictionary    kind=tm:net:interface:interfacestate    name=${interface_name}    disabled=${True}
     ${api_uri}    set variable    /mgmt/tm/net/interface/${interface_name}
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_dict}    to json    ${api_response.content}
     dictionary should contain item    ${api_response_dict}    disabled    True
     [Return]    ${api_response}
@@ -2037,7 +2037,7 @@ Verify disabled state of BIG-IP physical interface
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${interface_name}
     ${api_uri}    set variable    /mgmt/tm/net/interface/${interface_name}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    should be equal as strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    should be equal as strings    ${api_response.status_code}    200
     ${api_response_dict}    to json    ${api_response.content}
     dictionary should contain item  ${api_response_dict}    disabled    True
     [Return]    ${api_response}
@@ -2047,7 +2047,7 @@ Verify down state of BIG-IP physical interface
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${interface_name}
     ${api_uri}    set variable    /mgmt/tm/net/interface/stats
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_dict}    to json    ${api_response.content}
     ${interface_stats_entries}    get from dictionary  ${api_response_dict}    entries
     ${interface_stats_dict}    get from dictionary  ${interface_stats_entries}    https://localhost/mgmt/tm/net/interface/${interface_name}/stats
@@ -2066,7 +2066,7 @@ Configure BIG-IP Interface Description
     ${api_uri}    set variable    /mgmt/tm/net/interface/${interface_name}
     ${api_payload}    create dictionary    description=${interface_description}
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Set BIG-IP Interface LLDP to Transmit Only
@@ -2075,7 +2075,7 @@ Set BIG-IP Interface LLDP to Transmit Only
     ${api_uri}    set variable    /mgmt/tm/net/interface/${interface_name}
     ${api_payload}    create dictionary    lldpAdmin=txonly
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Set BIG-IP Interface LLDP to Receive Only
@@ -2084,7 +2084,7 @@ Set BIG-IP Interface LLDP to Receive Only
     ${api_uri}    set variable    /mgmt/tm/net/interface/${interface_name}
     ${api_payload}    create dictionary    lldpAdmin=rxonly
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Set BIG-IP Interface LLDP to Transmit and Receive
@@ -2093,7 +2093,7 @@ Set BIG-IP Interface LLDP to Transmit and Receive
     ${api_uri}    set variable    /mgmt/tm/net/interface/${interface_name}
     ${api_payload}    create dictionary    lldpAdmin=txrx
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Disable BIG-IP LLDP on Interface
@@ -2102,7 +2102,7 @@ Disable BIG-IP LLDP on Interface
     ${api_uri}    set variable    /mgmt/tm/net/interface/${interface_name}
     ${api_payload}    create dictionary    lldpAdmin=disable
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 List all BIG-IP Interfaces
@@ -2110,7 +2110,7 @@ List all BIG-IP Interfaces
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
     ${api_uri}    set variable    /mgmt/tm/net/interface
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_dict}    to json    ${api_response.content}
     ${interface_list}    get from dictionary    ${api_response_dict}    items
     :FOR    ${current_interface}    IN  @{interface_list}
@@ -2125,7 +2125,7 @@ Verify Interface Drop Counters on the BIG-IP
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${interface_drops_threshold}=0.01
     ${api_uri}    set variable    /mgmt/tm/net/interface/stats
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_dict}    to json    ${api_response.content}
     ${interface_stats_entries}    get from dictionary    ${api_response_dict}    entries
     :FOR    ${current_interface}    IN  @{interface_stats_entries}
@@ -2149,7 +2149,7 @@ Verify Interface Error Counters on the BIG-IP
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${interface_errors_threshold}=0.01
     ${api_uri}    set variable    /mgmt/tm/net/interface/stats
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_dict}    to json    ${api_response.content}
     ${interface_stats_entries}    get from dictionary    ${api_response_dict}    entries
     :FOR    ${current_interface}    IN  @{interface_stats_entries}
@@ -2196,7 +2196,7 @@ Create Static Route Configuration on the BIG-IP
     ${api_payload}    create dictionary    name=${name}    network=${cidr_network}    gw=${gateway}   partition=${partition}  description=${description}
     ${api_uri}    set variable    /mgmt/tm/net/route
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_json}    To Json    ${api_response.content}
     [Return]    ${api_response}
 
@@ -2206,7 +2206,7 @@ Verify Static Route Configuration on the BIG-IP
     ${verification_dict}    create dictionary    name=${name}    partition=${partition}    network=${cidr_network}    gw=${gateway}   description=${description}
     ${api_uri}    set variable    /mgmt/tm/net/route/~${partition}~${name}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    should be equal as strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    should be equal as strings    ${api_response.status_code}    200
     ${api_response_json}    to json    ${api_response.content}
     dictionary should contain sub dictionary    ${api_response_json}    ${verification_dict}
     [Return]    ${api_response}
@@ -2217,7 +2217,7 @@ Create Static Default Route Configuration on the BIG-IP
     ${api_payload}    create dictionary    name=default    gw=${gateway}   partition=${partition}  description=${description}
     ${api_uri}    set variable    /mgmt/tm/net/route
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_json}    To Json    ${api_response.content}
     [Return]    ${api_response}
 
@@ -2227,7 +2227,7 @@ Verify Static Default Route Configuration on the BIG-IP
     ${verification_dict}    create dictionary    name=default-inet6    partition=${partition}    gw=${gateway}   description=${description}
     ${api_uri}    set variable    /mgmt/tm/net/route/~${partition}~${name}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    should be equal as strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    should be equal as strings    ${api_response.status_code}    200
     ${api_response_json}    to json    ${api_response.content}
     dictionary should contain sub dictionary    ${api_response_json}    ${verification_dict}
     [Return]    ${api_response}
@@ -2238,7 +2238,7 @@ Create Static IPv6 Default Route Configuration on the BIG-IP
     ${api_payload}    create dictionary    name=default-inet6    gw=${gateway}   partition=${partition}  description=${description}
     ${api_uri}    set variable    /mgmt/tm/net/route
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_json}    To Json    ${api_response.content}
     [Return]    ${api_response}
 
@@ -2248,7 +2248,7 @@ Verify Static IPv6 Default Route Configuration on the BIG-IP
     ${verification_dict}    create dictionary    name=default-inet6    partition=${partition}    gw=${gateway}   description=${description}
     ${api_uri}    set variable    /mgmt/tm/net/route/~${partition}~${name}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    should be equal as strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    should be equal as strings    ${api_response.status_code}    200
     ${api_response_json}    to json    ${api_response.content}
     dictionary should contain sub dictionary    ${api_response_json}    ${verification_dict}
     [Return]    ${api_response}
@@ -2258,7 +2258,7 @@ Verify Static Route Presence in BIG-IP Route Table
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${name}    ${partition}    ${cidr_network}    ${gateway}
     ${api_uri}    set variable    /mgmt/tm/net/route/stats
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    should be equal as strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    should be equal as strings    ${api_response.status_code}    200
     ${api_response_json}    to json    ${api_response.content}
     ${route_table_entries}    get from dictionary    ${api_response_json}    entries
     log    ROUTE TABLE LIST: ${route_table_entries}
@@ -2271,7 +2271,7 @@ Delete Static Route Configuration on the BIG-IP
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${name}    ${partition}
     ${api_uri}    set variable    /mgmt/tm/net/route/~${partition}~${name}
     ${api_response}    BIG-IP iControl BasicAuth DELETE    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Verify Static Route Deletion on the BIG-IP
@@ -2287,7 +2287,7 @@ Verify Static Route Removal in BIG-IP Route Table
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${name}    ${partition}
     ${api_uri}    set variable    /mgmt/tm/net/route/stats
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    should be equal as strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    should be equal as strings    ${api_response.status_code}    200
     ${api_response_json}    to json    ${api_response.content}
     ${route_table_entries}    get from dictionary    ${api_response_json}    entries
     log    ROUTE TABLE LIST: ${route_table_entries}
@@ -2300,7 +2300,7 @@ Display BIG-IP Static Route Configuration
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
     ${api_uri}    set variable    /mgmt/tm/net/route
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_json}    To Json    ${api_response.content}
     log dictionary    ${api_response_json}
     [Return]    ${api_response}
@@ -2315,7 +2315,7 @@ Create a Route Domain on the BIG-IP
     ${api_payload}    create dictionary    name=${route_domain_name}   id=${route_domain_id}   partition=${partition}
     ${api_uri}    set variable    /mgmt/tm/net/route-domain
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${verification_dict}    create dictionary    kind=tm:net:route-domain:route-domainstate    name=${route_domain_name}   partition=${partition}
     ${api_response_dict}    to json    ${api_response.text}
     dictionary should contain subdictionary    ${api_response_dict}    ${verification_dict}
@@ -2326,7 +2326,7 @@ Verify a Route Domain on the BIG-IP
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${route_domain_name}    ${route_domain_id}    ${partition}=Common
     ${api_uri}    set variable    /mgmt/tm/net/route-domain/~${partition}~${route_domain_name}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${configured_route_domain_id}    get from dictionary    ${api_response.json}    id
     should be equal as strings    ${route_domain_id}    ${configured_route_domain_id}
     [Return]    ${api_response.json}
@@ -2337,7 +2337,7 @@ Add a Description to a BIG-IP Route Domain
     ${api_payload}    create dictionary    description=${description}
     ${api_uri}    set variable    /mgmt/tm/net/route-domain/~${partition}~${route_domain_name}
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Set Route Domain VLAN List
@@ -2346,7 +2346,7 @@ Set Route Domain VLAN List
     ${api_payload}    create dictionary    vlans=${vlan_list}
     ${api_uri}    set variable    /mgmt/tm/net/route-domain/~${partition}~${route_domain_name}
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Enable BGP Only on BIG-IP Route Domain
@@ -2356,7 +2356,7 @@ Enable BGP Only on BIG-IP Route Domain
     ${api_payload}    create dictionary    routingProtocol=${api_routing_protocol_list}
     ${api_uri}    set variable    /mgmt/tm/net/route-domain/~${partition}~${route_domain_name}
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     Sleep    10s
     [Return]    ${api_response}
 
@@ -2365,7 +2365,7 @@ List Dynamic Routing Protocols Enabled on a Route Domain
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${route_domain_name}    ${partition}=Common
     ${api_uri}    set variable    /mgmt/tm/net/route-domain/~${partition}~${route_domain_name}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${routing_protocols_list}    get from dictionary    ${api_response.json}    routingProtocol
     [Return]    ${routing_protocols_list}
 
@@ -2376,7 +2376,7 @@ Enable BGP and BFD on BIG-IP Route Domain
     ${api_payload}    create dictionary    routingProtocol=${api_routing_protocol_list}
     ${api_uri}    set variable    /mgmt/tm/net/route-domain/~${partition}~${route_domain_name}
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     Sleep    10s
     [Return]    ${api_response}
 
@@ -2387,7 +2387,7 @@ Disable Dynamic Routing on BIG-IP Route Domain
     ${api_payload}    create dictionary    routingProtocol=${api_routing_protocol_list}
     ${api_uri}    set variable    /mgmt/tm/net/route-domain/~${partition}~${route_domain_name}
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     Sleep    5s
     [Return]    ${api_response}
 
@@ -2397,7 +2397,7 @@ Enable Route Domain Strict Routing
     ${api_payload}    create dictionary    strict=enabled
     ${api_uri}    set variable    /mgmt/tm/net/route-domain/~${partition}~${route_domain_name}
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Disable Route Domain Strict Routing
@@ -2406,7 +2406,7 @@ Disable Route Domain Strict Routing
     ${api_payload}    create dictionary    strict=disabled
     ${api_uri}    set variable    /mgmt/tm/net/route-domain/~${partition}~${route_domain_name}
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 #############
@@ -2419,7 +2419,7 @@ Reset Self-IP Stats
     ${api_payload}    Create Dictionary    command=reset-stats    name=${name}
     ${api_uri}    set variable    /mgmt/tm/net/self
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Reset All Self-IP Stats
@@ -2428,7 +2428,7 @@ Reset All Self-IP Stats
     ${api_payload}    Create Dictionary    command=reset-stats
     ${api_uri}    set variable    /mgmt/tm/net/self
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Create BIG-IP Non-floating Self IP Address
@@ -2437,7 +2437,7 @@ Create BIG-IP Non-floating Self IP Address
     ${api_payload}    Create Dictionary   name=${name}    partition=${partition}  address=${address}  allowService=${allow-service}   trafficGroup=traffic-group-local-only  description=${description}  vlan=${vlan}
     ${api_uri}    set variable    /mgmt/tm/net/self
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Create BIG-IP Floating Self IP Address
@@ -2446,7 +2446,7 @@ Create BIG-IP Floating Self IP Address
     ${api_payload}    Create Dictionary   name=${name}    partition=${partition}  address=${address}  allowService=${allow-service}   trafficGroup=${traffic-group}   description=${description}  vlan=${vlan}
     ${api_uri}    set variable    /mgmt/tm/net/self
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Verify BIG-IP Non-floating Self IP Address
@@ -2454,7 +2454,7 @@ Verify BIG-IP Non-floating Self IP Address
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${name}    ${address}    ${partition}="Common"
     ${api_uri}    set variable    /mgmt/tm/net/self/~${partition}~${name}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Verify BIG-IP Floating Self IP Address
@@ -2462,7 +2462,7 @@ Verify BIG-IP Floating Self IP Address
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${name}    ${address}    ${partition}="Common"    ${traffic-group}=traffic-group-1
     ${api_uri}    set variable    /mgmt/tm/net/self/~${partition}~${name}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 ##############
@@ -2475,7 +2475,7 @@ Reset Trunk Stats
     ${api_payload}    Create Dictionary    command=reset-stats    name=${name}
     ${api_uri}    set variable    /mgmt/tm/net/trunk
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Reset All Trunk Stats
@@ -2484,7 +2484,7 @@ Reset All Trunk Stats
     ${api_payload}    Create Dictionary    command=reset-stats
     ${api_uri}    set variable    /mgmt/tm/net/trunk
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Create BIG-IP Trunk    
@@ -2493,7 +2493,7 @@ Create BIG-IP Trunk
     ${api_uri}    set variable    /mgmt/tm/net/trunk
     ${api_payload}    create dictionary    name=${name}    lacp=${lacp}    lacpMode=${lacpMode}    lacpTimeout=${lacpTimeout}    stp=${stp}    linkSelectPolicy=${linkSelectPolicy}    qinqEthertype=${qinqEthertype}    distributionHash=${distributionHash}    description=${description}
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Verify BIG-IP Trunk Exists    
@@ -2501,7 +2501,7 @@ Verify BIG-IP Trunk Exists
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${name}
     ${api_uri}    set variable    /mgmt/tm/net/trunk/${name}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_dict}    to json    ${api_response.content}
     ${trunk_name_dict}    create dictionary    name=${name}
     dictionary should contain sub dictionary    ${api_response_dict}    ${trunk_name_dict}
@@ -2512,7 +2512,7 @@ Delete BIG-IP Trunk
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${name}
     ${api_uri}    set variable    /mgmt/tm/net/trunk/${name}
     ${api_response}    BIG-IP iControl BasicAuth DELETE
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Set Trunk Description
@@ -2521,7 +2521,7 @@ Set Trunk Description
     ${api_uri}    set variable    /mgmt/tm/net/trunk/${trunk_name}
     ${api_payload}    create dictionary    description=${trunk_description}
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Retrieve BIG-IP Trunk Status and Statistics
@@ -2529,7 +2529,7 @@ Retrieve BIG-IP Trunk Status and Statistics
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}   ${trunk_name}
     ${api_uri}    set variable    /mgmt/tm/net/trunk/${trunk_name}/stats
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_dict}    to json    ${api_response.content}
     dictionary should contain item  ${api_response_dict}    kind    tm:net:trunk:trunkstats
     ${trunk_stats_dict}    get from dictionary    ${api_response_dict}    entries
@@ -2541,7 +2541,7 @@ Verify BIG-IP Trunk is Up
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}   ${trunk_name}
     ${api_uri}    set variable    /mgmt/tm/net/trunk/${trunk_name}/stats
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_dict}    to json    ${api_response.content}
     dictionary should contain item  ${api_response_dict}    kind    tm:net:trunk:trunkstats
     ${trunk_stats_dict}    get from dictionary    ${api_response_dict}    entries
@@ -2560,7 +2560,7 @@ Set BIG-IP Trunk Interface List
     ${api_payload}    create dictionary    interfaces    ${physical_interface_list}
     ${api_uri}    set variable    /mgmt/tm/net/trunk/${trunk_name}
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 List BIG-IP Trunk Interface Configuration
@@ -2568,7 +2568,7 @@ List BIG-IP Trunk Interface Configuration
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}   ${trunk_name}
     ${api_uri}    set variable    /mgmt/tm/net/trunk/${trunk_name}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Add Interface to BIG-IP Trunk
@@ -2577,7 +2577,7 @@ Add Interface to BIG-IP Trunk
     log    Getting list of existing interfaces on trunk
     ${api_uri}    set variable    /mgmt/tm/net/trunk/${trunk_name}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_dict}    to json    ${api_response.content}
     dictionary should contain key   ${api_response_dict}    interfaces
     ${initial_interface_list}    get from dictionary    ${api_response_dict}    interfaces
@@ -2593,7 +2593,7 @@ Add Interface to BIG-IP Trunk
     ${api_payload}    create dictionary    interfaces    ${new_interface_list}
     ${api_uri}    set variable    /mgmt/tm/net/trunk/${trunk_name}
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Remove Interface from BIG-IP Trunk
@@ -2602,7 +2602,7 @@ Remove Interface from BIG-IP Trunk
     log    Getting list of existing interfaces on trunk
     ${api_uri}    set variable    /mgmt/tm/net/trunk/${trunk_name}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_dict}    to json    ${api_response.content}
     ${initial_interface_list}    get from dictionary    ${api_response_dict}    interfaces
     ${initial_interface_list}    convert to list    ${initial_interface_list}
@@ -2618,7 +2618,7 @@ Remove Interface from BIG-IP Trunk
     ${api_payload}    create dictionary    interfaces    ${new_interface_list}
     ${api_uri}    /mgmt/tm/net/trunk/${trunk_name}
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Verify BIG-IP Trunk Interface Removal
@@ -2628,7 +2628,7 @@ Verify BIG-IP Trunk Interface Removal
     ${api_uri}    set variable   /mgmt/tm/net/trunk/${trunk_name}
     set test variable    ${api_uri}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_dict}    to json    ${api_response.content}
     log    ${api_response_dict}
     dictionary should not contain value    ${api_response_dict}    ${physical_interface}
@@ -2641,7 +2641,7 @@ Verify BIG-IP Trunk Interface Addition
     ${api_uri}    set variable   /mgmt/tm/net/trunk/${trunk_name}
     set test variable    ${api_uri}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_dict}    to json    ${api_response.content}
     log    ${api_response_dict}
     dictionary should contain value    ${api_response_dict}    ${physical_interface}
@@ -2654,7 +2654,7 @@ Verify BIG-IP Trunk Interface List
     ${api_uri}    set variable   /mgmt/tm/net/trunk/${trunk_name}
     set test variable    ${api_uri}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_dict}    to json    ${api_response.content}
     ${configured_interface_list}    get from dictionary    ${api_response_dict}    interfaces
     log    Full API response: ${api_response_dict}
@@ -2668,7 +2668,7 @@ Verify Trunk Collision Counters on BIG-IP
     ${api_uri}    set variable    /mgmt/tm/net/trunk/${trunk_name}/stats
     set test variable    ${api_uri}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_dict}    to json    ${api_response.content}
     dictionary should contain item  ${api_response_dict}    kind    tm:net:trunk:trunkstats
     ${trunk_stats_dict}    get from dictionary    ${api_response_dict}    entries
@@ -2689,7 +2689,7 @@ Verify Trunk Drop Counters on BIG-IP
     ${api_uri}    set variable    /mgmt/tm/net/trunk/${trunk_name}/stats
     set test variable    ${api_uri}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_dict}    to json    ${api_response.content}
     dictionary should contain item  ${api_response_dict}    kind    tm:net:trunk:trunkstats
     ${trunk_stats_dict}    get from dictionary   ${api_response_dict}    entries
@@ -2714,7 +2714,7 @@ Verify Trunk Error Counters on BIG-IP
     ${api_uri}    set variable    /mgmt/tm/net/trunk/${trunk_name}/stats
     set test variable    ${api_uri}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_dict}    to json    ${api_response.content}
     dictionary should contain item  ${api_response_dict}    kind    tm:net:trunk:trunkstats
     ${trunk_stats_dict}    get from dictionary   ${api_response_dict}    entries
@@ -2739,7 +2739,7 @@ Get BIG-IP Trunk bitsIn Value
     ${api_uri}    set variable    /mgmt/tm/net/trunk/${trunk_name}/stats
     set test variable    ${api_uri}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_dict}    to json    ${api_response.content}
     dictionary should contain item  ${api_response_dict}    kind    tm:net:trunk:trunkstats
     ${trunk_stats_dict}    get from dictionary   ${api_response_dict}    entries
@@ -2759,7 +2759,7 @@ Get BIG-IP Trunk bitsOut Value
     ${api_uri}    set variable    /mgmt/tm/net/trunk/${trunk_name}/stats
     set test variable    ${api_uri}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_dict}    to json    ${api_response.content}
     dictionary should contain item  ${api_response_dict}    kind    tm:net:trunk:trunkstats
     ${trunk_stats_dict}    get from dictionary   ${api_response_dict}    entries
@@ -2782,7 +2782,7 @@ Get Current List of Interfaces Mapped to VLAN
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${vlan_name}
     ${api_uri}    set variable    /mgmt/tm/net/vlan/${vlan_name}/interfaces
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_dict}    to json    ${api_response.content}
     Dictionary Should Contain Key   ${api_response_dict}    interfaces
     ${initial_interface_list}    get from dictionary    ${api_response_dict}    interfaces
@@ -2796,7 +2796,7 @@ Create A Vlan on the BIG-IP
     ${api_payload}    Create Dictionary    name    ${vlan_name}   tag  ${vlan_tag}    partition=${partition}
     ${api_uri}    set variable    /mgmt/tm/net/vlan
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Enable dot1q Tagging on a BIG-IP VLAN Interface
@@ -2805,7 +2805,7 @@ Enable dot1q Tagging on a BIG-IP VLAN Interface
     ${api_payload}    create dictionary   tagged=${true}
     ${api_uri}    set variable    /mgmt/tm/net/vlan/~${partition}~${vlan_name}/interfaces/${interface_name}
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Verify dot1q Tagging Enabled on BIG-IP Vlan Interface
@@ -2813,7 +2813,7 @@ Verify dot1q Tagging Enabled on BIG-IP Vlan Interface
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${vlan_name}    ${interface_name}    ${partition}=Common
     ${api_uri}    set variable    /mgmt/tm/net/vlan/~${partition}~${vlan_name}/interfaces/${interface_name}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_dict}    to json    ${api_response.content}
     dictionary should contain item    ${api_response_dict}    tagged    True
     [Return]    ${api_response}
@@ -2824,7 +2824,7 @@ Modify VLAN Mapping on BIG-IP VLAN
     ${api_payload}    Create Dictionary    interfaces=${vlan_interface_list}
     ${api_uri}    set variable    /mgmt/tm/net/vlan/~${partition}~${vlan_name}
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Modify MTU on BIG-IP VLAN
@@ -2833,7 +2833,7 @@ Modify MTU on BIG-IP VLAN
     ${api_payload}    Create Dictionary    mtu    ${vlan_mtu}
     ${api_uri}    set variable    /mgmt/tm/net/vlan/~${partition}~${vlan_name}
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Verify MTU on BIG-IP VLAN
@@ -2841,7 +2841,7 @@ Verify MTU on BIG-IP VLAN
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${vlan_name}    ${vlan_mtu}    ${partition}=Common
     ${api_uri}    set variable    /mgmt/tm/net/vlan/~${partition}~${vlan_name}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_dict}    to json    ${api_response.content}
     dictionary should contain item  ${api_response_dict}    kind    tm:net:vlan:vlanstate
     dictionary should contain item  ${api_response_dict}    mtu    ${vlan_mtu}
@@ -2853,7 +2853,7 @@ Verify dot1q Tag on BIG-IP VLAN
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${vlan_name}    ${vlan_tag}    ${partition}=Common
     ${api_uri}    set variable    /mgmt/tm/net/vlan/~${partition}~${vlan_name}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_dict}    to json    ${api_response.content}
     dictionary should contain item  ${api_response_dict}    kind    tm:net:vlan:vlanstate
     dictionary should contain item  ${api_response_dict}    tag    ${vlan_tag}
@@ -2865,7 +2865,7 @@ Verify VLAN Mapping on a BIG-IP VLAN
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${vlan_name}    ${interface_name}    ${partition}=Common
     ${api_uri}    set variable    /mgmt/tm/net/vlan/~${partition}~${vlan_name}/interfaces/${interface_name}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_dict}    to json    ${api_response.content}
     dictionary should contain item  ${api_response_dict}    kind    tm:net:vlan:interfaces:interfacesstate
     dictionary should contain item  ${api_response_dict}    name    ${interface_name}
@@ -2877,7 +2877,7 @@ Configure VLAN Failsale on BIG-IP
     ${api_payload}    create dictionary    failsafe=${failsafe}    failsafeAction=${failsafe-action}    failsafeTimeout=${failsafe-timeout}
     ${api_uri}    set variable    /mgmt/tm/net/vlan/~${partition}~${vlan}
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_dict}    to json    ${api_response.content}
     dictionary should contain item  ${api_response_dict}    name    ${vlan}
     dictionary should contain item  ${api_response_dict}    partition    ${partition}
@@ -2891,7 +2891,7 @@ Delete a BIG-IP VLAN
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${vlan_name}
     ${api_uri}    set variable    /mgmt/tm/net/vlan/${vlan_name}
     ${api_response}    BIG-IP iControl BasicAuth DELETE    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}  api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Retrieve BIG-IP VLAN Configuration
@@ -2899,7 +2899,7 @@ Retrieve BIG-IP VLAN Configuration
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${vlan}
     ${api_uri}    set variable if    /mgmt/tm/net/vlan/${vlan}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Retrieve All BIG-IP VLAN Configurations
@@ -2907,7 +2907,7 @@ Retrieve All BIG-IP VLAN Configurations
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
     ${api_uri}    set variable    /mgmt/tm/net/vlan
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Retrieve BIG-IP VLAN Configuration via TMSH
@@ -2930,7 +2930,7 @@ Create Firewall Policy
     ${api_uri}    set variable    /mgmt/tm/security/firewall/policy
     ${api_payload}    create dictionary    name=${policy_name}    partition=${partition}
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Verify Firewall Policy Exists
@@ -2938,7 +2938,7 @@ Verify Firewall Policy Exists
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${policy_name}    ${partition}=Common
     ${api_uri}    set variable    /mgmt/tm/security/firewall/policy/~${partition}~${policy_name}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Create Firewall Port List
@@ -2947,7 +2947,7 @@ Create Firewall Port List
     ${api_uri}    set variable    /mgmt/tm/security/firewall/port-list
     ${api_payload}    create dictionary    name=${port_list_name}    partition=${partition}    ports=${port_list}
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Retrieve Firewall Port List
@@ -2955,7 +2955,7 @@ Retrieve Firewall Port List
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${port_list_name}    ${partition}=Common
     ${api_uri}    set variable    /mgmt/tm/security/firewall/port-list/~${partition}~${port_list_name}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Create Firewall Address List
@@ -2964,7 +2964,7 @@ Create Firewall Address List
     ${api_uri}    set variable    /mgmt/tm/security/firewall/address-list
     ${api_payload}    create dictionary    name=${address_list_name}    partition=${partition}    addresses=${address_list}
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Retrieve Firewall Address List
@@ -2972,7 +2972,7 @@ Retrieve Firewall Address List
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${address_list_name}    ${partition}=Common
     ${api_uri}    set variable    /mgmt/tm/security/firewall/address-list/~${partition}~${address_list_name}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Add Rule to Firewall Policy
@@ -2982,7 +2982,7 @@ Add Rule to Firewall Policy
     ${api_uri}    set variable    /mgmt/tm/security/firewall/policy/~${partition}~${policy_name}/rules
     ${api_payload}    set variable    ${rule}
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Retrieve Firewall Rule from Policy
@@ -2990,7 +2990,7 @@ Retrieve Firewall Rule from Policy
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${policy_name}    ${rule_name}    ${partition}=Common
     ${api_uri}    set variable    /mgmt/tm/security/firewall/policy/~${partition}~${policy_name}/rules/${rule_name}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Retrieve Firewall Policy Stats
@@ -2998,7 +2998,7 @@ Retrieve Firewall Policy Stats
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${policy_name}    ${partition}=Common
     ${api_uri}    set variable    /mgmt/tm/security/firewall/policy/~${partition}~${policy_name}/stats
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 ###############
@@ -3011,7 +3011,7 @@ Save the BIG-IP Configuration
     ${api_payload}    create dictionary    command    save
     ${api_uri}    set variable    /mgmt/tm/sys/config
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 
@@ -3021,7 +3021,7 @@ Load the BIG-IP Default Configuration
     ${api_payload}    create dictionary    command=load    name=default
     ${api_uri}    set variable    /mgmt/tm/sys/config
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    should be equal as strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    should be equal as strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 ############
@@ -3034,7 +3034,7 @@ Retrieve CPU Statistics
     ${api_uri}    set variable    /mgmt/tm/sys/cpu
     set test variable    ${api_uri}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    should be equal as strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    should be equal as strings    ${api_response.status_code}    200
     [Teardown]    Run Keywords   Delete All Sessions
     [Return]    ${api_response}
 
@@ -3049,7 +3049,7 @@ Send a BIG-IP to Standby
     ${api_payload}    create dictionary    kind=tm:sys:failover:runstate    command=run    standby=${true}
     ${api_uri}    set variable    /mgmt/tm/sys/failover
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    should be equal as strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    should be equal as strings    ${api_response.status_code}    200
     sleep    2s
     ${failover_state}    Retrieve CM Failover State    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}
     should be equal as strings    ${failover_state}    standby
@@ -3063,7 +3063,7 @@ Take a BIG-IP Offline
     ${api_uri}    set variable    /mgmt/tm/sys/failover
     set test variable    ${api_uri}
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    should be equal as strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    should be equal as strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Place a BIG-IP Online
@@ -3074,7 +3074,7 @@ Place a BIG-IP Online
     ${api_uri}    set variable    /mgmt/tm/sys/failover
     set test variable    ${api_uri}
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    should be equal as strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    should be equal as strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 ########################
@@ -3087,7 +3087,7 @@ Disable BIG-IP Management Interface DHCP
     ${api_payload}    create dictionary    mgmtDhcp    disabled
     ${api_uri}    set variable    /mgmt/tm/sys/global-settings
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Enable BIG-IP Management Interface DHCP
@@ -3096,7 +3096,7 @@ Enable BIG-IP Management Interface DHCP
     ${api_payload}    create dictionary    mgmtDhcp    enabled
     ${api_uri}    set variable    /mgmt/tm/sys/global-settings
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Create Management Network Route
@@ -3105,7 +3105,7 @@ Create Management Network Route
     ${api_payload}    create dictionary    name    ${name}    network    ${network}    gateway    ${gateway}    description    ${description}
     ${api_uri}    set variable    /mgmt/tm/sys/management-route
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Configure BIG-IP Hostname
@@ -3114,7 +3114,7 @@ Configure BIG-IP Hostname
     ${api_payload}    create dictionary    hostname    ${hostname}
     ${api_uri}    set variable    /mgmt/tm/sys/global-settings
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Retrieve BIG-IP Hostname
@@ -3122,7 +3122,7 @@ Retrieve BIG-IP Hostname
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
     ${api_uri}    set variable    /mgmt/tm/sys/global-settings
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_dict}    to json    ${api_response.text}
     ${configured_hostname}    get from dictionary    ${api_response_dict}    hostname
     [Return]    ${configured_hostname}
@@ -3133,7 +3133,7 @@ Disable BIG-IP GUI Setup Wizard
     ${api_payload}    create dictionary    guiSetup    disabled
     ${api_uri}    set variable    /mgmt/tm/sys/global-settings
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Enable BIG-IP GUI Setup Wizard
@@ -3142,7 +3142,7 @@ Enable BIG-IP GUI Setup Wizard
     ${api_payload}    create dictionary    guiSetup    enabled
     ${api_uri}    set variable    /mgmt/tm/sys/global-settings
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Disable Console Inactivity Timeout on BIG-IP
@@ -3151,7 +3151,7 @@ Disable Console Inactivity Timeout on BIG-IP
     ${api_payload}    create dictionary    consoleInactivityTimeout    ${0}
     ${api_uri}    set variable    /mgmt/tm/sys/global-settings
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Configure Console Inactivity Timeout on BIG-IP
@@ -3160,7 +3160,7 @@ Configure Console Inactivity Timeout on BIG-IP
     ${api_payload}    create dictionary    consoleInactivityTimeout    ${console_timeout}
     ${api_uri}    set variable    /mgmt/tm/sys/global-settings
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 ############
@@ -3178,7 +3178,7 @@ Create BIG-IP HA Group
     run keyword if    '${state}' == 'enabled'    set to dictionary    ${api_payload}    enabled=${true}
     ${api_uri}    set variable    /mgmt/tm/sys/ha-group
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}    
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 ############
@@ -3192,7 +3192,7 @@ Configure NTP Server List
     ${api_payload}    create dictionary    servers    ${ntp_server_list_payload}
     ${api_uri}    set variable    /mgmt/tm/sys/ntp
     ${api_response}    BIG-IP iControl BasicAuth PATCH  bigip_host=${bigip_host}    bigip_username=${bigip_username}   bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Query NTP Server List
@@ -3200,7 +3200,7 @@ Query NTP Server List
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
     ${api_uri}    set variable    /mgmt/tm/sys/ntp
     ${api_response}    BIG-IP iControl BasicAuth GET   bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_json}    To Json    ${api_response.content}
     ${ntp_servers_configured}    Get from Dictionary    ${api_response_json}    servers
     ${ntp_servers_configured}    Convert to List    ${ntp_servers_configured}
@@ -3213,7 +3213,7 @@ Verify NTP Server Associations
     ${api_payload}    Create Dictionary    command    run    utilCmdArgs    -c \'ntpq -pn\'
     ${api_uri}    set variable    /mgmt/tm/util/bash
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}  bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_json}    To Json    ${api_response.content}
     ${ntpq_output}    Get from Dictionary    ${api_response_json}    commandResult
     ${ntpq_output_start}    Set Variable    ${ntpq_output.find("===\n")}
@@ -3246,7 +3246,7 @@ Delete NTP Server Configuration
     ${api_payload}    Create Dictionary    servers=${empty_list}
     ${api_uri}    set variable    /mgmt/tm/sys/ntp
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 ####################
@@ -3258,7 +3258,7 @@ Retrieve All BIG-IP Performance Statistics
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
     ${api_uri}    set variable    /mgmt/tm/sys/performance/all-stats
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    should be equal as strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    should be equal as strings    ${api_response.status_code}    200
     Log    API RESPONSE: ${api_response.content}
     [Teardown]    Run Keywords   Delete All Sessions
     [Return]    ${api_response}
@@ -3268,7 +3268,7 @@ Retrieve BIG-IP Performance Connection Statistics
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
     ${api_uri}    set variable    /mgmt/tm/sys/performance/connections
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    should be equal as strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    should be equal as strings    ${api_response.status_code}    200
     Log    API RESPONSE: ${api_response.content}
     [Teardown]    Run Keywords   Delete All Sessions
     [Return]    ${api_response}
@@ -3278,7 +3278,7 @@ Retrieve BIG-IP Performance DNS Express Statistics
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
     ${api_uri}    set variable    /mgmt/tm/sys/performance/dnsexpress
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    should be equal as strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    should be equal as strings    ${api_response.status_code}    200
     Log    API RESPONSE: ${api_response.content}
     [Teardown]    Run Keywords   Delete All Sessions
     [Return]    ${api_response}
@@ -3288,7 +3288,7 @@ Retrieve BIG-IP Performance DNSSEC Statistics
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
     ${api_uri}    set variable    /mgmt/tm/sys/performance/dnssec
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    should be equal as strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    should be equal as strings    ${api_response.status_code}    200
     Log    API RESPONSE: ${api_response.content}
     [Teardown]    Run Keywords   Delete All Sessions
     [Return]    ${api_response}
@@ -3299,7 +3299,7 @@ Retrieve BIG-IP Performance RAM Cache Statistics
     ${api_uri}    set variable    /mgmt/tm/sys/performance/ramcache
     set test variable    ${api_uri}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    should be equal as strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    should be equal as strings    ${api_response.status_code}    200
     Log    API RESPONSE: ${api_response.content}
     [Teardown]    Run Keywords   Delete All Sessions
     [Return]    ${api_response}
@@ -3310,7 +3310,7 @@ Retrieve BIG-IP Performance System Statistics
     ${api_uri}    set variable    /mgmt/tm/sys/performance/system
     set test variable    ${api_uri}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    should be equal as strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    should be equal as strings    ${api_response.status_code}    200
     Log    API RESPONSE: ${api_response.content}
     [Teardown]    Run Keywords   Delete All Sessions
     [Return]    ${api_response}
@@ -3321,7 +3321,7 @@ Retrieve BIG-IP Performance Throughput Statistics
     ${api_uri}    set variable    /mgmt/tm/sys/performance/throughput
     set test variable    ${api_uri}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    should be equal as strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    should be equal as strings    ${api_response.status_code}    200
     Log    API RESPONSE: ${api_response.content}
     [Teardown]    Run Keywords   Delete All Sessions
     [Return]    ${api_response}
@@ -3332,7 +3332,7 @@ Reset All Performance Stats
     ${api_payload}    Create Dictionary    command=reset-stats
     ${api_uri}    set variable    /mgmt/tm/sys/performance/all-stats
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Reset Performance Throughput Stats
@@ -3341,7 +3341,7 @@ Reset Performance Throughput Stats
     ${api_payload}    Create Dictionary    command=reset-stats
     ${api_uri}    set variable    /mgmt/tm/sys/performance/throughput
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Reset Performance System Stats
@@ -3350,7 +3350,7 @@ Reset Performance System Stats
     ${api_payload}    Create Dictionary    command=reset-stats
     ${api_uri}    set variable    /mgmt/tm/sys/performance/system
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Reset Performance Ramcache Stats
@@ -3359,7 +3359,7 @@ Reset Performance Ramcache Stats
     ${api_payload}    Create Dictionary    command=reset-stats
     ${api_uri}    set variable    /mgmt/tm/sys/performance/ramcache
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Reset Performance DNSSEC Stats
@@ -3368,7 +3368,7 @@ Reset Performance DNSSEC Stats
     ${api_payload}    Create Dictionary    command=reset-stats
     ${api_uri}    set variable    /mgmt/tm/sys/performance/dnssec
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Reset Performance DNS Express Stats
@@ -3377,7 +3377,7 @@ Reset Performance DNS Express Stats
     ${api_payload}    Create Dictionary    command=reset-stats
     ${api_uri}    set variable    /mgmt/tm/sys/performance/dnsexpress
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Reset Performance Connection Stats
@@ -3386,7 +3386,7 @@ Reset Performance Connection Stats
     ${api_payload}    Create Dictionary    command=reset-stats
     ${api_uri}    set variable    /mgmt/tm/sys/performance/connection
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 ##################
@@ -3399,7 +3399,7 @@ Provision AFM Module on the BIG-IP
     ${api_payload}    create dictionary    level=${provisioning_level}
     ${api_uri}    set variable    /mgmt/tm/sys/provision/afm
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    should be equal as strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    should be equal as strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Provision GTM Module on the BIG-IP
@@ -3408,7 +3408,7 @@ Provision GTM Module on the BIG-IP
     ${api_payload}    create dictionary    level=${provisioning_level}
     ${api_uri}    set variable    /mgmt/tm/sys/provision/gtm
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    should be equal as strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    should be equal as strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Verify AFM is Provisioned
@@ -3416,7 +3416,7 @@ Verify AFM is Provisioned
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
     ${api_uri}    set variable    /mgmt/tm/sys/provision/afm
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    should be equal as strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    should be equal as strings    ${api_response.status_code}    200
     should not contain    ${api_response.text}    "level":"none"
     [Return]    ${api_response}
 
@@ -3425,7 +3425,7 @@ Verify GTM is Provisioned
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
     ${api_uri}    set variable    /mgmt/tm/sys/provision/gtm
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    should be equal as strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    should be equal as strings    ${api_response.status_code}    200
     should not contain    ${api_response.text}    "level":"none"
     [Return]    ${api_response}
 
@@ -3442,7 +3442,7 @@ Save an SCF on the BIG-IP
     ${api_payload}    create dictionary    command=save    options=${options_list}
     ${api_uri}    set variable    /mgmt/tm/sys/config
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    should be equal as strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    should be equal as strings    ${api_response.status_code}    200
     Log    API RESPONSE: ${api_response.content}
     [Return]    ${api_response}
 
@@ -3454,7 +3454,7 @@ Load an SCF on the BIG-IP
     ${api_payload}    create dictionary    command=load    options=${options_list}
     ${api_uri}    set variable    /mgmt/tm/sys/config
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    should be equal as strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    should be equal as strings    ${api_response.status_code}    200
     Log    API RESPONSE: ${api_response.content}
     [Return]    ${api_response}
 
@@ -3467,7 +3467,7 @@ Check for BIG-IP Services Waiting to Restart
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
     ${api_uri}    set variable    /mgmt/tm/sys/service/stats
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     Should Not Contain    ${api_response.text}    waiting for tmm to release running semaphore
     [Return]    ${api_response}
 
@@ -3481,7 +3481,7 @@ Create BIG-IP SNMP Community
     ${api_payload}    Create Dictionary   access=${access}    communityName=${communityName}    ipv6=${ipv6}   description=${description}    name=${name}
     ${api_uri}    set variable    /mgmt/tm/sys/snmp/communities
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Create SNMPv3 User
@@ -3490,7 +3490,7 @@ Create SNMPv3 User
     ${api_uri}    set variable    /mgmt/tm/sys/snmp/users
     ${api_payload}    create dictionary    name=${name}    username=${username}    authProtocol=${authProtocol}   privacyProtocol=${privacyProtocol}    authPassword=${authPassword}   privacyPassword=${privacyPassword}    securityLevel=${securityLevel}
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Delete SNMP Community
@@ -3498,7 +3498,7 @@ Delete SNMP Community
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${name}
     ${api_uri}    set variable    /mgmt/tm/sys/snmp/communities/${name}
     ${api_response}    BIG-IP iControl BasicAuth DELETE    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Remove Host from BIG-IP SNMP Allow-List
@@ -3506,7 +3506,7 @@ Remove Host from BIG-IP SNMP Allow-List
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${snmphost}
     ${api_uri}    set variable    /mgmt/tm/sys/snmp
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${snmp-allow-list}    evaluate    json.loads('''${api_response.content}''')   json
     ${snmp-allow-list}    Get from Dictionary    ${snmp-allow-list}    allowedAddresses
     Log    Pre-modification SNMP allow list: ${snmp-allow-list}
@@ -3515,7 +3515,7 @@ Remove Host from BIG-IP SNMP Allow-List
     ${api_uri}    set variable    /mgmt/tm/sys/snmp
     ${api_payload}    Create Dictionary    allowedAddresses=${snmp-allow-list}
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Add Host to BIG-IP SNMP Allow-List
@@ -3523,14 +3523,14 @@ Add Host to BIG-IP SNMP Allow-List
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${snmphost}
     ${api_uri}    set variable    /mgmt/tm/sys/snmp
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${snmp-allow-list}    evaluate    json.loads('''${api_response.content}''')   json
     ${snmp-allow-list}    Get from Dictionary    ${snmp-allow-list}    allowedAddresses
     Append to List    ${snmp-allow-list}    ${snmphost}
     ${api_uri}    set variable    /mgmt/tm/sys/snmp
     ${api_payload}    Create Dictionary    allowedAddresses=${snmp-allow-list}
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Get SNMPv2 IPv4 sysDescr
@@ -3559,7 +3559,7 @@ Create BIG-IP SNMPv2 Trap Destination
     ${api_payload}    create dictionary    name=${name}    community=${community}    host=${host}    version=2c    description=${description}
     ${api_uri}    set variable    /mgmt/tm/sys/snmp
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Trigger an SNMPv2 Trap on the BIG-IP
@@ -3568,7 +3568,7 @@ Trigger an SNMPv2 Trap on the BIG-IP
     ${api_payload}    create dictionary    command    run    utilCmdArgs    -c "logger -p ${snmpv2_trap_facility}}.${snmpv2_trap_level}} '${snmpv2_trap_message}}'"
     ${api_uri}    set variable    /mgmt/tm/util/bash
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Walk SNMPv3 Host
@@ -3585,7 +3585,7 @@ Create BIG-IP SNMPv3 Trap Destination
     ${api_payload}    create dictionary    name=robot_framework_snmpv3  authPassword=${snmpv3_auth_pass}    authProtocol=${snmpv3_auth_proto}    community=${snmpv3_community}    host=${snmphost}    port=${${snmpv3_port}}  privacyPassword=${snmpv3_priv_pass}    privacyProtocol=${snmpv3_priv_proto}    securityName=${snmpv3_security_name}    version=3   securityLevel=${snmpv3_security_level}
     ${api_uri}    set variable    /mgmt/tm/sys/snmp/traps
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Set the BIG-IP SNMP Trap Community
@@ -3594,7 +3594,7 @@ Set the BIG-IP SNMP Trap Community
     ${api_payload}    create dictionary    trapCommunity=${community_name}
     ${api_uri}    set variable    /mgmt/tm/sys/snmp
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Trigger an SNMPv3 Trap on the BIG-IP
@@ -3603,7 +3603,7 @@ Trigger an SNMPv3 Trap on the BIG-IP
     ${api_payload}    create dictionary    command    run    utilCmdArgs    -c "logger -p ${SNMPV3_TRAP_FACILITY}.${SNMPV3_TRAP_LEVEL} '${SNMPV3_TRAP_MESSAGE}'"
     ${api_uri}    set variable    /mgmt/tm/util/bash
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 ############
@@ -3615,7 +3615,7 @@ Get Current SSH Allow ACL
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
     ${api_uri}    set variable    /mgmt/tm/sys/sshd
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_dict}    to json    ${api_response.content}
     ${initial_sshd_allow_acl}    get from dictionary    ${api_response_dict}    allow
     log    Initial SSH Allow ACL: ${initial_sshd_allow_acl}
@@ -3633,7 +3633,7 @@ Add Host to SSH Allow ACL
     ${api_payload}    create dictionary    allow    ${new_sshd_allow_acl}
     ${api_uri}    set variable    /mgmt/tm/sys/sshd
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Remove Host from SSH Allow ACL
@@ -3647,7 +3647,7 @@ Remove Host from SSH Allow ACL
     ${api_payload}    create dictionary    allow    ${new_sshd_allow_acl}
     ${api_uri}    set variable    /mgmt/tm/sys/sshd
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Remove All Hosts from SSH Allow ACL
@@ -3657,7 +3657,7 @@ Remove All Hosts from SSH Allow ACL
     ${api_payload}    create dictionary    allow    ${new_sshd_allow_acl}
     ${api_uri}    set variable    /mgmt/tm/sys/sshd
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Reset BIG-IP SSH Allow ACL to Allow All Hosts
@@ -3667,7 +3667,7 @@ Reset BIG-IP SSH Allow ACL to Allow All Hosts
     ${api_payload}    create dictionary    allow=${all_ssh_list}
     ${api_uri}    set variable    /mgmt/tm/sys/sshd
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Verify SSH Allow ACL
@@ -3675,7 +3675,7 @@ Verify SSH Allow ACL
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${verify_ssh_host}
     ${api_uri}    set variable    /mgmt/tm/sys/sshd
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${api_response_dict}    to json    ${api_response.content}
     ${sshd_allow_acl}    get from dictionary    ${api_response_dict}    allow
     list should contain value    ${sshd_allow_acl}    ${verify_ssh_host}
@@ -3697,7 +3697,7 @@ Enable BIG-IP Turboflex Profile
     ${api_uri}    set variable    /mgmt/tm/sys/turboflex/profile-config
     ${api_payload}    create dictionary    kind=tm:sys:turboflex:profile-config:profile-configstate    type=${turboflex_profile}
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 View BIG-IP Turboflex Profile
@@ -3705,7 +3705,7 @@ View BIG-IP Turboflex Profile
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
     ${api_uri}    set variable    /mgmt/tm/sys/turboflex/profile-config
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 ############
@@ -3718,7 +3718,7 @@ Save a UCS on the BIG-IP
     ${api_payload}    create dictionary    command=save    name=${ucs_filename}
     ${api_uri}    set variable    /mgmt/tm/sys/ucs
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Load a UCS on the BIG-IP
@@ -3739,7 +3739,7 @@ Retrieve BIG-IP Version
     ${api_auth}    create list    ${bigip_username}    ${bigip_password}
     ${api_uri}    set variable    /mgmt/tm/sys/version
     ${api_response}    BIG-IP iControl BasicAuth GET   bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    should be equal as strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    should be equal as strings    ${api_response.status_code}    200
     Log    API RESPONSE: ${api_response.content}
     [Return]    ${api_response}
 
@@ -3749,7 +3749,7 @@ Retrieve BIG-IP Version using Token Authentication
     ${api_token}    Generate Token    ${bigip_host}    ${bigip_username}   ${bigip_password}
     ${api_uri}    set variable    /mgmt/tm/sys/version
     ${api_response}    BIG-IP iControl TokenAuth GET    bigip_host=${bigip_host}    api_token=${api_token}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${verification_text}    set variable  "kind":"tm:sys:version:versionstats"
     should contain    ${api_response.text}    ${verification_text}
     [Teardown]    Run Keywords    Delete Token    bigip_host=${bigip_host}    api_token=${api_token}    AND    Delete All Sessions
@@ -3771,7 +3771,7 @@ Import a BIG-IP Cluster into the BIG-IQ
     ${api_payload}    create dictionary    name=${bigiq_bigip_import_task_name}    defaultStatsConfig=${stats_collection}    deviceDetails=${device_details}    conflictPolicy=USE_BIGIQ    versionedConflictPolicy=USE_BIGIQ    deviceConflictPolicy=USE_BIGIP    snapshotWorkingConfig=true
     ${api_uri}    set variable    /mgmt/cm/global/tasks/device-discovery-import-controller
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigiq_host}    bigip_username=${bigiq_username}    bigip_password=${bigiq_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response.json}
     
 Verify BIG-IQ Import Task Completion
@@ -3779,7 +3779,7 @@ Verify BIG-IQ Import Task Completion
     [Arguments]        ${bigiq_host}    ${bigiq_username}    ${bigip_password}    ${bigiq_bigip_import_task_url}        
     ${api_uri}    set variable    ${bigiq_bigip_import_task_url}
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigiq_host}    bigip_username=${bigiq_username}    bigip_password=${bigiq_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     ${task_status}    get from dictionary    ${api_response.json}    status
     Should be Equal As Strings    ${task_status}    FINISHED
     [Return]    ${api_response.json}
@@ -3789,7 +3789,7 @@ Get BIG-IQ Snapshot Names
     [Arguments]    ${bigiq_host}    ${bigiq_username}    ${bigiq_password}    ${module}
     ${api_uri}    /mgmt/cm/${module}/working-config/snapshots    
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigiq_host}    bigip_username=${bigiq_username}    bigip_password=${bigiq_password}
-    should be equal as strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    should be equal as strings    ${api_response.status_code}    200
     [Return]    ${api_response.json}
 
 Resolve BIG-IQ List of Devices in BIG-IP Cluster    
@@ -3797,7 +3797,7 @@ Resolve BIG-IQ List of Devices in BIG-IP Cluster
     [Arguments]    ${bigiq_host}    ${bigiq_username}    ${bigiq_password}    ${bigip_cluster_name}    
     ${api_uri}    /mgmt/shared/resolver/device-groups/cm-bigip-cluster_${bigip_cluster_name}/devices
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigiq_host}    bigip_username=${bigiq_username}    bigip_password=${bigiq_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response.json}
 
 Create Node on BIG-IQ
@@ -3806,7 +3806,7 @@ Create Node on BIG-IQ
     ${api_uri}    /mgmt/cm/adc-core/working-config/ltm/node
     ${api_payload}     create dictionary    name=${name}    partition=${partition}    description=${description}    address=${address}    deviceReference=${device_reference}
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigiq_host}    bigip_username=${bigiq_username}    bigip_password=${bigiq_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response.json}
 
 Create Pool on BIG-IQ
@@ -3815,7 +3815,7 @@ Create Pool on BIG-IQ
     ${api_url}    set variable    /mgmt/cm/adc-core/working-config/ltm/pool
     ${api_payload}    create dictionary    name=${name}    partition=${partition}    description=${description}    deviceReference=${device_reference}
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigiq_host}    bigip_username=${bigiq_username}    bigip_password=${bigiq_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response.json}
 
 Populate Pool on BIG-IQ
@@ -3825,7 +3825,7 @@ Populate Pool on BIG-IQ
     ${api_url}    set variable    ${pool_uri}/members
     ${api_payload}    create dictionary    name=${pool_member_name}:${pool_member_port}    partition=${partition}    description=${description}    port=${pool_member_port}    nodeReference=${nodeReference}    
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigiq_host}    bigip_username=${bigiq_username}    bigip_password=${bigiq_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response.json}
     
 Create Virtual Server on BIG-IQ    
@@ -3834,7 +3834,7 @@ Create Virtual Server on BIG-IQ
     ${api_uri}    set variable    /mgmt/cm/adc-core/working-config/ltm/virtual
     ${api_payload}    create dictionary    name=${name}    partition=${partition}    description=${description}    ipProtocol=${ip_protocol}    destinationAddress=${destination_address}    mask=${mask}    destinationPort=${destination_port}   sourceAddress=${source_address}    sourceAddressTranslation=${source_address_translation}    deviceReference=${device_reference}    poolReference=${pool_reference}
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigiq_host}    bigip_username=${bigiq_username}    bigip_password=${bigiq_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response.json}
 
 Deploy BIG-IQ LTM Configuration
@@ -3843,7 +3843,7 @@ Deploy BIG-IQ LTM Configuration
     ${api_uri}    set variable    /mgmt/cm/adc-core/tasks/deploy-configuration
     ${api_payload}    create dictionary    skipVerifyConfig=${skip_verify_config}    skipDistribution=${skip_distribution}    name=${name}    deviceReferences=${device_references}    objectsToDeployReferences=${objects_to_deploy_references}    deploySpecifiedObjectsOnly=${deploy_specified_objects_only}
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigiq_host}    bigip_username=${bigiq_username}    bigip_password=${bigiq_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response.json}
 
 Restore an LTM Snapshot on the BIG-IQ
@@ -3852,7 +3852,7 @@ Restore an LTM Snapshot on the BIG-IQ
     ${api_url}    set variable    /mgmt/cm/adc-core/tasks/restore-config
     ${api_payload}    create dictionary     name=${name}    snapshotReference=${snapshot_reference}
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigiq_host}    bigip_username=${bigiq_username}    bigip_password=${bigiq_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response.json}
 
 
