@@ -42,7 +42,7 @@ done
 
 printf "Running Rebot Report Summarization"
 # Compile all output into a single report
-rebot --name "F5 Robot Framework Test Report" -l ./COMBINED-LOG.html -r ./COMBINED-REPORT.html ./*.xml
+rebot --name "F5 Robot Framework Test Report" -l ./COMBINED-LOG.html -r ./COMBINED-REPORT.html ./reports/*.xml
 # Remove raw output files
 fm -f ./*.xml
 
