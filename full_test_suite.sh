@@ -24,7 +24,7 @@ printf "##############################\n"
 start_time=`date`
 printf "Starting at $start_time\n"
 
-tests=('0010-basic-connectivity')
+tests=('0010-basic_connectivity')
 
 for current_test in "${tests[@]}"
 do 
