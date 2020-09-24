@@ -28,7 +28,7 @@ tests=('0010-basic-connectivity')
 
 for current_test in tests
 do 
-    robot --noncritical non_critical --outputdir ./reports -o $test.xml -l $test.log.html -r $test.report.html ./$test.robot
+    robot --noncritical non_critical --outputdir ./reports -o $current_test.xml -l $current_test.log.html -r $current_test.report.html ./$current_test.robot
 done
 
 ########################################
