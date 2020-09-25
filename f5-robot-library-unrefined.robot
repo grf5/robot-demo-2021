@@ -39,22 +39,6 @@ Ping IPv6 Host from BIG-IP
     Should Contain    ${ping_output}    , 0% packet loss
     [Return]    ${api_response}
 
-Retrieve BIG-IP Login Page
-    [Documentation]    Tests connectivity and availability of the BIG-IP web UI login page
-    [Arguments]    ${bigip_host}
-    RequestsLibrary.Create Session    webui    https://${bigip_host}
-    ${api_response}    get request    webui    /tmui/login.jsp
-    Should Be Equal As Strings    ${api_response.status_code}    200
-    Log    Web UI HTTP RESPONSE: ${api_response.text}
-    should contain    ${api_response.text}    <meta name="description" content="BIG-IP&reg; Configuration Utility" />
-    [Teardown]    Delete All Sessions
-    [Return]    ${api_response}
-
-Query DNS Record
-    [Documentation]    Executes the dig command on a BIG-IP
-    [Arguments]    ${query}    ${ns_address}=4.2.2.1    ${query_type}=A
-    [Return]
-
 Reset All Statistics
     [Documentation]    Resets all statistics on the BIG-IP
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    
@@ -2896,60 +2880,6 @@ Create Management Network Route
     Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
-Configure BIG-IP Hostname
-    [Documentation]    Sets the hostname on the BIG-IP, must include a domain in hostname.domain format (https://support.f5.com/csp/article/K13369)
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${hostname}
-    ${api_payload}    create dictionary    hostname    ${hostname}
-    ${api_uri}    set variable    /mgmt/tm/sys/global-settings
-    ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    200
-    [Return]    ${api_response}
-
-Retrieve BIG-IP Hostname
-    [Documentation]    Retrieves the hostname on the BIG-IP (https://support.f5.com/csp/article/K13369)
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
-    ${api_uri}    set variable    /mgmt/tm/sys/global-settings
-    ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    200
-    ${api_response_dict}    to json    ${api_response.text}
-    ${configured_hostname}    get from dictionary    ${api_response_dict}    hostname
-    [Return]    ${configured_hostname}
-
-Disable BIG-IP GUI Setup Wizard
-    [Documentation]    Disables the Setup Wizard in the UI (https://support.f5.com/csp/article/K13369)
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
-    ${api_payload}    create dictionary    guiSetup    disabled
-    ${api_uri}    set variable    /mgmt/tm/sys/global-settings
-    ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    200
-    [Return]    ${api_response}
-
-Enable BIG-IP GUI Setup Wizard
-    [Documentation]    Enables the Setup Wizard in the UI (https://support.f5.com/csp/article/K13369)
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
-    ${api_payload}    create dictionary    guiSetup    enabled
-    ${api_uri}    set variable    /mgmt/tm/sys/global-settings
-    ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    200
-    [Return]    ${api_response}
-
-Disable Console Inactivity Timeout on BIG-IP
-    [Documentation]    Disables the console port timeout on the BIG-IP (https://support.f5.com/csp/article/K13369)
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
-    ${api_payload}    create dictionary    consoleInactivityTimeout    ${0}
-    ${api_uri}    set variable    /mgmt/tm/sys/global-settings
-    ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    200
-    [Return]    ${api_response}
-
-Configure Console Inactivity Timeout on BIG-IP
-    [Documentation]    Sets the console port timeout on the BIG-IP (https://support.f5.com/csp/article/K13369)
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${console_timeout}
-    ${api_payload}    create dictionary    consoleInactivityTimeout    ${console_timeout}
-    ${api_uri}    set variable    /mgmt/tm/sys/global-settings
-    ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    200
-    [Return]    ${api_response}
 
 ############
 ## sys ha
@@ -2969,74 +2899,6 @@ Create BIG-IP HA Group
     Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
-############
-## sys ntp
-############
-
-Configure NTP Server List
-    [Documentation]    Declaratively sets the list of NTP servers on a BIG-IP (https://support.f5.com/csp/article/K13380)
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${ntp_server_list}
-    ${ntp_server_list_payload}    to json    ${ntp_server_list}
-    ${api_payload}    create dictionary    servers    ${ntp_server_list_payload}
-    ${api_uri}    set variable    /mgmt/tm/sys/ntp
-    ${api_response}    BIG-IP iControl BasicAuth PATCH  bigip_host=${bigip_host}    bigip_username=${bigip_username}   bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    200
-    [Return]    ${api_response}
-
-Query NTP Server List
-    [Documentation]    Retrieves a list of configured NTP servers on the BIG-IP (https://support.f5.com/csp/article/K13380)
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
-    ${api_uri}    set variable    /mgmt/tm/sys/ntp
-    ${api_response}    BIG-IP iControl BasicAuth GET   bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    200
-    ${api_response_json}    To Json    ${api_response.content}
-    ${ntp_servers_configured}    Get from Dictionary    ${api_response_json}    servers
-    ${ntp_servers_configured}    Convert to List    ${ntp_servers_configured}
-    List Should Not Contain Duplicates    ${ntp_servers_configured}
-    [Return]    ${ntp_servers_configured}
-
-Verify NTP Server Associations
-    [Documentation]    Verifies that all configured NTP servers are synced (https://support.f5.com/csp/article/K13380)
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
-    ${api_payload}    Create Dictionary    command    run    utilCmdArgs    -c \'ntpq -pn\'
-    ${api_uri}    set variable    /mgmt/tm/util/bash
-    ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}  bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    200
-    ${api_response_json}    To Json    ${api_response.content}
-    ${ntpq_output}    Get from Dictionary    ${api_response_json}    commandResult
-    ${ntpq_output_start}    Set Variable    ${ntpq_output.find("===\n")}
-    ${ntpq_output_clean}    Set Variable    ${ntpq_output[${ntpq_output_start}+4:]}
-    ${ntpq_output_values_list}    Split String    ${ntpq_output_clean}
-    ${ntpq_output_length}    get length    ${ntpq_output_values_list}
-    ${ntpq_output_server_count}    evaluate    ${ntpq_output_length} / 10 + 1
-    FOR    ${current_ntp_server}  IN RANGE    1   ${ntpq_output_server_count}
-       ${ntp_server_ip}    remove from list    ${ntpq_output_values_list}  0
-       ${ntp_server_reference}    remove from list    ${ntpq_output_values_list}  0
-       ${ntp_server_stratum}    remove from list    ${ntpq_output_values_list}  0
-       ${ntp_server_type}    remove from list    ${ntpq_output_values_list}  0
-       ${ntp_server_when}    remove from list    ${ntpq_output_values_list}  0
-       ${ntp_server_poll}    remove from list    ${ntpq_output_values_list}  0
-       ${ntp_server_reach}    remove from list    ${ntpq_output_values_list}  0
-       ${ntp_server_delay}    remove from list    ${ntpq_output_values_list}  0
-       ${ntp_server_offset}    remove from list    ${ntpq_output_values_list}  0
-       ${ntp_server_jitter}    remove from list    ${ntpq_output_values_list}  0
-       log    NTP server status: IP: ${ntp_server_ip} Reference IP: ${ntp_server_reference} Stratum: ${ntp_server_stratum} Type: ${ntp_server_type} Last Poll: ${ntp_server_when} Poll Interval: ${ntp_server_poll} Successes: ${ntp_server_reach} Delay: ${ntp_server_delay} Offset: ${ntp_server_offset} Jitter: ${ntp_server_jitter}
-    END
-    should not be equal as integers    ${ntp_server_reach}    0
-    should not be equal as strings    ${ntp_server_when}    -
-    should not be equal as strings    ${ntp_server_reference}    .STEP.
-    should not be equal as strings    ${ntp_server_reference}    .LOCL.
-    [Return]    ${api_response}
-
-Delete NTP Server Configuration
-    [Documentation]    Deletes all NTP servers from a BIG-IP (https://support.f5.com/csp/article/K13380)
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
-    ${empty_list}    Create List
-    ${api_payload}    Create Dictionary    servers=${empty_list}
-    ${api_uri}    set variable    /mgmt/tm/sys/ntp
-    ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    200
-    [Return]    ${api_response}
 
 ####################
 ## sys performance
@@ -3207,19 +3069,6 @@ Load an SCF on the BIG-IP
     Log    API RESPONSE: ${api_response.content}
     [Return]    ${api_response}
 
-################
-## sys service
-################
-
-Check for BIG-IP Services Waiting to Restart
-    [Documentation]    Checks the daemons on the BIG-IP to see if any are awaiting tmm to release a running semaphore (https://support.f5.com/csp/article/K05645522)
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
-    ${api_uri}    set variable    /mgmt/tm/sys/service/stats
-    ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    200
-    Should Not Contain    ${api_response.text}    waiting for tmm to release running semaphore
-    [Return]    ${api_response}
-
 #############
 ## sys snmp
 #############
@@ -3377,31 +3226,6 @@ View BIG-IP Turboflex Profile
     Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
-################
-## sys version
-################
-
-Retrieve BIG-IP Version
-    [Documentation]    Shows the current version of software running on the BIG-IP (https://support.f5.com/csp/article/K8759)
-    [Arguments]    ${bigip_host}   ${bigip_username}   ${bigip_password}
-    ${api_auth}    create list    ${bigip_username}    ${bigip_password}
-    ${api_uri}    set variable    /mgmt/tm/sys/version
-    ${api_response}    BIG-IP iControl BasicAuth GET   bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    should be equal as strings    ${api_response.status_code}    200
-    Log    API RESPONSE: ${api_response.content}
-    [Return]    ${api_response}
-
-Retrieve BIG-IP Version using Token Authentication
-    [Documentation]    Shows the current version of software running on the BIG-IP (https://support.f5.com/csp/article/K8759)
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
-    ${api_token}    Generate Token    ${bigip_host}    ${bigip_username}   ${bigip_password}
-    ${api_uri}    set variable    /mgmt/tm/sys/version
-    ${api_response}    BIG-IP iControl TokenAuth GET    bigip_host=${bigip_host}    api_token=${api_token}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    200
-    ${verification_text}    set variable  "kind":"tm:sys:version:versionstats"
-    should contain    ${api_response.text}    ${verification_text}
-    [Teardown]    Run Keywords    Delete Token    bigip_host=${bigip_host}    api_token=${api_token}    AND    Delete All Sessions
-    [Return]    ${api_response}
 
 ###########
 ## BIG-IQ 
