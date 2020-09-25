@@ -46,8 +46,8 @@ Ping the Gateway for the Default IPv4 Route
     set log level    trace
     ${default_route}    To Json    ${PRIMARY_STATIC_DEFAULT_ROUTE}
     ${default_gateway}    get from dictionary    ${default_route}    gw
-    wait until keyword succeeds    6x    10 seconds    Ping Host from BIG-IP    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    host=${default_route}
+    wait until keyword succeeds    4x    15 seconds    Ping Host from BIG-IP    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    host=${default_route}
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
     ${default_route}    To Json    ${SECONDARY_STATIC_DEFAULT_ROUTE}
     ${default_gateway}    get from dictionary    ${default_route}    gw
-    wait until keyword succeeds    6x    10 seconds    Ping Host from BIG-IP    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    host=${default_route}
+    wait until keyword succeeds    4x    15 seconds    Ping Host from BIG-IP    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    host=${default_route}
