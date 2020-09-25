@@ -142,12 +142,6 @@ export SECONDARY_SCF_FILENAME=robot_framework_posttest_config_save-$SECONDARY_MG
 printf "Running Rebot Report Summarization"
 <<<<<<< Updated upstream
 rebot --name "F5 Robot Framework Test Report" -l ./reports/COMBINED-LOG.html -r ./reports/COMBINED-REPORT.html ./reports/*.xml
-=======
-# Compile all output into a single report
-rebot --name "F5 Robot Framework Test Report" -l ./COMBINED-LOG.html -r ./COMBINED-REPORT.html ./reports/*.xml
->>>>>>> Stashed changes
-
-#test=DCNETARCH-SLB-Capture_the_Device_Text_Configurations; $robot_fullpath --noncritical non_critical  --outputdir ./reports -o $test.xml -l $test.log.html -r $test.report.html ./bin/$test.robot
 
 printf "##############################\n"
 printf "## Script execution complete  \n"
