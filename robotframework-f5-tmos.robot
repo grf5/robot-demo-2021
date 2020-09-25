@@ -448,7 +448,7 @@ Move CM Device to New Hostname
     ${api_uri}    Set Variable    /mgmt/tm/cm/device
     ${api_payload}    Create Dictionary    command    mv    name    ${current_name}    target    ${target}
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Configure CM Device Unicast Address
@@ -459,7 +459,7 @@ Configure CM Device Unicast Address
     ${unicast_address_list}    Create List    ${unicast_address_dict}
     ${api_payload}    Create Dictionary    unicast-address    ${unicast_address_list}
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 Configure CM Device Mirror IP
@@ -468,7 +468,7 @@ Configure CM Device Mirror IP
     ${api_uri}    Set Variable    /mgmt/tm/cm/device/~Common~${device_name}
     ${api_payload}    Create Dictionary    mirrorIp    ${mirror_ip}
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
     
 Configure CM Device Configsync IP
@@ -477,7 +477,7 @@ Configure CM Device Configsync IP
     ${api_uri}    Set Variable    /mgmt/tm/cm/device/~Common~${device_name}
     ${api_payload}    Create Dictionary    configsyncIp    ${configsync_ip}
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
 ####################
