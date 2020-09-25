@@ -6,6 +6,7 @@ export PYTHONWARNINGS='ignore:Unverified HTTPS request'
 # Test case variables
 export ROBOT_HOST_IP=`hostname -I`
 export ROBOT_HOST_IP="$(echo -e "${ROBOT_HOST_IP}" | tr -d '[:space:]')"
+echo Sourcing from $ROBOT_HOST_IP---
 
 # BIG-IP Devices
 export PRIMARY_HOSTNAME='ip-10-1-1-5.us-west-2.compute.internal'
