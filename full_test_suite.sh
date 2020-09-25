@@ -137,6 +137,7 @@ printf "#########################################################\n"
 export FILE_TIMESTAMP=`date +%Y%m%d-%H%M%S`
 export PRIMARY_SCF_FILENAME=robot_framework_posttest_config_save-$PRIMARY_MGMT_IP-$FILE_TIMESTAMP.scf
 export SECONDARY_SCF_FILENAME=robot_framework_posttest_config_save-$SECONDARY_MGMT_IP-$FILE_TIMESTAMP.scf
+current_test=ff0a-configuration_downloads; robot --noncritical non_critical --outputdir ./reports -o $current_test.xml -l $current_test.log.html -r $current_test.report.html ./$current_test.robot
 
 # Executing Rebot Report Summarization, which combines all single reports into a master report
 printf "Running Rebot Report Summarization"
