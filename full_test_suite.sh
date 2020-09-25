@@ -30,6 +30,33 @@ export SECONDARY_BASE_UCS_FILENAME='/var/local/ucs/firstboot_licensed.ucs'
 # sys ntp
 export NTP_SERVER_LIST='["52.0.56.137","45.63.54.13","204.11.201.12","172.98.193.44"]'
 
+# sys snmp
+export SNMPv2_TRAP_HOST='{"v2Traps":[{"name":"ROBOT_FRAMEWORK_HOST","host":"$ROBOT_HOST_IP","community":"robot"}]}'
+export SNMPV2_TRAP_FACILITY='0'
+export SNMPV2_TRAP_LEVEL='emerg'
+export SNMPV2_TRAP_MESSAGE='ROBOT FRAMEWORK TEST MESSAGE SNMPv4'
+export SNMPV2_POLL_COMMUNITY='robot'
+export SNMPV2_PORT='161'
+export SNMPV2_TIMEOUT='5'
+export SNMPV2_RETRIES='12'
+export SNMPV3_TRAP_HOST='$ROBOT_HOST_IP'
+export SNMPV3_TRAP_PORT='2162'
+export SNMPV3_TRAP_FACILITY='0'
+export SNMPV3_TRAP_LEVEL='emerg'
+export SNMPV3_TRAP_MESSAGE='ROBOT FRAMEWORK TEST MESSAGE SNMPv6'
+export SNMPV3_USER='robot_framework'
+export SNMPV3_COMMUNITY='robot'
+export SNMPV3_AUTH_PASS='robot_framework'
+export SNMPV3_AUTH_PROTO='sha'
+export SNMPV3_PRIV_PASS='robot_framework'
+export SNMPV3_PRIV_PROTO='aes'
+export SNMPV3_PRIV_PROTO_SNMPLIB='AES128'
+export SNMPV3_SECURITY_LEVEL='auth-privacy'
+export SNMPV3_SECURITY_NAME='robot-framework'
+export SNMPV3_PORT='161'
+export SNMPV3_TIMEOUT='5'
+export SNMPV3_RETRIES='12'
+
 # net interface
 export PRIMARY_INTERFACE_DETAILS='[{"name":"1.1","description":"Configured by Robot Framework","lldpAdmin":"txrx"},{"name":"1.2","description":"Configured by Robot Framework","lldpAdmin":"txrx"}]'
 export SECONDARY_INTERFACE_DETAILS='[{"name":"1.1","description":"Configured by Robot Framework","lldpAdmin":"txrx"},{"name":"1.2","description":"Configured by Robot Framework","lldpAdmin":"txrx"}]'
@@ -48,10 +75,8 @@ export INSIDE_INTERFACE_NAME='1.2'
 rm -f ./reports/*.html
 rm -f ./reports/*.xml
 
-# When developing, load base configs; when running full test, load the default
-# ONLY ENABLE ONE OF THE FOLLOWING TWO LINES AT ANY TIME!
+# Load the base provisioning UCS on the BIG-IPs
 test=DCNETARCH-SLB-LOAD-SYS-UCS-BASEPROVISIONING; $robot_fullpath --noncritical non_critical  --outputdir ./reports -o $test.xml -l $test.log.html -r $test.report.html ./bin/$test.robot
-# test=DCNETARCH-SLB-LOAD-SYS-CONFIG-DEFAULT; $robot_fullpath --noncritical non_critical  --outputdir ./reports -o $test.xml -l $test.log.html -r $test.report.html ./bin/$test.robot
 
 printf "##############################\n"
 printf "## Starting script execution  \n"
@@ -59,7 +84,7 @@ printf "##############################\n"
 start_time=`date`
 
 # Execute tests in order via this array
-tests=('000a-reset_environment' '0010-basic_connectivity' '0020-sys_global_settings' '0030-ntp' '0040-net_interface' '0050-net_vlan')
+tests=('000a-reset_environment' '0010-basic_connectivity' '0019-sys_provision' '0020-sys_global_settings' '0025-sys_snmp' '0030-ntp' '0040-net_interface' '0050-net_vlan' '0060-net_self' '0070-cm_clustering' '0080-ltm_tcp_load_balancing' '0090-ltm_udp_load_balancing')
 
 # Cycle through list of tests and create a per-test report in /reports
 for current_test in "${tests[@]}"
