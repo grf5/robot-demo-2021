@@ -144,7 +144,6 @@ current_test=ff0a-configuration_downloads; robot --noncritical non_critical --ou
 
 # Executing Rebot Report Summarization, which combines all single reports into a master report
 printf "Running Rebot Report Summarization"
-<<<<<<< Updated upstream
 rebot --name "F5 Robot Framework Test Report" -l ./reports/COMBINED-LOG.html -r ./reports/COMBINED-REPORT.html ./reports/*.xml
 
 printf "##############################\n"
