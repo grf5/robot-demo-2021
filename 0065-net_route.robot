@@ -41,7 +41,7 @@ Display Static Route Configuration on the BIG-IP
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
     Display BIG-IP Static Route Configuration   bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
 
-Ping the Gateway for Each Default IPv4 Route
+Ping the Gateway for the Default IPv4 Route
     [Documentation]    Pings the next-hop for each static route to ensure its reachable
     set log level    trace
     ${default_route}    To Json    ${PRIMARY_STATIC_DEFAULT_ROUTE}
