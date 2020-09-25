@@ -27,7 +27,7 @@ Provision Software Modules on the BIG-IP
     END
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
     ${module_list}    to json    ${MODULE_PROVISIONING}
-    FOR    ${current_module}    IN    @{modult_list}
+    FOR    ${current_module}    IN    @{module_list}
         Verify All BIG-IP Ready States    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
         Check for BIG-IP Services Waiting to Restart    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
         ${module}    get from dictionary    ${current_module}    module
