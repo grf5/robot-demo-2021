@@ -28,6 +28,29 @@ export SECONDARY_HTTP_PASSWORD='f5r0b0t!'
 export PRIMARY_BASE_UCS_FILENAME='/var/local/ucs/firstboot_licensed.ucs'
 export SECONDARY_BASE_UCS_FILENAME='/var/local/ucs/firstboot_licensed.ucs'
 
+# ltm virtual - tcp round robin
+export TCP_ROUND_ROBIN_VIP_NAME='tcp_round_robin_vs'
+export TCP_ROUND_ROBIN_VIP_ADDRESS='198.19.160.5'
+export TCP_ROUND_ROBIN_VIP_MASK='255.255.255.255'
+export TCP_ROUND_ROBIN_VIP_PORT='80'
+export TCP_ROUND_ROBIN_VIP_PROTOCOL='tcp'
+export TCP_ROUND_ROBIN_VIP_SNAT_TYPE='automap'
+export TCP_ROUND_ROBIN_POOL_NAME='tcp_round_robin_pool'
+export TCP_ROUND_ROBIN_POOL_MEMBERS='[{"address":"198.19.208.21","port":"80"},{"address":"198.19.208.22","port":"80"},{"address":"198.19.208.23","port":"80"},{"address":"198.19.208.24","port":"80"},{"address":"198.19.208.25","port":"80"},{"address":"198.19.208.26","port":"80"},{"address":"198.19.208.27","port":"80"},{"address":"198.19.208.28","port":"80"},{"address":"198.19.208.29","port":"80"},{"address":"198.19.208.30","port":"80"}]'
+export TCP_ROUND_ROBIN_POOL_MONITOR='/Common/gateway_icmp'
+
+# ltm virtual - udp round robin
+export UDP_ROUND_ROBIN_VIP_NAME='udp_dns_round_robin_vs'
+export UDP_ROUND_ROBIN_VIP_PARTITION='Common'
+export UDP_ROUND_ROBIN_VIP_ADDRESS='198.19.160.2'
+export UDP_ROUND_ROBIN_VIP_MASK='255.255.255.255'
+export UDP_ROUND_ROBIN_VIP_PORT='53'
+export UDP_ROUND_ROBIN_VIP_PROTOCOL='udp'
+export UDP_ROUND_ROBIN_VIP_SNAT_TYPE='automap'
+export UDP_ROUND_ROBIN_POOL_NAME='udp_dns_round_robin_pool'
+export UDP_ROUND_ROBIN_POOL_MEMBERS='[{"address":"198.19.208.21","port":"53"},{"address":"198.19.208.22","port":"53"},{"address":"198.19.208.23","port":"53"},{"address":"198.19.208.24","port":"53"},{"address":"198.19.208.25","port":"53"},{"address":"198.19.208.26","port":"53"},{"address":"198.19.208.27","port":"53"},{"address":"198.19.208.28","port":"53"},{"address":"198.19.208.29","port":"53"},{"address":"198.19.208.30","port":"53"}]'
+export UDP_ROUND_ROBIN_POOL_MONITOR='/Common/gateway_icmp'
+
 # sys ntp
 export NTP_SERVER_LIST='["52.0.56.137","45.63.54.13","204.11.201.12","172.98.193.44"]'
 
