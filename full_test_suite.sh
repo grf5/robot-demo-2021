@@ -29,6 +29,9 @@ export SECONDARY_HTTP_PASSWORD='f5r0b0t!'
 export PRIMARY_BASE_UCS_FILENAME='/var/local/ucs/firstboot_licensed.ucs'
 export SECONDARY_BASE_UCS_FILENAME='/var/local/ucs/firstboot_licensed.ucs'
 
+# cm device-group
+export DSC_GROUP_NAME='ROBOT_FRAMEWORK_TESTING'
+
 # ltm virtual - tcp round robin
 export TCP_ROUND_ROBIN_VIP_NAME='tcp_round_robin_vs'
 export TCP_ROUND_ROBIN_VIP_ADDRESS='198.19.160.5'
