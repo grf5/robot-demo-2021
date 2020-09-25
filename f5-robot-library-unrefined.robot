@@ -3178,46 +3178,6 @@ Reset Performance Connection Stats
     Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
-##################
-## sys provision
-##################
-
-Provision AFM Module on the BIG-IP
-    [Documentation]    Sets the provisioning level of AFM on the BIG-IP (https://support.f5.com/csp/article/K12111)
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${provisioning_level}
-    ${api_payload}    create dictionary    level=${provisioning_level}
-    ${api_uri}    set variable    /mgmt/tm/sys/provision/afm
-    ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    should be equal as strings    ${api_response.status_code}    200
-    [Return]    ${api_response}
-
-Provision GTM Module on the BIG-IP
-    [Documentation]    Sets the provisioning level of GTM on the BIG-IP (https://support.f5.com/csp/article/K12111)
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${provisioning_level}
-    ${api_payload}    create dictionary    level=${provisioning_level}
-    ${api_uri}    set variable    /mgmt/tm/sys/provision/gtm
-    ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    should be equal as strings    ${api_response.status_code}    200
-    [Return]    ${api_response}
-
-Verify AFM is Provisioned
-    [Documentation]    Verifies that AFM is provisioned on the BIG-IP (https://support.f5.com/csp/article/K12111)
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
-    ${api_uri}    set variable    /mgmt/tm/sys/provision/afm
-    ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    should be equal as strings    ${api_response.status_code}    200
-    should not contain    ${api_response.text}    "level":"none"
-    [Return]    ${api_response}
-
-Verify GTM is Provisioned
-    [Documentation]    Verifies that GTM is provisioned on the BIG-IP (https://support.f5.com/csp/article/K12111)
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
-    ${api_uri}    set variable    /mgmt/tm/sys/provision/gtm
-    ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    should be equal as strings    ${api_response.status_code}    200
-    should not contain    ${api_response.text}    "level":"none"
-    [Return]    ${api_response}
-
 
 ############
 ## sys scf

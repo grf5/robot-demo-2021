@@ -30,6 +30,9 @@ export SECONDARY_BASE_UCS_FILENAME='/var/local/ucs/firstboot_licensed.ucs'
 # sys ntp
 export NTP_SERVER_LIST='["52.0.56.137","45.63.54.13","204.11.201.12","172.98.193.44"]'
 
+# sys provision
+export MODULE_PROVISIONING='[{"module":"ltm","provisioningLevel":"nominal"},{"module":"cgnat","provisioningLevel":"nominal"}]'
+
 # sys snmp
 export SNMPv2_TRAP_HOST='{"v2Traps":[{"name":"ROBOT_FRAMEWORK_HOST","host":"$ROBOT_HOST_IP","community":"robot"}]}'
 export SNMPV2_TRAP_FACILITY='0'

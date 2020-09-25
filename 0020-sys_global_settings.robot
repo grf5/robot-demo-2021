@@ -1,6 +1,5 @@
 *** Settings ***
 Documentation    This test checks for basic access to the management services (SSH, HTTPS UI, iControl REST API)
-Resource    f5-robot-library-unrefined.robot
 Resource    robotframework-f5-tmos.robot
 
 *** Variables ***

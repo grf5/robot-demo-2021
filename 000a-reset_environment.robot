@@ -1,6 +1,5 @@
 *** Settings ***
-Documentation    This test checks for proper configuration, validation and operation of NTP on the BIG-IP
-Resource    f5-robot-library-unrefined.robot
+Documentation    This test resets the test environment back to default configurations
 Resource    robotframework-f5-tmos.robot
 
 *** Variables ***
