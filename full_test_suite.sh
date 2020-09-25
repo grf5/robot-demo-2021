@@ -53,7 +53,7 @@ export UDP_ROUND_ROBIN_POOL_MEMBERS='[{"address":"198.19.208.21","port":"53"},{"
 export UDP_ROUND_ROBIN_POOL_MONITOR='/Common/gateway_icmp'
 
 # sys ntp
-export NTP_SERVER_LIST='["52.0.56.137","45.63.54.13","204.11.201.12","172.98.193.44"]'
+export NTP_SERVER_LIST='["52.0.56.137","45.63.54.13"]'
 
 # sys provision
 export MODULE_PROVISIONING='[{"module":"ltm","provisioningLevel":"nominal"},{"module":"cgnat","provisioningLevel":"nominal"}]'
@@ -140,7 +140,12 @@ export SECONDARY_SCF_FILENAME=robot_framework_posttest_config_save-$SECONDARY_MG
 
 # Executing Rebot Report Summarization, which combines all single reports into a master report
 printf "Running Rebot Report Summarization"
+<<<<<<< Updated upstream
 rebot --name "F5 Robot Framework Test Report" -l ./reports/COMBINED-LOG.html -r ./reports/COMBINED-REPORT.html ./reports/*.xml
+=======
+# Compile all output into a single report
+rebot --name "F5 Robot Framework Test Report" -l ./COMBINED-LOG.html -r ./COMBINED-REPORT.html ./reports/*.xml
+>>>>>>> Stashed changes
 
 #test=DCNETARCH-SLB-Capture_the_Device_Text_Configurations; $robot_fullpath --noncritical non_critical  --outputdir ./reports -o $test.xml -l $test.log.html -r $test.report.html ./bin/$test.robot
 
