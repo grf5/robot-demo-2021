@@ -102,15 +102,15 @@ Verify that the devices are now in sync-only mode
     [Documentation]    Verifies that the devices are in sync-only mode and not yet configured for traffic failover
     set log level    trace
     ${primary_sync_mode}    Retrieve CM Sync Mode    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    
-    should be equal as strings    '${primary_sync_mode}'    'sync-only'
+    should be equal as strings    '${primary_sync_mode}'    'trust-only'
     ${secondary_sync_mode}    Retrieve CM Sync Mode    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    
-    should be equal as strings    '${secondary_sync_mode}'    'sync-only'
+    should be equal as strings    '${secondary_sync_mode}'    'trust-only'
 
 Wait for the devices to finish building the trust
     [Documentation]    Verifies that the cluster management sync "LED Color" is green, meaning sync is successful
     set log level    trace
-    wait until keyword succeeds    1 min    5 sec    Verify CM Sync LED Color is Green    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}       
-    wait until keyword succeeds    1 min    5 sec    Verify CM Sync LED Color is Green    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}       
+    wait until keyword succeeds    2 min    5 sec    Verify CM Sync LED Color is Green    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}       
+    wait until keyword succeeds    2 min    5 sec    Verify CM Sync LED Color is Green    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}       
 
 Verify Devices are "Green" after creating trust
     [Documentation]    Verifies that the cluster management sync "LED Color" is green, meaning sync is successful
