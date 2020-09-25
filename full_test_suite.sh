@@ -78,9 +78,9 @@ export INSIDE_INTERFACE_NAME='1.2'
 rm -f ./reports/*.html
 rm -f ./reports/*.xml
 
-printf "##############################\n"
-printf "## Starting script execution  \n"
-printf "##############################\n"
+printf "####################################\n"
+printf "## Executing Robot Framework Tests  \n"
+printf "####################################\n"
 start_time=`date`
 
 # Execute tests in order via this array
@@ -92,9 +92,20 @@ do
     robot --noncritical non_critical --outputdir ./reports -o $current_test.xml -l $current_test.log.html -r $current_test.report.html ./$current_test.robot
 done
 
+printf "#########################################################\n"
+printf "## Robot Framework Tests Complete; starting final tasks  \n"
+printf "#########################################################\n"
+
+# Final SCF download parameters
+export FILE_TIMESTAMP=`date +%Y%m%d-%H%M%S`
+export PRIMARY_SCF_FILENAME=robot_framework_posttest_config_save-$PRIMARY_MGMT_IP-$FILE_TIMESTAMP.scf
+export SECONDARY_SCF_FILENAME=robot_framework_posttest_config_save-$SECONDARY_MGMT_IP-$FILE_TIMESTAMP.scf
+
 # Executing Rebot Report Summarization, which combines all single reports into a master report
 printf "Running Rebot Report Summarization"
 rebot --name "F5 Robot Framework Test Report" -l ./reports/COMBINED-LOG.html -r ./reports/COMBINED-REPORT.html ./reports/*.xml
+
+#test=DCNETARCH-SLB-Capture_the_Device_Text_Configurations; $robot_fullpath --noncritical non_critical  --outputdir ./reports -o $test.xml -l $test.log.html -r $test.report.html ./bin/$test.robot
 
 printf "##############################\n"
 printf "## Script execution complete  \n"
