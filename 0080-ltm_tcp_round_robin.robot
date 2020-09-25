@@ -26,3 +26,12 @@ ${TCP_ROUND_ROBIN_POOL_MEMBERS}         %{TCP_ROUND_ROBIN_POOL_MEMBERS}
 ${TCP_ROUND_ROBIN_POOL_MONITOR}         %{TCP_ROUND_ROBIN_POOL_MONITOR}
 
 *** Test Cases ***
+Perform BIG-IP Quick Check
+    [Documentation]    Verifies that key BIG-IP services are in a ready state
+    set log level    trace
+    Verify All BIG-IP Ready States    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}
+    Check for BIG-IP Services Waiting to Restart    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}
+    Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
+    Verify All BIG-IP Ready States    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
+    Check for BIG-IP Services Waiting to Restart    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
+
