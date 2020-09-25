@@ -68,37 +68,41 @@ Add the UDP DNS Round-Robin Test Nodes to Pool
     [Documentation]    Populates the pool object with the pool members (also referred to as nodes or back-end servers)
     set log level    trace
     ${UDP_ROUND_ROBIN_POOL_MEMBERS}    to json    ${UDP_ROUND_ROBIN_POOL_MEMBERS}
-    :FOR    ${current_pool_member}    IN    @{UDP_ROUND_ROBIN_POOL_MEMBERS}
-    \   ${pool_member_name}    get from dictionary    ${current_pool_member}    address
-    \   ${pool_member_address}    get from dictionary    ${current_pool_member}    address
-    \   ${pool_member_port}    Get From Dictionary    ${current_pool_member}    port
-    \   Add an LTM Pool Member to a Pool    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${HTTP_USERNAME}    bigip_password=${HTTP_PASSWORD}    pool_name=${UDP_ROUND_ROBIN_POOL_NAME}    pool_member_name=${pool_member_name}    port=${pool_member_port}    address=${pool_member_address}    monitor=${UDP_ROUND_ROBIN_POOL_MONITOR}
-    \   Verify an LTM Pool Member    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${HTTP_USERNAME}    bigip_password=${HTTP_PASSWORD}    pool_name=${UDP_ROUND_ROBIN_POOL_NAME}    pool_member_name=${pool_member_name}    port=${pool_member_port}    address=${pool_member_address}    monitor=${UDP_ROUND_ROBIN_POOL_MONITOR}
+    FOR    ${current_pool_member}    IN    @{UDP_ROUND_ROBIN_POOL_MEMBERS}
+       ${pool_member_name}    get from dictionary    ${current_pool_member}    address
+       ${pool_member_address}    get from dictionary    ${current_pool_member}    address
+       ${pool_member_port}    Get From Dictionary    ${current_pool_member}    port
+       Add an LTM Pool Member to a Pool    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${HTTP_USERNAME}    bigip_password=${HTTP_PASSWORD}    pool_name=${UDP_ROUND_ROBIN_POOL_NAME}    pool_member_name=${pool_member_name}    port=${pool_member_port}    address=${pool_member_address}    monitor=${UDP_ROUND_ROBIN_POOL_MONITOR}
+       Verify an LTM Pool Member    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${HTTP_USERNAME}    bigip_password=${HTTP_PASSWORD}    pool_name=${UDP_ROUND_ROBIN_POOL_NAME}    pool_member_name=${pool_member_name}    port=${pool_member_port}    address=${pool_member_address}    monitor=${UDP_ROUND_ROBIN_POOL_MONITOR}
+    END
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    :FOR    ${current_pool_member}    IN    @{UDP_ROUND_ROBIN_POOL_MEMBERS}
-    \   ${pool_member_name}    get from dictionary    ${current_pool_member}    address
-    \   ${pool_member_address}    get from dictionary    ${current_pool_member}    address
-    \   ${pool_member_port}    Get From Dictionary    ${current_pool_member}    port
-    \   Add an LTM Pool Member to a Pool    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${HTTP_USERNAME}    bigip_password=${HTTP_PASSWORD}    pool_name=${UDP_ROUND_ROBIN_POOL_NAME}    pool_member_name=${pool_member_name}    port=${pool_member_port}    address=${pool_member_address}    monitor=${UDP_ROUND_ROBIN_POOL_MONITOR}
-    \   Verify an LTM Pool Member    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${HTTP_USERNAME}    bigip_password=${HTTP_PASSWORD}    pool_name=${UDP_ROUND_ROBIN_POOL_NAME}    pool_member_name=${pool_member_name}    port=${pool_member_port}    address=${pool_member_address}    monitor=${UDP_ROUND_ROBIN_POOL_MONITOR}
+    FOR    ${current_pool_member}    IN    @{UDP_ROUND_ROBIN_POOL_MEMBERS}
+       ${pool_member_name}    get from dictionary    ${current_pool_member}    address
+       ${pool_member_address}    get from dictionary    ${current_pool_member}    address
+       ${pool_member_port}    Get From Dictionary    ${current_pool_member}    port
+       Add an LTM Pool Member to a Pool    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${HTTP_USERNAME}    bigip_password=${HTTP_PASSWORD}    pool_name=${UDP_ROUND_ROBIN_POOL_NAME}    pool_member_name=${pool_member_name}    port=${pool_member_port}    address=${pool_member_address}    monitor=${UDP_ROUND_ROBIN_POOL_MONITOR}
+       Verify an LTM Pool Member    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${HTTP_USERNAME}    bigip_password=${HTTP_PASSWORD}    pool_name=${UDP_ROUND_ROBIN_POOL_NAME}    pool_member_name=${pool_member_name}    port=${pool_member_port}    address=${pool_member_address}    monitor=${UDP_ROUND_ROBIN_POOL_MONITOR}
+    END
 
 Add the UDP DNS Round-Robin IPv6 Test Nodes to Pool
     [Documentation]    Populates the pool object with the pool members (also referred to as nodes or back-end servers)
     set log level    trace
     ${UDP_ROUND_ROBIN_IPV6_POOL_MEMBERS}    to json    ${UDP_ROUND_ROBIN_IPV6_POOL_MEMBERS}
-    :FOR    ${current_pool_member}    IN    @{UDP_ROUND_ROBIN_IPV6_POOL_MEMBERS}
-    \   ${pool_member_name}    get from dictionary    ${current_pool_member}    address
-    \   ${pool_member_address}    get from dictionary    ${current_pool_member}    address
-    \   ${pool_member_port}    Get From Dictionary    ${current_pool_member}    port
-    \   Add an LTM IPv6 Pool Member to a Pool    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${HTTP_USERNAME}    bigip_password=${HTTP_PASSWORD}    pool_name=${UDP_ROUND_ROBIN_IPV6_POOL_NAME}    pool_member_name=${pool_member_name}    port=${pool_member_port}    address=${pool_member_address}    monitor=${UDP_ROUND_ROBIN_IPV6_POOL_MONITOR}
-    \   Verify an LTM IPv6 Pool Member    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${HTTP_USERNAME}    bigip_password=${HTTP_PASSWORD}    pool_name=${UDP_ROUND_ROBIN_IPV6_POOL_NAME}    pool_member_name=${pool_member_name}    port=${pool_member_port}    address=${pool_member_address}    monitor=${UDP_ROUND_ROBIN_IPV6_POOL_MONITOR}
+    FOR    ${current_pool_member}    IN    @{UDP_ROUND_ROBIN_IPV6_POOL_MEMBERS}
+       ${pool_member_name}    get from dictionary    ${current_pool_member}    address
+       ${pool_member_address}    get from dictionary    ${current_pool_member}    address
+       ${pool_member_port}    Get From Dictionary    ${current_pool_member}    port
+       Add an LTM IPv6 Pool Member to a Pool    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${HTTP_USERNAME}    bigip_password=${HTTP_PASSWORD}    pool_name=${UDP_ROUND_ROBIN_IPV6_POOL_NAME}    pool_member_name=${pool_member_name}    port=${pool_member_port}    address=${pool_member_address}    monitor=${UDP_ROUND_ROBIN_IPV6_POOL_MONITOR}
+       Verify an LTM IPv6 Pool Member    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${HTTP_USERNAME}    bigip_password=${HTTP_PASSWORD}    pool_name=${UDP_ROUND_ROBIN_IPV6_POOL_NAME}    pool_member_name=${pool_member_name}    port=${pool_member_port}    address=${pool_member_address}    monitor=${UDP_ROUND_ROBIN_IPV6_POOL_MONITOR}
+    END
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    :FOR    ${current_pool_member}    IN    @{UDP_ROUND_ROBIN_IPV6_POOL_MEMBERS}
-    \   ${pool_member_name}    get from dictionary    ${current_pool_member}    address
-    \   ${pool_member_address}    get from dictionary    ${current_pool_member}    address
-    \   ${pool_member_port}    Get From Dictionary    ${current_pool_member}    port
-    \   Add an LTM IPv6 Pool Member to a Pool    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${HTTP_USERNAME}    bigip_password=${HTTP_PASSWORD}    pool_name=${UDP_ROUND_ROBIN_IPV6_POOL_NAME}    pool_member_name=${pool_member_name}    port=${pool_member_port}    address=${pool_member_address}    monitor=${UDP_ROUND_ROBIN_IPV6_POOL_MONITOR}
-    \   Verify an LTM IPv6 Pool Member    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${HTTP_USERNAME}    bigip_password=${HTTP_PASSWORD}    pool_name=${UDP_ROUND_ROBIN_IPV6_POOL_NAME}    pool_member_name=${pool_member_name}    port=${pool_member_port}    address=${pool_member_address}    monitor=${UDP_ROUND_ROBIN_IPV6_POOL_MONITOR}
+    FOR    ${current_pool_member}    IN    @{UDP_ROUND_ROBIN_IPV6_POOL_MEMBERS}
+       ${pool_member_name}    get from dictionary    ${current_pool_member}    address
+       ${pool_member_address}    get from dictionary    ${current_pool_member}    address
+       ${pool_member_port}    Get From Dictionary    ${current_pool_member}    port
+       Add an LTM IPv6 Pool Member to a Pool    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${HTTP_USERNAME}    bigip_password=${HTTP_PASSWORD}    pool_name=${UDP_ROUND_ROBIN_IPV6_POOL_NAME}    pool_member_name=${pool_member_name}    port=${pool_member_port}    address=${pool_member_address}    monitor=${UDP_ROUND_ROBIN_IPV6_POOL_MONITOR}
+       Verify an LTM IPv6 Pool Member    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${HTTP_USERNAME}    bigip_password=${HTTP_PASSWORD}    pool_name=${UDP_ROUND_ROBIN_IPV6_POOL_NAME}    pool_member_name=${pool_member_name}    port=${pool_member_port}    address=${pool_member_address}    monitor=${UDP_ROUND_ROBIN_IPV6_POOL_MONITOR}
+    END
 
 Create UDP DNS Round-Robin Virtual Server
     [Documentation]    Creates a virtual server object that listens for traffic and forwards to the appropriate pool/next-hop
