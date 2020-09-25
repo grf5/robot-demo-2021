@@ -159,13 +159,13 @@ Verify Devices are "In Sync" after creating device group
     ${secondary_sync_status}    Retrieve CM Sync Status    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    
     should be equal as strings    '${secondary_sync_status}'    'In Sync'    
 
-Verify that the devices are still in sync-only mode after creating device group
+Verify that the devices are still in trust-only mode after creating device group
     [Documentation]    Verifies that the configuration is synced between the BIG-IPs as part of the clustering/HA
     set log level    trace
     ${primary_sync_mode}    Retrieve CM Sync Mode    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    
-    should be equal as strings    '${primary_sync_mode}'    'sync-only'
+    should be equal as strings    '${primary_sync_mode}'    'trust-only'
     ${secondary_sync_mode}    Retrieve CM Sync Mode    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    
-    should be equal as strings    '${secondary_sync_mode}'    'sync-only'
+    should be equal as strings    '${secondary_sync_mode}'    'trust-only'
 
 Add both devices to the device group
     [Documentation]    Adds both the primary and standby unit the newly created device group
