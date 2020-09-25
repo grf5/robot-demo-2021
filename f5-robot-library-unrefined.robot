@@ -39,17 +39,6 @@ Ping IPv6 Host from BIG-IP
     Should Contain    ${ping_output}    , 0% packet loss
     [Return]    ${api_response}
 
-Reset All Statistics
-    [Documentation]    Resets all statistics on the BIG-IP
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    
-    Reset All Interface Stats    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}
-    Reset All Trunk Stats    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}
-    Reset All Self-IP Stats    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}
-    Reset All Virtual Stats    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}
-    Reset All Node Stats    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}
-    Reset All Pool Stats    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}
-    Reset All Performance Stats    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}
-
 Reboot a BIG-IP
     [Documentation]    Issues the "tmsh reboot" command
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    
@@ -2545,152 +2534,6 @@ Get BIG-IP Trunk bitsOut Value
     log    Trunk ${trunk_tmname} - Bits Out Counter: ${counters_bitsOut_count}
     [Return]    ${api_response}
 
-#############
-## net vlan
-#############
-
-Get Current List of Interfaces Mapped to VLAN
-    [Documentation]    Retrieves a list of interfaces/trunks to which a VLAN is mapped (https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/tmos-routing-administration-13-1-0/5.html)
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${vlan_name}
-    ${api_uri}    set variable    /mgmt/tm/net/vlan/${vlan_name}/interfaces
-    ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    200
-    ${api_response_dict}    to json    ${api_response.content}
-    Dictionary Should Contain Key   ${api_response_dict}    interfaces
-    ${initial_interface_list}    get from dictionary    ${api_response_dict}    interfaces
-    ${initial_interface_list}    convert to list    ${initial_interface_list}
-    log    Initial Interface List: ${initial_interface_list}
-    [Return]    ${api_response}
-
-Create A Vlan on the BIG-IP
-    [Documentation]    Creates a VLAN on the BIG-IP (https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/tmos-routing-administration-13-1-0/5.html)
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${vlan_name}    ${vlan_tag}   ${partition}=Common
-    ${api_payload}    Create Dictionary    name    ${vlan_name}   tag  ${vlan_tag}    partition=${partition}
-    ${api_uri}    set variable    /mgmt/tm/net/vlan
-    ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    200
-    [Return]    ${api_response}
-
-Enable dot1q Tagging on a BIG-IP VLAN Interface
-    [Documentation]    Enables dot1q tagging on an interface tied to a VLAN (https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/tmos-routing-administration-13-1-0/5.html)
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${vlan_name}    ${interface_name}    ${partition}=Common
-    ${api_payload}    create dictionary   tagged=${true}
-    ${api_uri}    set variable    /mgmt/tm/net/vlan/~${partition}~${vlan_name}/interfaces/${interface_name}
-    ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    200
-    [Return]    ${api_response}
-
-Verify dot1q Tagging Enabled on BIG-IP Vlan Interface
-    [Documentation]    Verifies dot1q tagging on an interface tied to a VLAN (https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/tmos-routing-administration-13-1-0/5.html)
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${vlan_name}    ${interface_name}    ${partition}=Common
-    ${api_uri}    set variable    /mgmt/tm/net/vlan/~${partition}~${vlan_name}/interfaces/${interface_name}
-    ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    200
-    ${api_response_dict}    to json    ${api_response.content}
-    dictionary should contain item    ${api_response_dict}    tagged    True
-    [Return]    ${api_response}
-
-Modify VLAN Mapping on BIG-IP VLAN
-    [Documentation]    Maps a VLAN to an interface or list of interfaces (https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/tmos-routing-administration-13-1-0/5.html)
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${vlan_name}    ${vlan_interface_list}    ${partition}=Common
-    ${api_payload}    Create Dictionary    interfaces=${vlan_interface_list}
-    ${api_uri}    set variable    /mgmt/tm/net/vlan/~${partition}~${vlan_name}
-    ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    200
-    [Return]    ${api_response}
-
-Modify MTU on BIG-IP VLAN
-    [Documentation]    Modifies the MTU on a BIG-IP VLAN (https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/tmos-routing-administration-13-1-0/5.html)
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${vlan_name}    ${vlan_mtu}    ${partition}=Common
-    ${api_payload}    Create Dictionary    mtu    ${vlan_mtu}
-    ${api_uri}    set variable    /mgmt/tm/net/vlan/~${partition}~${vlan_name}
-    ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    200
-    [Return]    ${api_response}
-
-Verify MTU on BIG-IP VLAN
-    [Documentation]    Verifies the MTU configured on a BIG-IP VLAN (https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/tmos-routing-administration-13-1-0/5.html)
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${vlan_name}    ${vlan_mtu}    ${partition}=Common
-    ${api_uri}    set variable    /mgmt/tm/net/vlan/~${partition}~${vlan_name}
-    ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    200
-    ${api_response_dict}    to json    ${api_response.content}
-    dictionary should contain item  ${api_response_dict}    kind    tm:net:vlan:vlanstate
-    dictionary should contain item  ${api_response_dict}    mtu    ${vlan_mtu}
-    dictionary should contain item  ${api_response_dict}    name    ${vlan_name}
-    [Return]    ${api_response}
-
-Verify dot1q Tag on BIG-IP VLAN
-    [Documentation]    Verifies the dot1q tag configured for a VLAN on the BIG-IP (https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/tmos-routing-administration-13-1-0/5.html)
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${vlan_name}    ${vlan_tag}    ${partition}=Common
-    ${api_uri}    set variable    /mgmt/tm/net/vlan/~${partition}~${vlan_name}
-    ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    200
-    ${api_response_dict}    to json    ${api_response.content}
-    dictionary should contain item  ${api_response_dict}    kind    tm:net:vlan:vlanstate
-    dictionary should contain item  ${api_response_dict}    tag    ${vlan_tag}
-    dictionary should contain item  ${api_response_dict}    name    ${vlan_name}
-    [Return]    ${api_response}
-
-Verify VLAN Mapping on a BIG-IP VLAN
-    [Documentation]    Verifies if a single interface (physical or trunk) is mapped to a VLAN (https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/tmos-routing-administration-13-1-0/5.html)
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${vlan_name}    ${interface_name}    ${partition}=Common
-    ${api_uri}    set variable    /mgmt/tm/net/vlan/~${partition}~${vlan_name}/interfaces/${interface_name}
-    ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    200
-    ${api_response_dict}    to json    ${api_response.content}
-    dictionary should contain item  ${api_response_dict}    kind    tm:net:vlan:interfaces:interfacesstate
-    dictionary should contain item  ${api_response_dict}    name    ${interface_name}
-    [Return]    ${api_response}
-
-Configure VLAN Failsale on BIG-IP
-    [Documentation]    Sets the state and parameters of VLAN failsfe on a BIG-IP VLAN (https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/bigip-system-essentials-13-1-0/9.html)
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${vlan}    ${partition}=Common   ${failsafe}=disabled   ${failsafe-action}=failover   ${failsafe-timeout}=60
-    ${api_payload}    create dictionary    failsafe=${failsafe}    failsafeAction=${failsafe-action}    failsafeTimeout=${failsafe-timeout}
-    ${api_uri}    set variable    /mgmt/tm/net/vlan/~${partition}~${vlan}
-    ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    200
-    ${api_response_dict}    to json    ${api_response.content}
-    dictionary should contain item  ${api_response_dict}    name    ${vlan}
-    dictionary should contain item  ${api_response_dict}    partition    ${partition}
-    dictionary should contain item  ${api_response_dict}    failsafe    ${failsafe}
-    dictionary should contain item  ${api_response_dict}    failsafeAction    ${failsafe-action}
-    dictionary should contain item  ${api_response_dict}    failsafeTimeout    ${failsafe-timeout}
-    [Return]    ${api_response}
-
-Delete a BIG-IP VLAN
-    [Documentation]    Deletes a VLAN from the BIG-IP (https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/tmos-routing-administration-13-1-0/5.html)
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${vlan_name}
-    ${api_uri}    set variable    /mgmt/tm/net/vlan/${vlan_name}
-    ${api_response}    BIG-IP iControl BasicAuth DELETE    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}  api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    200
-    [Return]    ${api_response}
-
-Retrieve BIG-IP VLAN Configuration
-    [Documentation]    Retrieves the VLAN configuration from the BIG-IP
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${vlan}
-    ${api_uri}    set variable if    /mgmt/tm/net/vlan/${vlan}
-    ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    200
-    [Return]    ${api_response}
-
-Retrieve All BIG-IP VLAN Configurations
-    [Documentation]    Retrieves the VLAN configurations from the BIG-IP
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
-    ${api_uri}    set variable    /mgmt/tm/net/vlan
-    ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    200
-    [Return]    ${api_response}
-
-Retrieve BIG-IP VLAN Configuration via TMSH
-    [Documentation]    Retrieves the VLAN configuration from the BIG-IP via TMSH
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${vlan}=all
-    ${tmsh_command}    set variable    tmsh list net vlan ${vlan} all-properties
-    Wait until Keyword Succeeds    3x    5 seconds    Open Connection    ${bigip_host}
-    Log In    ${bigip_username}    ${bigip_password}
-    ${tmsh_result}    Execute Command    ${tmsh_command}
-    Close All Connections
-    [Return]    ${tmsh_result}
 
 ######################
 ## security firewall
@@ -2868,15 +2711,6 @@ Enable BIG-IP Management Interface DHCP
     ${api_payload}    create dictionary    mgmtDhcp    enabled
     ${api_uri}    set variable    /mgmt/tm/sys/global-settings
     ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    200
-    [Return]    ${api_response}
-
-Create Management Network Route
-    [Documentation]    Adds a route for a resource or network to the management interface (https://support.f5.com/csp/article/K13284)
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${name}    ${network}    ${gateway}    ${description}="Added by Robot Framework"
-    ${api_payload}    create dictionary    name    ${name}    network    ${network}    gateway    ${gateway}    description    ${description}
-    ${api_uri}    set variable    /mgmt/tm/sys/management-route
-    ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
     Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
