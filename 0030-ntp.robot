@@ -1,6 +1,5 @@
 *** Settings ***
 Documentation    This test checks for proper configuration, validation and operation of NTP on the BIG-IP
-Resource    f5-robot-library-unrefined.robot
 Resource    robotframework-f5-tmos.robot
 
 *** Variables ***

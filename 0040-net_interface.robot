@@ -1,6 +1,5 @@
 *** Settings ***
 Documentation    This test configures parameters for "net interface" objects on the BIG-IP
-Resource    f5-robot-library-unrefined.robot
 Resource    robotframework-f5-tmos.robot
 
 *** Variables ***
