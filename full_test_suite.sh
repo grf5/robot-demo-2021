@@ -75,9 +75,6 @@ export INSIDE_INTERFACE_NAME='1.2'
 rm -f ./reports/*.html
 rm -f ./reports/*.xml
 
-# Load the base provisioning UCS on the BIG-IPs
-test=DCNETARCH-SLB-LOAD-SYS-UCS-BASEPROVISIONING; $robot_fullpath --noncritical non_critical  --outputdir ./reports -o $test.xml -l $test.log.html -r $test.report.html ./bin/$test.robot
-
 printf "##############################\n"
 printf "## Starting script execution  \n"
 printf "##############################\n"
