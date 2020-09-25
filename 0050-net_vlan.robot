@@ -115,10 +115,10 @@ Log All BIG-IP VLAN Configurations via API
 Retrieve All BIG-IP Interface Configurations via TMSH
     [Documentation]    Gather a snapshot of the interface configurations post-configuration
     set log level    trace
-    ${primary_interface_configurations}    Retrieve BIG-IP Interface Configuration via TMSH    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${SSH_USERNAME}    bigip_password=${SSH_PASSWORD}
+    ${primary_interface_configurations}    Retrieve BIG-IP Interface Configuration via TMSH    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_SSH_USERNAME}    bigip_password=${PRIMARY_SSH_PASSWORD}
     log    ${primary_interface_configurations}
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    ${secondary_interface_configurations}    Retrieve BIG-IP Interface Configuration via TMSH    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SSH_USERNAME}    bigip_password=${SSH_PASSWORD}
+    ${secondary_interface_configurations}    Retrieve BIG-IP Interface Configuration via TMSH    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_SSH_USERNAME}    bigip_password=${SECONDARY_SSH_PASSWORD}
     log    ${secondary_interface_configurations}
 
 Gather All BIG-IP Interface Configurations via API

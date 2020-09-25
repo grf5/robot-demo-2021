@@ -66,11 +66,11 @@ export SECONDARY_INTERFACE_DETAILS='[{"name":"1.1","description":"Configured by 
 
 # net vlan
 export OUTSIDE_VLAN_NAME='public'
-export OUTSIDE_VLAN_TAG='none'
+export OUTSIDE_VLAN_TAG='4093'
 export OUTSIDE_VLAN_TAGGED='False'
 export OUTSIDE_INTERFACE_NAME='1.1'
 export INSIDE_VLAN_NAME='private'
-export INSIDE_VLAN_TAG='none'
+export INSIDE_VLAN_TAG='4092'
 export INSIDE_VLAN_TAGGED='False'
 export INSIDE_INTERFACE_NAME='1.2'
 
