@@ -195,6 +195,7 @@ Reset Statistics on the BIG-IP
 
 Run Traffic Test
     [Documentation]    Run a traffic generator test here
+    log    "No traffic generator configured"
 
 Retrieve Statistics for all BIG-IP Virtual Servers
     [Documentation]    Retrieves the current statistics for all configured virtual servers
