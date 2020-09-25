@@ -2878,6 +2878,7 @@ Remove Host from BIG-IP SNMP Allow-List
 Add Host to BIG-IP SNMP Allow-List
     [Documentation]    Adds the IP address or subnet to the SNMP allowed hosts list (https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/bigip-external-monitoring-implementations-13-0-0/13.html)
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${snmphost}
+    Log    ${snmphost}
     ${api_uri}    set variable    /mgmt/tm/sys/snmp
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
     Should Be Equal As Strings    ${api_response.status_code}    200
