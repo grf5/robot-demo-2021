@@ -27,22 +27,12 @@ Create Default Static Routes on the BIG-IP
     ${route_gateway}    get from dictionary    ${PRIMARY_STATIC_DEFAULT_ROUTE}    gw
     ${route_description}    get from dictionary    ${PRIMARY_STATIC_DEFAULT_ROUTE}    description
     Create Static Default Route Configuration on the BIG-IP    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    partition=${route_partition}    gateway=${route_gateway}    description=${route_description}
-    ${PRIMARY_STATIC_DEFAULTv6_ROUTE}    to json    ${PRIMARY_STATIC_DEFAULTv6_ROUTE}
-    ${route_partition}    get from dictionary    ${PRIMARY_STATIC_DEFAULTv6_ROUTE}    partition
-    ${route_gateway}    get from dictionary    ${PRIMARY_STATIC_DEFAULTv6_ROUTE}    gw
-    ${route_description}    get from dictionary    ${PRIMARY_STATIC_DEFAULTv6_ROUTE}    description
-    Create Static IPv6 Default Route Configuration on the BIG-IP    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    partition=${route_partition}    gateway=${route_gateway}    description=${route_description}
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
     ${SECONDARY_STATIC_DEFAULT_ROUTE}    to json    ${SECONDARY_STATIC_DEFAULT_ROUTE}
     ${route_partition}    get from dictionary    ${SECONDARY_STATIC_DEFAULT_ROUTE}    partition
     ${route_gateway}    get from dictionary    ${SECONDARY_STATIC_DEFAULT_ROUTE}    gw
     ${route_description}    get from dictionary    ${SECONDARY_STATIC_DEFAULT_ROUTE}    description
     Create Static Default Route Configuration on the BIG-IP    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    partition=${route_partition}    gateway=${route_gateway}    description=${route_description}
-    ${SECONDARY_STATIC_DEFAULTv6_ROUTE}    to json    ${SECONDARY_STATIC_DEFAULTv6_ROUTE}
-    ${route_partition}    get from dictionary    ${SECONDARY_STATIC_DEFAULTv6_ROUTE}    partition
-    ${route_gateway}    get from dictionary    ${SECONDARY_STATIC_DEFAULTv6_ROUTE}    gw
-    ${route_description}    get from dictionary    ${SECONDARY_STATIC_DEFAULTv6_ROUTE}    description
-    Create Static IPv6 Default Route Configuration on the BIG-IP    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    partition=${route_partition}    gateway=${route_gateway}    description=${route_description}
 
 Display Static Route Configuration on the BIG-IP
     [Documentation]    Retrieves the static routes configured on the device; does not retrieve the routing table/effective routes
@@ -66,20 +56,4 @@ Ping the Gateway for Each Static IPv4 Route
         ${route_name}    get from dictionary    ${current_static_route}    name
         ${route_gateway}    get from dictionary    ${current_static_route}    gw
         wait until keyword succeeds    6x    10 seconds    Ping Host from BIG-IP    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    host=${route_gateway}
-    END
-Ping the Gateway for Each Static IPv6 Route
-    [Documentation]    Pings the next-hop for each static route to ensure its reachable
-    set log level    trace
-    ${STATIC_ROUTESv6_LIST}    To Json    ${PRIMARY_STATIC_ROUTEv6_LIST}
-    FOR    ${current_static_route}    IN    @{STATIC_ROUTESv6_LIST}
-        ${route_name}    get from dictionary    ${current_static_route}    name
-        ${route_gateway}    get from dictionary    ${current_static_route}    gw
-        wait until keyword succeeds    6x    10 seconds    Ping IPv6 Host from BIG-IP    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    host=${route_gateway}
-    END
-    Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    ${STATIC_ROUTESv6_LIST}    To Json    ${SECONDARY_STATIC_ROUTEv6_LIST}
-    FOR    ${current_static_route}    IN    @{STATIC_ROUTESv6_LIST}
-        ${route_name}    get from dictionary    ${current_static_route}    name
-        ${route_gateway}    get from dictionary    ${current_static_route}    gw
-        wait until keyword succeeds    6x    10 seconds    Ping IPv6 Host from BIG-IP    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    host=${route_gateway}
     END
