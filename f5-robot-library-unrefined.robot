@@ -3377,27 +3377,6 @@ View BIG-IP Turboflex Profile
     Should Be Equal As Strings    ${api_response.status_code}    200
     [Return]    ${api_response}
 
-############
-## sys ucs
-############
-
-Save a UCS on the BIG-IP
-    [Documentation]    Saves a configuration backup on a BIG-IP (https://support.f5.com/csp/article/K4423)
-    [Arguments]    ${bigip_host}   ${bigip_username}    ${bigip_password}    ${ucs_filename}
-    ${api_payload}    create dictionary    command=save    name=${ucs_filename}
-    ${api_uri}    set variable    /mgmt/tm/sys/ucs
-    ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    200
-    [Return]    ${api_response}
-
-Load a UCS on the BIG-IP
-    [Documentation]    Loads a configuration backup to a BIG-IP (https://support.f5.com/csp/article/K4423)
-    [Arguments]    ${bigip_host}   ${bigip_username}    ${bigip_password}    ${ucs_filename}
-    ${api_payload}    create dictionary    command=load    name=${ucs_filename}
-    ${api_uri}    set variable    /mgmt/tm/sys/ucs
-    ${api_response}    BIG-IP iControl BasicAuth POST without Verification     bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    [Return]    ${api_response}
-
 ################
 ## sys version
 ################

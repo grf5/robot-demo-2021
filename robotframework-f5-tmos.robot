@@ -345,87 +345,6 @@ Verify BIG-IP Provision Ready State
     should be equal as strings    ${ready_state_value}    ${provision_ready_state}
     [Return]    ${provision_ready_state}
 
-############
-## sys ssh
-############
-
-Retrieve Current SSH Allow ACL
-    [Documentation]    View the current SSH allow ACL on the BIG-IP (https://support.f5.com/csp/article/K5380)
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
-    ${api_uri}    set variable    /mgmt/tm/sys/sshd
-    ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    200
-    ${api_response_dict}    to json    ${api_response.content}
-    ${initial_sshd_allow_acl}    get from dictionary    ${api_response_dict}    allow
-    log    Initial SSH Allow ACL: ${initial_sshd_allow_acl}
-    set test variable    ${initial_sshd_allow_acl}
-    [Return]    ${api_response}
-
-Add Host to SSH Allow ACL
-    [Documentation]    Add a host to the current SSH allow ACL on the BIG-IP (https://support.f5.com/csp/article/K5380)
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${new_ssh_host}
-    Get Current SSH Allow ACL    ${bigip_host}    ${bigip_username}    ${bigip_password}
-    list should not contain value   ${initial_sshd_allow_acl}    ${new_ssh_host}
-    ${new_sshd_allow_acl}    set variable    ${initial_sshd_allow_acl}
-    append to list    ${new_sshd_allow_acl}    ${new_ssh_host}
-    log    Updated SSH Allow ACL: ${new_sshd_allow_acl}
-    ${api_payload}    create dictionary    allow    ${new_sshd_allow_acl}
-    ${api_uri}    set variable    /mgmt/tm/sys/sshd
-    ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    200
-    [Return]    ${api_response}
-
-Remove Host from SSH Allow ACL
-    [Documentation]    Remove a host from the current SSH allow ACL on the BIG-IP (https://support.f5.com/csp/article/K5380)
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${ssh_host}
-    Get Current SSH Allow ACL    ${bigip_host}    ${bigip_username}    ${bigip_password}
-    list should contain value    ${initial_sshd_allow_acl}    ${ssh_host}
-    ${new_sshd_allow_acl}    set variable    ${initial_sshd_allow_acl}
-    remove values from list    ${new_sshd_allow_acl}    ${ssh_host}
-    log    Updated SSH Allow ACL: ${new_sshd_allow_acl}
-    ${api_payload}    create dictionary    allow    ${new_sshd_allow_acl}
-    ${api_uri}    set variable    /mgmt/tm/sys/sshd
-    ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    200
-    [Return]    ${api_response}
-
-Remove All Hosts from SSH Allow ACL
-    [Documentation]    Remove all hosts from the current SSH allow ACL on the BIG-IP (https://support.f5.com/csp/article/K5380)
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
-    ${new_sshd_allow_acl}    Create List
-    ${api_payload}    create dictionary    allow    ${new_sshd_allow_acl}
-    ${api_uri}    set variable    /mgmt/tm/sys/sshd
-    ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    200
-    [Return]    ${api_response}
-
-Reset BIG-IP SSH Allow ACL to Allow All Hosts
-    [Documentation]    Resets the  SSH allow ACL on the BIG-IP to the default value to allow all hosts (https://support.f5.com/csp/article/K5380)
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
-    ${all_ssh_list}    create list    ALL
-    ${api_payload}    create dictionary    allow=${all_ssh_list}
-    ${api_uri}    set variable    /mgmt/tm/sys/sshd
-    ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
-    Should Be Equal As Strings    ${api_response.status_code}    200
-    [Return]    ${api_response}
-
-Verify SSH Allow ACL
-    [Documentation]    Verify that a host exists in the current SSH allow ACL on the BIG-IP (https://support.f5.com/csp/article/K5380)
-    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${verify_ssh_host}
-    ${api_uri}    set variable    /mgmt/tm/sys/sshd
-    ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    Should Be Equal As Strings    ${api_response.status_code}    200
-    ${api_response_dict}    to json    ${api_response.content}
-    ${sshd_allow_acl}    get from dictionary    ${api_response_dict}    allow
-    list should contain value    ${sshd_allow_acl}    ${verify_ssh_host}
-    [Return]    ${api_response}
-
-Run BASH Echo Test
-    [Documentation]    Issues a BASH command and looks for the proper response inside of an existing SSH session
-    ${BASH_ECHO_RESPONSE}    Execute Command    bash -c echo\\ 'BASH TEST'
-    Should Be Equal    ${BASH_ECHO_RESPONSE}    BASH TEST
-    [Return]    ${BASH_ECHO_RESPONSE}
-
 ##################
 ## net interface
 ##################
@@ -669,4 +588,106 @@ Verify Module is Provisioned
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
     should be equal as strings    ${api_response.status_code}    200
     should not contain    ${api_response.text}    "level":"none"
+    [Return]    ${api_response}
+
+############
+## sys ssh
+############
+
+Retrieve Current SSH Allow ACL
+    [Documentation]    View the current SSH allow ACL on the BIG-IP (https://support.f5.com/csp/article/K5380)
+    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
+    ${api_uri}    set variable    /mgmt/tm/sys/sshd
+    ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
+    Should Be Equal As Strings    ${api_response.status_code}    200
+    ${api_response_dict}    to json    ${api_response.content}
+    ${initial_sshd_allow_acl}    get from dictionary    ${api_response_dict}    allow
+    log    Initial SSH Allow ACL: ${initial_sshd_allow_acl}
+    set test variable    ${initial_sshd_allow_acl}
+    [Return]    ${api_response}
+
+Add Host to SSH Allow ACL
+    [Documentation]    Add a host to the current SSH allow ACL on the BIG-IP (https://support.f5.com/csp/article/K5380)
+    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${new_ssh_host}
+    Get Current SSH Allow ACL    ${bigip_host}    ${bigip_username}    ${bigip_password}
+    list should not contain value   ${initial_sshd_allow_acl}    ${new_ssh_host}
+    ${new_sshd_allow_acl}    set variable    ${initial_sshd_allow_acl}
+    append to list    ${new_sshd_allow_acl}    ${new_ssh_host}
+    log    Updated SSH Allow ACL: ${new_sshd_allow_acl}
+    ${api_payload}    create dictionary    allow    ${new_sshd_allow_acl}
+    ${api_uri}    set variable    /mgmt/tm/sys/sshd
+    ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
+    Should Be Equal As Strings    ${api_response.status_code}    200
+    [Return]    ${api_response}
+
+Remove Host from SSH Allow ACL
+    [Documentation]    Remove a host from the current SSH allow ACL on the BIG-IP (https://support.f5.com/csp/article/K5380)
+    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${ssh_host}
+    Get Current SSH Allow ACL    ${bigip_host}    ${bigip_username}    ${bigip_password}
+    list should contain value    ${initial_sshd_allow_acl}    ${ssh_host}
+    ${new_sshd_allow_acl}    set variable    ${initial_sshd_allow_acl}
+    remove values from list    ${new_sshd_allow_acl}    ${ssh_host}
+    log    Updated SSH Allow ACL: ${new_sshd_allow_acl}
+    ${api_payload}    create dictionary    allow    ${new_sshd_allow_acl}
+    ${api_uri}    set variable    /mgmt/tm/sys/sshd
+    ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
+    Should Be Equal As Strings    ${api_response.status_code}    200
+    [Return]    ${api_response}
+
+Remove All Hosts from SSH Allow ACL
+    [Documentation]    Remove all hosts from the current SSH allow ACL on the BIG-IP (https://support.f5.com/csp/article/K5380)
+    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
+    ${new_sshd_allow_acl}    Create List
+    ${api_payload}    create dictionary    allow    ${new_sshd_allow_acl}
+    ${api_uri}    set variable    /mgmt/tm/sys/sshd
+    ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
+    Should Be Equal As Strings    ${api_response.status_code}    200
+    [Return]    ${api_response}
+
+Reset BIG-IP SSH Allow ACL to Allow All Hosts
+    [Documentation]    Resets the  SSH allow ACL on the BIG-IP to the default value to allow all hosts (https://support.f5.com/csp/article/K5380)
+    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
+    ${all_ssh_list}    create list    ALL
+    ${api_payload}    create dictionary    allow=${all_ssh_list}
+    ${api_uri}    set variable    /mgmt/tm/sys/sshd
+    ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
+    Should Be Equal As Strings    ${api_response.status_code}    200
+    [Return]    ${api_response}
+
+Verify SSH Allow ACL
+    [Documentation]    Verify that a host exists in the current SSH allow ACL on the BIG-IP (https://support.f5.com/csp/article/K5380)
+    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${verify_ssh_host}
+    ${api_uri}    set variable    /mgmt/tm/sys/sshd
+    ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
+    Should Be Equal As Strings    ${api_response.status_code}    200
+    ${api_response_dict}    to json    ${api_response.content}
+    ${sshd_allow_acl}    get from dictionary    ${api_response_dict}    allow
+    list should contain value    ${sshd_allow_acl}    ${verify_ssh_host}
+    [Return]    ${api_response}
+
+Run BASH Echo Test
+    [Documentation]    Issues a BASH command and looks for the proper response inside of an existing SSH session
+    ${BASH_ECHO_RESPONSE}    Execute Command    bash -c echo\\ 'BASH TEST'
+    Should Be Equal    ${BASH_ECHO_RESPONSE}    BASH TEST
+    [Return]    ${BASH_ECHO_RESPONSE}
+
+############
+## sys ucs
+############
+
+Save a UCS on the BIG-IP
+    [Documentation]    Saves a configuration backup on a BIG-IP (https://support.f5.com/csp/article/K4423)
+    [Arguments]    ${bigip_host}   ${bigip_username}    ${bigip_password}    ${ucs_filename}
+    ${api_payload}    create dictionary    command=save    name=${ucs_filename}
+    ${api_uri}    set variable    /mgmt/tm/sys/ucs
+    ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
+    Should Be Equal As Strings    ${api_response.status_code}    200
+    [Return]    ${api_response}
+
+Load a UCS on the BIG-IP
+    [Documentation]    Loads a configuration backup to a BIG-IP (https://support.f5.com/csp/article/K4423)
+    [Arguments]    ${bigip_host}   ${bigip_username}    ${bigip_password}    ${ucs_filename}
+    ${api_payload}    create dictionary    command=load    name=${ucs_filename}
+    ${api_uri}    set variable    /mgmt/tm/sys/ucs
+    ${api_response}    BIG-IP iControl BasicAuth POST without Verification     bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
     [Return]    ${api_response}
