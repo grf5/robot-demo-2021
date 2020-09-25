@@ -885,7 +885,7 @@ Verify an LTM Pool
     ${monitor_configured}    evaluate    $config_json.get("monitor","none")
     ${monitor_configured}    remove string using regexp   ${monitor_configured}    (\ \{|\ \})
     ${monitor_configured}    remove string using regexp   ${monitor_configured}    (\ \{|\ \})
-    run keyword if    '${monitor_configured' != 'none'    set to dictionary    ${api_response.json}    monitor=${monitor_configured}
+    run keyword if    '${monitor_configured}' != 'none'    set to dictionary    ${api_response.json}    monitor=${monitor_configured}
     Dictionary Should Contain Subdictionary    ${config_json}    ${expected_configuration}
     [Return]    ${api_response}
 
