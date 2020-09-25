@@ -25,60 +25,6 @@ ${SECONDARY_STATIC_DEFAULT_ROUTE}            %{SECONDARY_STATIC_DEFAULT_ROUTE}
 ${SECONDARY_STATIC_DEFAULTv6_ROUTE}            %{SECONDARY_STATIC_DEFAULTv6_ROUTE}
 
 *** Test Cases ***
-Create Static IPv4 Routes on the BIG-IP
-    [Documentation]    Creates static routes on the BIG-IP
-    set log level    trace
-    ${STATIC_ROUTES_LIST}    To Json    ${PRIMARY_STATIC_ROUTE_LIST}
-    FOR    ${current_static_route}    IN    @{STATIC_ROUTES_LIST}
-        ${route_name}    get from dictionary    ${current_static_route}    name
-        ${route_network}    get from dictionary    ${current_static_route}    network
-        ${route_gateway}    get from dictionary    ${current_static_route}    gw
-        ${route_partition}    get from dictionary    ${current_static_route}    partition
-        ${route_description}    get from dictionary    ${current_static_route}    description
-        Create Static Route Configuration on the BIG-IP    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    name=${route_name}    partition=${route_partition}   cidr_network=${route_network}    gateway=${route_gateway}  description=${route_description}
-        Verify Static Route Configuration on the BIG-IP    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    name=${route_name}    partition=${route_partition}   cidr_network=${route_network}    gateway=${route_gateway}  description=${route_description}
-        Verify Static Route Presence in BIG-IP Route Table  bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    name=${route_name}    partition=${route_partition}   cidr_network=${route_network}    gateway=${route_gateway}
-    END
-    Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    ${STATIC_ROUTES_LIST}    To Json    ${SECONDARY_STATIC_ROUTE_LIST}
-    FOR    ${current_static_route}    IN    @{STATIC_ROUTES_LIST}
-        ${route_name}    get from dictionary    ${current_static_route}    name
-        ${route_network}    get from dictionary    ${current_static_route}    network
-        ${route_gateway}    get from dictionary    ${current_static_route}    gw
-        ${route_partition}    get from dictionary    ${current_static_route}    partition
-        ${route_description}    get from dictionary    ${current_static_route}    description
-        Create Static Route Configuration on the BIG-IP    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    name=${route_name}    partition=${route_partition}   cidr_network=${route_network}    gateway=${route_gateway}  description=${route_description}
-        Verify Static Route Configuration on the BIG-IP    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    name=${route_name}    partition=${route_partition}   cidr_network=${route_network}    gateway=${route_gateway}  description=${route_description}
-        Verify Static Route Presence in BIG-IP Route Table  bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    name=${route_name}    partition=${route_partition}   cidr_network=${route_network}    gateway=${route_gateway}
-    END  
-
-Create Static IPv6 Routes on the BIG-IP
-    [Documentation]    Creates static routes on the BIG-IP
-    set log level    trace
-    ${STATIC_ROUTESv6_LIST}    To Json    ${PRIMARY_STATIC_ROUTEv6_LIST}
-    FOR    ${current_static_route}    IN    @{STATIC_ROUTESv6_LIST}
-        ${route_name}    get from dictionary    ${current_static_route}    name
-        ${route_network}    get from dictionary    ${current_static_route}    network
-        ${route_gateway}    get from dictionary    ${current_static_route}    gw
-        ${route_partition}    get from dictionary    ${current_static_route}    partition
-        ${route_description}    get from dictionary    ${current_static_route}    description
-        Create Static Route Configuration on the BIG-IP    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    name=${route_name}    partition=${route_partition}   cidr_network=${route_network}    gateway=${route_gateway}  description=${route_description}
-        Verify Static Route Configuration on the BIG-IP    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    name=${route_name}    partition=${route_partition}   cidr_network=${route_network}    gateway=${route_gateway}  description=${route_description}
-        Verify Static Route Presence in BIG-IP Route Table  bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    name=${route_name}    partition=${route_partition}   cidr_network=${route_network}    gateway=${route_gateway}
-    END
-    Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    ${STATIC_ROUTESv6_LIST}    To Json    ${SECONDARY_STATIC_ROUTEv6_LIST}
-    FOR    ${current_static_route}    IN    @{STATIC_ROUTESv6_LIST}
-        ${route_name}    get from dictionary    ${current_static_route}    name
-        ${route_network}    get from dictionary    ${current_static_route}    network
-        ${route_gateway}    get from dictionary    ${current_static_route}    gw
-        ${route_partition}    get from dictionary    ${current_static_route}    partition
-        ${route_description}    get from dictionary    ${current_static_route}    description
-        Create Static Route Configuration on the BIG-IP    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    name=${route_name}    partition=${route_partition}   cidr_network=${route_network}    gateway=${route_gateway}  description=${route_description}
-        Verify Static Route Configuration on the BIG-IP    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    name=${route_name}    partition=${route_partition}   cidr_network=${route_network}    gateway=${route_gateway}  description=${route_description}
-        Verify Static Route Presence in BIG-IP Route Table  bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    name=${route_name}    partition=${route_partition}   cidr_network=${route_network}    gateway=${route_gateway}
-    END
-
 Create Default Static Routes on the BIG-IP
     [Documentation]    Creates default static routes on the BIG-IP
     set log level    trace
