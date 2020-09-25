@@ -19,29 +19,29 @@ Provision Software Modules on the BIG-IP
     set log level    trace
     FOR    ${current_module}    IN    ${MODULE_PROVISIONING}
         ${module}    set variable    ${current_module}
-        Provision Module on the BIG-IP    bigip_host=${BIGIP_PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    module=${MODULE}    provisioning_level=${PROVISION_LEVEL}
+        Provision Module on the BIG-IP    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    module=${MODULE}    provisioning_level=${PROVISION_LEVEL}
     END
-    Return from Keyword If    '${BIGIP_SECONDARY_MGMT_IP}' == 'false'
+    Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
     FOR    ${current_module}    IN    ${MODULE_PROVISIONING}
-        Provision Module on the BIG-IP    bigip_host=${BIGIP_SECONDARY_MGMT_IP}    bigip_username=${HTTP_USERNAME}    bigip_password=${HTTP_PASSWORD}    provisioning_level=${PROVISION_AFM_LEVEL}
+        Provision Module on the BIG-IP    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    module=${MODULE}    provisioning_level=${PROVISION_LEVEL}
     END
 
 Perform BIG-IP Post-Provision Check
     [Documentation]    Verifies that key BIG-IP services are in a ready state
     set log level    trace
-    Wait until Keyword Succeeds    50x    10 seconds    Verify All BIG-IP Ready States    bigip_host=${BIGIP_PRIMARY_MGMT_IP}    bigip_username=${HTTP_USERNAME}    bigip_password=${HTTP_PASSWORD}
-    wait until keyword succeeds    50x    10 seconds    Check for BIG-IP Services Waiting to Restart    bigip_host=${BIGIP_PRIMARY_MGMT_IP}    bigip_username=${HTTP_USERNAME}    bigip_password=${HTTP_PASSWORD}
-    Return from Keyword If    '${BIGIP_SECONDARY_MGMT_IP}' == 'false'
-    Wait until Keyword Succeeds    50x    10 seconds    Verify All BIG-IP Ready States    bigip_host=${BIGIP_SECONDARY_MGMT_IP}    bigip_username=${HTTP_USERNAME}    bigip_password=${HTTP_PASSWORD}
-    wait until keyword succeeds    50x    10 seconds    Check for BIG-IP Services Waiting to Restart    bigip_host=${BIGIP_SECONDARY_MGMT_IP}    bigip_username=${HTTP_USERNAME}    bigip_password=${HTTP_PASSWORD}
+    Wait until Keyword Succeeds    50x    10 seconds    Verify All BIG-IP Ready States    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}
+    wait until keyword succeeds    50x    10 seconds    Check for BIG-IP Services Waiting to Restart    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}
+    Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
+    Wait until Keyword Succeeds    50x    10 seconds    Verify All BIG-IP Ready States    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${HTTP_PASSWOSECONDARY_HTTP_PASSWORDRD}
+    wait until keyword succeeds    50x    10 seconds    Check for BIG-IP Services Waiting to Restart    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
 
 Verify Module Provisioning
     [Documentation]    Verifies that the software modules are provisioned as expected on the BIG-IP
     set log level    trace
     FOR    ${current_module}    IN    ${MODULE_PROVISIONING}
-        Verify AFM is Provisioned    bigip_host=${BIGIP_PRIMARY_MGMT_IP}    bigip_username=${HTTP_USERNAME}    bigip_password=${HTTP_PASSWORD}
+        Verify AFM is Provisioned    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}
     END
-    Return from Keyword If    '${BIGIP_SECONDARY_MGMT_IP}' == 'false'
+    Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
     FOR    ${current_module}    IN    ${MODULE_PROVISIONING}
-        Verify AFM is Provisioned    bigip_host=${BIGIP_SECONDARY_MGMT_IP}    bigip_username=${HTTP_USERNAME}    bigip_password=${HTTP_PASSWORD}
+        Verify AFM is Provisioned    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
     END
