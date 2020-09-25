@@ -50,20 +50,6 @@ Verify TCP DNS Round-Robin Test Pool
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
     Verify an LTM Pool    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    name=${TCP_ROUND_ROBIN_POOL_NAME}    monitor=${TCP_ROUND_ROBIN_POOL_MONITOR}
 
-Create TCP DNS Round-Robin IPv6 Test Pool
-    [Documentation]    Creates the pool object for the back-end pool members
-    set log level    trace
-    Create an LTM Pool    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    name=${TCP_ROUND_ROBIN_IPV6_POOL_NAME}    monitor=${TCP_ROUND_ROBIN_IPV6_POOL_MONITOR}
-    Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    Create an LTM Pool    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    name=${TCP_ROUND_ROBIN_IPV6_POOL_NAME}    monitor=${TCP_ROUND_ROBIN_IPV6_POOL_MONITOR}
-
-Verify TCP DNS Round-Robin IPv6 Test Pool
-    [Documentation]    Verifies the existence and configuration of the pool object
-    set log level    trace
-    Verify an LTM Pool    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    name=${TCP_ROUND_ROBIN_IPV6_POOL_NAME}    monitor=${TCP_ROUND_ROBIN_IPV6_POOL_MONITOR}
-    Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    Verify an LTM Pool    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    name=${TCP_ROUND_ROBIN_IPV6_POOL_NAME}    monitor=${TCP_ROUND_ROBIN_IPV6_POOL_MONITOR}
-
 Add the TCP DNS Round-Robin Test Nodes to Pool
     [Documentation]    Populates the pool object with the pool members (also referred to as nodes or back-end servers)
     set log level    trace
@@ -84,26 +70,6 @@ Add the TCP DNS Round-Robin Test Nodes to Pool
        Verify an LTM Pool Member    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    pool_name=${TCP_ROUND_ROBIN_POOL_NAME}    pool_member_name=${pool_member_name}    port=${pool_member_port}    address=${pool_member_address}
     END
 
-Add the TCP DNS Round-Robin IPv6 Test Nodes to Pool
-    [Documentation]    Populates the pool object with the pool members (also referred to as nodes or back-end servers)
-    set log level    trace
-    ${TCP_ROUND_ROBIN_IPV6_POOL_MEMBERS}    to json    ${TCP_ROUND_ROBIN_IPV6_POOL_MEMBERS}
-    FOR    ${current_pool_member}    IN    @{TCP_ROUND_ROBIN_IPV6_POOL_MEMBERS}
-       ${pool_member_name}    Get From Dictionary    ${current_pool_member}    address
-       ${pool_member_address}    Get From Dictionary    ${current_pool_member}    address
-       ${pool_member_port}    Get From Dictionary    ${current_pool_member}    port
-       Add an LTM IPv6 Pool Member to a Pool    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    pool_name=${TCP_ROUND_ROBIN_IPV6_POOL_NAME}    pool_member_name=${pool_member_name}    port=${pool_member_port}    address=${pool_member_address}
-       Verify an LTM IPv6 Pool Member    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    pool_name=${TCP_ROUND_ROBIN_IPV6_POOL_NAME}    pool_member_name=${pool_member_name}    port=${pool_member_port}    address=${pool_member_address}
-    END
-    Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    FOR    ${current_pool_member}    IN    @{TCP_ROUND_ROBIN_IPV6_POOL_MEMBERS}
-       ${pool_member_name}    Get From Dictionary    ${current_pool_member}    address
-       ${pool_member_address}    Get From Dictionary    ${current_pool_member}    address
-       ${pool_member_port}    Get From Dictionary    ${current_pool_member}    port
-       Add an LTM IPv6 Pool Member to a Pool    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    pool_name=${TCP_ROUND_ROBIN_IPV6_POOL_NAME}    pool_member_name=${pool_member_name}    port=${pool_member_port}    address=${pool_member_address}
-       Verify an LTM IPv6 Pool Member    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    pool_name=${TCP_ROUND_ROBIN_IPV6_POOL_NAME}    pool_member_name=${pool_member_name}    port=${pool_member_port}    address=${pool_member_address}
-    END
-
 Create TCP DNS Round-Robin Virtual Server
     [Documentation]    Creates a virtual server object that listens for traffic and forwards to the appropriate pool/next-hop
     set log level    trace
@@ -118,33 +84,12 @@ Verify TCP DNS Round-Robin Virtual Server
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
     Verify an LTM FastL4 Virtual Server    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    name=${TCP_ROUND_ROBIN_VIP_NAME}   destination=${TCP_ROUND_ROBIN_VIP_ADDRESS}:${TCP_ROUND_ROBIN_VIP_PORT}  pool=${TCP_ROUND_ROBIN_POOL_NAME}   ipProtocol=${TCP_ROUND_ROBIN_VIP_PROTOCOL}    mask=${TCP_ROUND_ROBIN_VIP_MASK}    sourceAddressTranslation_type=${TCP_ROUND_ROBIN_VIP_SNAT_TYPE}    sourceAddressTranslation_pool=none    translateAddress=enabled    translatePort=enabled
 
-Create TCP DNS Round-Robin IPv6 Virtual Server
-    [Documentation]    Creates a virtual server object that listens for traffic and forwards to the appropriate pool/next-hop
-    set log level    trace
-    Create an LTM FastL4 IPv6 Virtual Server    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    name=${TCP_ROUND_ROBIN_IPV6_VIP_NAME}   destination=${TCP_ROUND_ROBIN_IPV6_VIP_ADDRESS}.${TCP_ROUND_ROBIN_IPV6_VIP_PORT}  pool=${TCP_ROUND_ROBIN_IPV6_POOL_NAME}   ipProtocol=${TCP_ROUND_ROBIN_IPV6_VIP_PROTOCOL}    mask=${TCP_ROUND_ROBIN_IPV6_VIP_MASK}    sourceAddressTranslation_type=${TCP_ROUND_ROBIN_VIP_SNAT_TYPE}    sourceAddressTranslation_pool=none    translateAddress=enabled    translatePort=enabled
-    Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    Create an LTM FastL4 IPv6 Virtual Server    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    name=${TCP_ROUND_ROBIN_IPV6_VIP_NAME}   destination=${TCP_ROUND_ROBIN_IPV6_VIP_ADDRESS}.${TCP_ROUND_ROBIN_IPV6_VIP_PORT}  pool=${TCP_ROUND_ROBIN_IPV6_POOL_NAME}   ipProtocol=${TCP_ROUND_ROBIN_IPV6_VIP_PROTOCOL}    mask=${TCP_ROUND_ROBIN_IPV6_VIP_MASK}    sourceAddressTranslation_type=${TCP_ROUND_ROBIN_VIP_SNAT_TYPE}    sourceAddressTranslation_pool=none    translateAddress=enabled    translatePort=enabled
-
-Verify TCP DNS Round-Robin IPv6 Virtual Server
-    [Documentation]    Verifies the existence and configuration of a virtual server
-    set log level    trace
-    Verify an LTM FastL4 IPv6 Virtual Server    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    name=${TCP_ROUND_ROBIN_IPV6_VIP_NAME}   destination=${TCP_ROUND_ROBIN_IPV6_VIP_ADDRESS}.${TCP_ROUND_ROBIN_IPV6_VIP_PORT}  pool=${TCP_ROUND_ROBIN_IPV6_POOL_NAME}   ipProtocol=${TCP_ROUND_ROBIN_IPV6_VIP_PROTOCOL}    mask=${TCP_ROUND_ROBIN_IPV6_VIP_MASK}    sourceAddressTranslation_type=${TCP_ROUND_ROBIN_VIP_SNAT_TYPE}    sourceAddressTranslation_pool=none    translateAddress=enabled    translatePort=enabled
-    Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    Verify an LTM FastL4 IPv6 Virtual Server    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    name=${TCP_ROUND_ROBIN_IPV6_VIP_NAME}   destination=${TCP_ROUND_ROBIN_IPV6_VIP_ADDRESS}.${TCP_ROUND_ROBIN_IPV6_VIP_PORT}  pool=${TCP_ROUND_ROBIN_IPV6_POOL_NAME}   ipProtocol=${TCP_ROUND_ROBIN_IPV6_VIP_PROTOCOL}    mask=${TCP_ROUND_ROBIN_IPV6_VIP_MASK}    sourceAddressTranslation_type=${TCP_ROUND_ROBIN_VIP_SNAT_TYPE}    sourceAddressTranslation_pool=none    translateAddress=enabled    translatePort=enabled
-
 Set the VIP to advertise itself
     [Documentation]    Configures the virtual address (listening address/destination address) to be announced via BGP
     set log level    trace
     Configure Route Health Injection on a Virtual Address    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    address=${TCP_ROUND_ROBIN_VIP_ADDRESS}    route-advertisement=always 
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'    
     Configure Route Health Injection on a Virtual Address    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    address=${TCP_ROUND_ROBIN_VIP_ADDRESS}    route-advertisement=always
-
-Set the IPv6 VIP to advertise itself
-    [Documentation]    Configures the virtual address (listening address/destination address) to be announced via BGP
-    set log level    trace
-    Configure Route Health Injection on a Virtual Address    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    address=${TCP_ROUND_ROBIN_IPV6_VIP_ADDRESS}    route-advertisement=always 
-    Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'    
-    Configure Route Health Injection on a Virtual Address    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    address=${TCP_ROUND_ROBIN_IPV6_VIP_ADDRESS}    route-advertisement=always
 
 Force a Configuration Sync
     [Documentation]    Forces the BIG-IPs to resynchronize the shared configuration items via config-sync (part of HA)
