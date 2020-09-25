@@ -312,6 +312,19 @@ Reboot a BIG-IP
     [Return]    ${reboot_command_response}
 
 ##############
+## auth user
+##############
+
+Change a User's Default Shell
+    [Documentation]    Sets the default shell (tmsh/bash) for a BIG-IP user
+    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${username}    ${shell}
+    ${api_uri}    set variable    /mgmt/tm/auth/user/${username}
+    ${api_payload}    Create Dictionary    shell    ${shell}
+    ${api_response}    BIG-IP iControl BasicAuth PUT  bigip_host=${bigip_host}  bigip_username=${bigip_username}  bigip_password=${bigip_password}  api_uri=${api_uri}  api_payload=${api_payload}
+    Should Be Equal As Strings    ${api_response.status_code}    200
+    [Return]    ${api_response}
+
+##############
 ## cm device
 ##############
 
