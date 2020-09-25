@@ -442,6 +442,44 @@ Retrieve CM Active Modules
     ${cm_active_modules}    Get From Dictionary    ${cm_self_device}    activeModules
     [Return]    ${cm_active_modules}
 
+Move CM Device to New Hostname
+    [Documentation]    Renames the local cm device (https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/bigip-system-device-service-clustering-administration-13-1-0/5.html))
+    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${current_name}    ${target}
+    ${api_uri}    Set Variable    /mgmt/tm/cm/device
+    ${api_payload}    Create Dictionary    command    mv    name    ${current_name}    target    ${target}
+    ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
+    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    [Return]    ${api_response}
+
+Configure CM Device Unicast Address
+    [Documentation]    Configures the IP address used to contact the peer for initial certificate based auth configuration (https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/bigip-system-device-service-clustering-administration-13-1-0/5.html))
+    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${device_name}    ${unicast_address}
+    ${api_uri}    Set Variable    /mgmt/tm/cm/device/~Common~${device_name}
+    ${unicast_address_dict}    Create Dictionary    ip    ${unicast_address}
+    ${unicast_address_list}    Create List    ${unicast_address_dict}
+    ${api_payload}    Create Dictionary    unicast-address    ${unicast_address_list}
+    ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
+    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    [Return]    ${api_response}
+
+Configure CM Device Mirror IP
+    [Documentation]    Defines the IP address used for mirroring connections between a stateful device pair (https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/bigip-system-device-service-clustering-administration-13-1-0/5.html))
+    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${device_name}    ${mirror_ip}
+    ${api_uri}    Set Variable    /mgmt/tm/cm/device/~Common~${device_name}
+    ${api_payload}    Create Dictionary    mirrorIp    ${mirror_ip}
+    ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
+    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    [Return]    ${api_response}
+    
+Configure CM Device Configsync IP
+    [Documentation]    Configures the IP address used for configuration replication between pairs in a config-sync group (https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/bigip-system-device-service-clustering-administration-13-1-0/5.html))
+    [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${device_name}    ${configsync_ip}
+    ${api_uri}    Set Variable    /mgmt/tm/cm/device/~Common~${device_name}
+    ${api_payload}    Create Dictionary    configsyncIp    ${configsync_ip}
+    ${api_response}    BIG-IP iControl BasicAuth PATCH    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
+    Should Be Equal As Strings    ${api_response.status_code}    ${HTTP_RESPONSE_OK}
+    [Return]    ${api_response}
+
 ####################
 ## cm device-trust
 ####################
