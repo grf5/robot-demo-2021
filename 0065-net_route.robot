@@ -41,19 +41,13 @@ Display Static Route Configuration on the BIG-IP
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
     Display BIG-IP Static Route Configuration   bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
 
-Ping the Gateway for Each Static IPv4 Route
+Ping the Gateway for Each Default IPv4 Route
     [Documentation]    Pings the next-hop for each static route to ensure its reachable
     set log level    trace
-    ${STATIC_ROUTES_LIST}    To Json    ${PRIMARY_STATIC_ROUTE_LIST}
-    FOR    ${current_static_route}    IN    @{STATIC_ROUTES_LIST}
-        ${route_name}    get from dictionary    ${current_static_route}    name
-        ${route_gateway}    get from dictionary    ${current_static_route}    gw
-        wait until keyword succeeds    6x    10 seconds    Ping Host from BIG-IP    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    host=${route_gateway}
-    END
+    ${default_route}    To Json    ${PRIMARY_STATIC_DEFAULT_ROUTE}
+    ${default_gateway}    get from dictionary    ${default_route}    gw
+    wait until keyword succeeds    6x    10 seconds    Ping Host from BIG-IP    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    host=${default_route}
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    ${STATIC_ROUTES_LIST}    To Json    ${SECONDARY_STATIC_ROUTE_LIST}
-    FOR    ${current_static_route}    IN    @{STATIC_ROUTES_LIST}
-        ${route_name}    get from dictionary    ${current_static_route}    name
-        ${route_gateway}    get from dictionary    ${current_static_route}    gw
-        wait until keyword succeeds    6x    10 seconds    Ping Host from BIG-IP    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    host=${route_gateway}
-    END
+    ${default_route}    To Json    ${SECONDARY_STATIC_DEFAULT_ROUTE}
+    ${default_gateway}    get from dictionary    ${default_route}    gw
+    wait until keyword succeeds    6x    10 seconds    Ping Host from BIG-IP    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    host=${default_route}
