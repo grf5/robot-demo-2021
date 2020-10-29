@@ -2,3 +2,4 @@ venv/**
 reports/**
 /*.html
 /*.xml
+.DS_Store

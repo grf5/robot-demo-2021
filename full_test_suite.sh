@@ -8,11 +8,11 @@ export ROBOT_HOST_IP=`hostname -I`
 export ROBOT_HOST_IP="$(echo -e "${ROBOT_HOST_IP}" | tr -d '[:space:]')"
 
 # BIG-IP Devices
-export PRIMARY_HOSTNAME='ip-10-1-1-5.us-west-2.compute.internal'
-export PRIMARY_MGMT_IP='10.1.1.5'
-export SECONDARY_HOSTNAME='ip-10-1-1-6.us-west-2.compute.internal'
-export SECONDARY_MGMT_IP='10.1.1.6'
-export MGMT_NETWORK_GATEWAY='10.1.1.1'
+export PRIMARY_HOSTNAME='host-10-144-20-32.openstacklocal'
+export PRIMARY_MGMT_IP='10.144.20.32'
+export SECONDARY_HOSTNAME='host-10-144-20-25.openstacklocal'
+export SECONDARY_MGMT_IP='10.144.20.25'
+export MGMT_NETWORK_GATEWAY='10.144.31.254'
 
 # Device Credentials
 export PRIMARY_SSH_USERNAME='admin'
@@ -29,9 +29,9 @@ export PRIMARY_BASE_UCS_FILENAME='/var/local/ucs/firstboot_licensed.ucs'
 export SECONDARY_BASE_UCS_FILENAME='/var/local/ucs/firstboot_licensed.ucs'
 
 # cm device-group
-export PRIMARY_HA_IP_ADDRESS='10.1.20.5'
-export SECONDARY_HA_IP_ADDRESS='10.1.20.6'
-export DSC_GROUP_NAME='ROBOT_FRAMEWORK_TESTING'
+export PRIMARY_HA_IP_ADDRESS='10.10.40.11'
+export SECONDARY_HA_IP_ADDRESS='10.10.40.31'
+export DSC_GROUP_NAME='robot_framework_failover_group'
 
 # ltm virtual - tcp round robin
 export TCP_ROUND_ROBIN_VIP_NAME='tcp_round_robin_vs'
@@ -57,7 +57,7 @@ export UDP_ROUND_ROBIN_POOL_MEMBERS='[{"address":"198.19.208.21","port":"53"},{"
 export UDP_ROUND_ROBIN_POOL_MONITOR='/Common/gateway_icmp'
 
 # sys ntp
-export NTP_SERVER_LIST='["52.0.56.137","45.63.54.13"]'
+export NTP_SERVER_LIST='["0.pool.ntp.org","1.pool.ntp.org"]'
 
 # sys provision
 export MODULE_PROVISIONING='[{"module":"ltm","provisioningLevel":"nominal"},{"module":"cgnat","provisioningLevel":"nominal"}]'
@@ -90,8 +90,8 @@ export SNMPV3_TIMEOUT='5'
 export SNMPV3_RETRIES='12'
 
 # net interface
-export PRIMARY_INTERFACE_DETAILS='[{"name":"1.1","description":"Configured by Robot Framework","lldpAdmin":"txrx"},{"name":"1.2","description":"Configured by Robot Framework","lldpAdmin":"txrx"}]'
-export SECONDARY_INTERFACE_DETAILS='[{"name":"1.1","description":"Configured by Robot Framework","lldpAdmin":"txrx"},{"name":"1.2","description":"Configured by Robot Framework","lldpAdmin":"txrx"}]'
+export PRIMARY_INTERFACE_DETAILS='[{"name":"1.1","description":"Configured by Robot Framework","lldpAdmin":"txrx"},{"name":"1.2","description":"Configured by Robot Framework","lldpAdmin":"txrx"},{"name":"1.3","description":"Configured by Robot Framework","lldpAdmin":"txrx"}]'
+export SECONDARY_INTERFACE_DETAILS='[{"name":"1.1","description":"Configured by Robot Framework","lldpAdmin":"txrx"},{"name":"1.2","description":"Configured by Robot Framework","lldpAdmin":"txrx"},{"name":"1.3","description":"Configured by Robot Framework","lldpAdmin":"txrx"}]'
 
 # net self
 export PRIMARY_LOCAL_SELF_IP_LIST='[{"name":"public-ipv4-self-local","address":"10.1.10.5/24","partition":"Common","vlan":"public","allow-service":"all"},{"name":"private-ipv4-self-local","address":"10.1.20.5/24","partition":"Common","vlan":"private","allow-service":"all"}]'
@@ -104,14 +104,18 @@ export PRIMARY_STATIC_DEFAULT_ROUTE='{"gw":"10.1.10.1","description":"Configured
 export SECONDARY_STATIC_DEFAULT_ROUTE='{"gw":"10.1.10.1","description":"Configured by ROBOT FRAMEWORK","partition":"Common"}'
 
 # net vlan
-export OUTSIDE_VLAN_NAME='public'
+export OUTSIDE_VLAN_NAME='private'
 export OUTSIDE_VLAN_TAG='4093'
 export OUTSIDE_VLAN_TAGGED='False'
 export OUTSIDE_INTERFACE_NAME='1.1'
-export INSIDE_VLAN_NAME='private'
+export INSIDE_VLAN_NAME='public'
 export INSIDE_VLAN_TAG='4092'
 export INSIDE_VLAN_TAGGED='False'
 export INSIDE_INTERFACE_NAME='1.2'
+export HA_VLAN_NAME='ha_mirroring'
+export HA_VLAN_TAG='4091'
+export HA_VLAN_TAGGED='False'
+export HA_INTERFACE_NAME='1.3'
 
 # Delete existing reports
 rm -f ./reports/*.html
