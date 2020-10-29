@@ -34,33 +34,33 @@ export SECONDARY_HA_IP_ADDRESS='10.10.40.31'
 export DSC_GROUP_NAME='robot_framework_failover_group'
 
 # ltm virtual - tcp round robin
-export TCP_ROUND_ROBIN_VIP_NAME='tcp_round_robin_vs'
-export TCP_ROUND_ROBIN_VIP_ADDRESS='198.19.160.5'
-export TCP_ROUND_ROBIN_VIP_MASK='255.255.255.255'
-export TCP_ROUND_ROBIN_VIP_PORT='80'
-export TCP_ROUND_ROBIN_VIP_PROTOCOL='tcp'
-export TCP_ROUND_ROBIN_VIP_SNAT_TYPE='automap'
-export TCP_ROUND_ROBIN_POOL_NAME='tcp_round_robin_pool'
-export TCP_ROUND_ROBIN_POOL_MEMBERS='[{"address":"198.19.208.21","port":"80"},{"address":"198.19.208.22","port":"80"},{"address":"198.19.208.23","port":"80"},{"address":"198.19.208.24","port":"80"},{"address":"198.19.208.25","port":"80"},{"address":"198.19.208.26","port":"80"},{"address":"198.19.208.27","port":"80"},{"address":"198.19.208.28","port":"80"},{"address":"198.19.208.29","port":"80"},{"address":"198.19.208.30","port":"80"}]'
-export TCP_ROUND_ROBIN_POOL_MONITOR='/Common/gateway_icmp'
+# export TCP_ROUND_ROBIN_VIP_NAME='tcp_round_robin_vs'
+# export TCP_ROUND_ROBIN_VIP_ADDRESS='198.19.160.5'
+# export TCP_ROUND_ROBIN_VIP_MASK='255.255.255.255'
+# export TCP_ROUND_ROBIN_VIP_PORT='80'
+# export TCP_ROUND_ROBIN_VIP_PROTOCOL='tcp'
+# export TCP_ROUND_ROBIN_VIP_SNAT_TYPE='automap'
+# export TCP_ROUND_ROBIN_POOL_NAME='tcp_round_robin_pool'
+# export TCP_ROUND_ROBIN_POOL_MEMBERS='[{"address":"198.19.208.21","port":"80"},{"address":"198.19.208.22","port":"80"},{"address":"198.19.208.23","port":"80"},{"address":"198.19.208.24","port":"80"},{"address":"198.19.208.25","port":"80"},{"address":"198.19.208.26","port":"80"},{"address":"198.19.208.27","port":"80"},{"address":"198.19.208.28","port":"80"},{"address":"198.19.208.29","port":"80"},{"address":"198.19.208.30","port":"80"}]'
+# export TCP_ROUND_ROBIN_POOL_MONITOR='/Common/gateway_icmp'
 
 # ltm virtual - udp round robin
-export UDP_ROUND_ROBIN_VIP_NAME='udp_dns_round_robin_vs'
-export UDP_ROUND_ROBIN_VIP_PARTITION='Common'
-export UDP_ROUND_ROBIN_VIP_ADDRESS='198.19.160.2'
-export UDP_ROUND_ROBIN_VIP_MASK='255.255.255.255'
-export UDP_ROUND_ROBIN_VIP_PORT='53'
-export UDP_ROUND_ROBIN_VIP_PROTOCOL='udp'
-export UDP_ROUND_ROBIN_VIP_SNAT_TYPE='automap'
-export UDP_ROUND_ROBIN_POOL_NAME='udp_dns_round_robin_pool'
-export UDP_ROUND_ROBIN_POOL_MEMBERS='[{"address":"198.19.208.21","port":"53"},{"address":"198.19.208.22","port":"53"},{"address":"198.19.208.23","port":"53"},{"address":"198.19.208.24","port":"53"},{"address":"198.19.208.25","port":"53"},{"address":"198.19.208.26","port":"53"},{"address":"198.19.208.27","port":"53"},{"address":"198.19.208.28","port":"53"},{"address":"198.19.208.29","port":"53"},{"address":"198.19.208.30","port":"53"}]'
-export UDP_ROUND_ROBIN_POOL_MONITOR='/Common/gateway_icmp'
+# export UDP_ROUND_ROBIN_VIP_NAME='udp_dns_round_robin_vs'
+# export UDP_ROUND_ROBIN_VIP_PARTITION='Common'
+# export UDP_ROUND_ROBIN_VIP_ADDRESS='198.19.160.2'
+# export UDP_ROUND_ROBIN_VIP_MASK='255.255.255.255'
+# export UDP_ROUND_ROBIN_VIP_PORT='53'
+# export UDP_ROUND_ROBIN_VIP_PROTOCOL='udp'
+# export UDP_ROUND_ROBIN_VIP_SNAT_TYPE='automap'
+# export UDP_ROUND_ROBIN_POOL_NAME='udp_dns_round_robin_pool'
+# export UDP_ROUND_ROBIN_POOL_MEMBERS='[{"address":"198.19.208.21","port":"53"},{"address":"198.19.208.22","port":"53"},{"address":"198.19.208.23","port":"53"},{"address":"198.19.208.24","port":"53"},{"address":"198.19.208.25","port":"53"},{"address":"198.19.208.26","port":"53"},{"address":"198.19.208.27","port":"53"},{"address":"198.19.208.28","port":"53"},{"address":"198.19.208.29","port":"53"},{"address":"198.19.208.30","port":"53"}]'
+# export UDP_ROUND_ROBIN_POOL_MONITOR='/Common/gateway_icmp'
 
 # sys ntp
 export NTP_SERVER_LIST='["0.pool.ntp.org","1.pool.ntp.org"]'
 
 # sys provision
-export MODULE_PROVISIONING='[{"module":"ltm","provisioningLevel":"nominal"},{"module":"cgnat","provisioningLevel":"nominal"}]'
+export MODULE_PROVISIONING='[{"module":"ltm","provisioningLevel":"nominal"},{"module":"afm","provisioningLevel":"nominal"}]'
 
 # sys snmp
 export SNMPv2_TRAP_HOST='{"v2Traps":[{"name":"ROBOT_FRAMEWORK_HOST","host":"$ROBOT_HOST_IP","community":"robot"}]}'
@@ -94,14 +94,14 @@ export PRIMARY_INTERFACE_DETAILS='[{"name":"1.1","description":"Configured by Ro
 export SECONDARY_INTERFACE_DETAILS='[{"name":"1.1","description":"Configured by Robot Framework","lldpAdmin":"txrx"},{"name":"1.2","description":"Configured by Robot Framework","lldpAdmin":"txrx"},{"name":"1.3","description":"Configured by Robot Framework","lldpAdmin":"txrx"}]'
 
 # net self
-export PRIMARY_LOCAL_SELF_IP_LIST='[{"name":"public-ipv4-self-local","address":"10.1.10.5/24","partition":"Common","vlan":"public","allow-service":"all"},{"name":"private-ipv4-self-local","address":"10.1.20.5/24","partition":"Common","vlan":"private","allow-service":"all"}]'
-export PRIMARY_FLOATING_SELF_IP_LIST='[{"name":"public-ipv4-self-floating","address":"10.1.10.200/24","partition":"Common","vlan":"public","allow-service":"all"},{"name":"private-ipv4-self-floating","address":"10.1.20.200/24","partition":"Common","vlan":"private","allow-service":"all"}]'
-export SECONDARY_LOCAL_SELF_IP_LIST='[{"name":"public-ipv4-self-local","address":"10.1.10.6/24","partition":"Common","vlan":"public","allow-service":"all"},{"name":"private-ipv4-self-local","address":"10.1.20.6/24","partition":"Common","vlan":"private","allow-service":"all"}]'
-export SECONDARY_FLOATING_SELF_IP_LIST='[{"name":"public-ipv4-self-floating","address":"10.1.10.200/24","partition":"Common","vlan":"public","allow-service":"all"},{"name":"private-ipv4-self-floating","address":"10.1.20.200/24","partition":"Common","vlan":"private","allow-service":"all"}]'
+export PRIMARY_LOCAL_SELF_IP_LIST='[{"name":"public-ipv4-self-local","address":"10.20.0.248/24","partition":"Common","vlan":"public","allow-service":"all"},{"name":"private-ipv4-self-local","address":"10.10.30.247/24","partition":"Common","vlan":"private","allow-service":"all"}]'
+#export PRIMARY_FLOATING_SELF_IP_LIST='[{"name":"public-ipv4-self-floating","address":"10.1.10.200/24","partition":"Common","vlan":"public","allow-service":"all"},{"name":"private-ipv4-self-floating","address":"10.1.20.200/24","partition":"Common","vlan":"private","allow-service":"all"}]'
+export SECONDARY_LOCAL_SELF_IP_LIST='[{"name":"public-ipv4-self-local","address":"10.20.0.246/24","partition":"Common","vlan":"public","allow-service":"all"},{"name":"private-ipv4-self-local","address":"10.10.30.248/24","partition":"Common","vlan":"private","allow-service":"all"}]'
+#export SECONDARY_FLOATING_SELF_IP_LIST='[{"name":"public-ipv4-self-floating","address":"10.1.10.200/24","partition":"Common","vlan":"public","allow-service":"all"},{"name":"private-ipv4-self-floating","address":"10.1.20.200/24","partition":"Common","vlan":"private","allow-service":"all"}]'
 
 # net route
-export PRIMARY_STATIC_DEFAULT_ROUTE='{"gw":"10.1.10.1","description":"Configured by ROBOT FRAMEWORK","partition":"Common"}'
-export SECONDARY_STATIC_DEFAULT_ROUTE='{"gw":"10.1.10.1","description":"Configured by ROBOT FRAMEWORK","partition":"Common"}'
+export PRIMARY_STATIC_DEFAULT_ROUTE='{"gw":"10.20.0.1","description":"Configured by ROBOT FRAMEWORK","partition":"Common"}'
+export SECONDARY_STATIC_DEFAULT_ROUTE='{"gw":"10.20.0.1","description":"Configured by ROBOT FRAMEWORK","partition":"Common"}'
 
 # net vlan
 export OUTSIDE_VLAN_NAME='private'
