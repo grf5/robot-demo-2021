@@ -57,7 +57,7 @@ export UDP_ROUND_ROBIN_POOL_MEMBERS='[{"address":"198.19.208.21","port":"53"},{"
 export UDP_ROUND_ROBIN_POOL_MONITOR='/Common/gateway_icmp'
 
 # sys ntp
-export NTP_SERVER_LIST='["0.pool.ntp.org","1.pool.ntp.org"]'
+export NTP_SERVER_LIST='["132.163.96.1","132.163.96.2"]'
 
 # sys provision
 export MODULE_PROVISIONING='[{"module":"ltm","provisioningLevel":"nominal"},{"module":"afm","provisioningLevel":"nominal"}]'
