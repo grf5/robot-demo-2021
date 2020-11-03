@@ -23,6 +23,10 @@ ${INSIDE_VLAN_NAME}                     %{INSIDE_VLAN_NAME}
 ${INSIDE_VLAN_TAG}                      %{INSIDE_VLAN_TAG}
 ${INSIDE_VLAN_TAGGED}                   %{INSIDE_VLAN_TAGGED}
 ${INSIDE_INTERFACE_NAME}                %{INSIDE_INTERFACE_NAME}
+${HA_VLAN_NAME}                         %{HA_VLAN_NAME}
+${HA_VLAN_TAG}                          %{HA_VLAN_TAG}
+${HA_VLAN_TAGGED}                       %{HA_VLAN_TAGGED}
+${HA_INTERFACE_NAME}                    %{HA_INTERFACE_NAME}
 
 *** Test Cases ***
 Perform BIG-IP Quick Check
