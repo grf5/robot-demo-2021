@@ -127,7 +127,8 @@ printf "####################################\n"
 start_time=`date`
 
 # Execute tests in order via this array
-tests=('000a-reset_environment' '0010-basic_connectivity' '0015-auth' '0019-sys_provision' '0020-sys_global_settings' '0025-sys_snmp' '0030-ntp' '0040-net_interface' '0050-net_vlan' '0060-net_self' '0065-net_route' '0070-cm_clustering' '0080-ltm_tcp_round_robin' '0090-ltm_udp_round_robin')
+#tests=('000a-reset_environment' '0010-basic_connectivity' '0015-auth' '0019-sys_provision' '0020-sys_global_settings' '0025-sys_snmp' '0030-ntp' '0040-net_interface' '0050-net_vlan' '0060-net_self' '0065-net_route' '0070-cm_clustering' '0080-ltm_tcp_round_robin' '0090-ltm_udp_round_robin')
+tests=('0010-basic_connectivity')
 
 # Cycle through list of tests and create a per-test report in /reports
 for current_test in "${tests[@]}"
