@@ -60,6 +60,6 @@ Verify NTP Configuration
 Verify NTP Operation
     [Documentation]    Verifies NTP associations on all configured NTP servers
     set log level    trace
-    Wait until Keyword Succeeds    6x    10 seconds    Verify NTP Server Associations    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}
+    Wait until Keyword Succeeds    12x    10 seconds    Verify NTP Server Associations    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    Wait until Keyword Succeeds    6x    10 seconds    Verify NTP Server Associations    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
+    Wait until Keyword Succeeds    12x    10 seconds    Verify NTP Server Associations    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
