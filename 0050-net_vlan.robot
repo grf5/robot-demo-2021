@@ -59,6 +59,15 @@ Create the Outside VLAN on the BIG-IP
     Create A Vlan on the BIG-IP    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    vlan_name=${OUTSIDE_VLAN_NAME}    vlan_tag=${${OUTSIDE_VLAN_TAG}}
     Verify dot1q Tag on BIG-IP VLAN    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    vlan_name=${OUTSIDE_VLAN_NAME}    vlan_tag=${${OUTSIDE_VLAN_TAG}}
 
+Create the HA VLAN on the BIG-IP
+    [Documentation]    Creates the uplink/outside VLAN on the BIG-IP
+    set log level    trace
+    Create A Vlan on the BIG-IP    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    vlan_name=${HA_VLAN_NAME}    vlan_tag=${${HA_VLAN_TAG}}
+    Verify dot1q Tag on BIG-IP VLAN    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    vlan_name=${HA_VLAN_NAME}    vlan_tag=${${HA_VLAN_TAG}}
+    Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
+    Create A Vlan on the BIG-IP    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    vlan_name=${HA_VLAN_NAME}    vlan_tag=${${HA_VLAN_TAG}}
+    Verify dot1q Tag on BIG-IP VLAN    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    vlan_name=${HA_VLAN_NAME}    vlan_tag=${${HA_VLAN_TAG}}
+
 Map the Outside VLAN to the Outside Interface
     [Documentation]    Maps the outside/uplink VLAN to the logical interface
     set log level    trace
