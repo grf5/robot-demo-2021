@@ -16,13 +16,13 @@ export MGMT_NETWORK_GATEWAY='10.144.31.254'
 
 # Device Credentials
 export PRIMARY_SSH_USERNAME='admin'
-export PRIMARY_SSH_PASSWORD='admin'
+export PRIMARY_SSH_PASSWORD='f5r0b0t!'
 export PRIMARY_HTTP_USERNAME='admin'
-export PRIMARY_HTTP_PASSWORD='admin'
+export PRIMARY_HTTP_PASSWORD='f5r0b0t!'
 export SECONDARY_SSH_USERNAME='admin'
-export SECONDARY_SSH_PASSWORD='admin'
+export SECONDARY_SSH_PASSWORD='f5r0b0t!'
 export SECONDARY_HTTP_USERNAME='admin'
-export SECONDARY_HTTP_PASSWORD='admin'
+export SECONDARY_HTTP_PASSWORD='f5r0b0t!'
 
 # Base provisioning UCS (reset to this before test)
 export PRIMARY_BASE_UCS_FILENAME='/var/local/ucs/firstboot_licensed.ucs'
