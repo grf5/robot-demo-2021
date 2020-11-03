@@ -132,7 +132,7 @@ tests=('000a-reset_environment' '0010-basic_connectivity' '0011-disable_gui_wiza
 # Cycle through list of tests and create a per-test report in /reports
 for current_test in "${tests[@]}"
 do 
-    robot --noncritical non_critical --outputdir ./reports -o $current_test.xml -l $current_test.log.html -r $current_test.report.html ./$current_test.robot
+    robot --noncritical non_critical --consolewidth 156 --outputdir ./reports -o $current_test.xml -l $current_test.log.html -r $current_test.report.html ./$current_test.robot
 done
 
 printf "#########################################################\n"
