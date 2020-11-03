@@ -94,9 +94,9 @@ export PRIMARY_INTERFACE_DETAILS='[{"name":"1.1","description":"Configured by Ro
 export SECONDARY_INTERFACE_DETAILS='[{"name":"1.1","description":"Configured by Robot Framework","lldpAdmin":"txrx"},{"name":"1.2","description":"Configured by Robot Framework","lldpAdmin":"txrx"},{"name":"1.3","description":"Configured by Robot Framework","lldpAdmin":"txrx"}]'
 
 # net self
-export PRIMARY_LOCAL_SELF_IP_LIST='[{"name":"public-ipv4-self-local","address":"10.20.0.248/24","partition":"Common","vlan":"public","allow-service":"all"},{"name":"private-ipv4-self-local","address":"10.10.30.247/24","partition":"Common","vlan":"private","allow-service":"all"}]'
+export PRIMARY_LOCAL_SELF_IP_LIST='[{"name":"public-ipv4-self-local","address":"10.20.0.248/24","partition":"Common","vlan":"public","allow-service":"all"},{"name":"private-ipv4-self-local","address":"10.10.30.247/24","partition":"Common","vlan":"private","allow-service":"all"},{"name":"ha-ipv4-self-local","address":"10.10.40.11/24","partition":"Common","vlan":"ha","allow-service":"all"}]'
 #export PRIMARY_FLOATING_SELF_IP_LIST='[{"name":"public-ipv4-self-floating","address":"10.1.10.200/24","partition":"Common","vlan":"public","allow-service":"all"},{"name":"private-ipv4-self-floating","address":"10.1.20.200/24","partition":"Common","vlan":"private","allow-service":"all"}]'
-export SECONDARY_LOCAL_SELF_IP_LIST='[{"name":"public-ipv4-self-local","address":"10.20.0.246/24","partition":"Common","vlan":"public","allow-service":"all"},{"name":"private-ipv4-self-local","address":"10.10.30.248/24","partition":"Common","vlan":"private","allow-service":"all"}]'
+export SECONDARY_LOCAL_SELF_IP_LIST='[{"name":"public-ipv4-self-local","address":"10.20.0.246/24","partition":"Common","vlan":"public","allow-service":"all"},{"name":"private-ipv4-self-local","address":"10.10.30.248/24","partition":"Common","vlan":"private","allow-service":"all"},{"name":"ha-ipv4-self-local","address":"10.10.40.31/24","partition":"Common","vlan":"ha","allow-service":"all"}]'
 #export SECONDARY_FLOATING_SELF_IP_LIST='[{"name":"public-ipv4-self-floating","address":"10.1.10.200/24","partition":"Common","vlan":"public","allow-service":"all"},{"name":"private-ipv4-self-floating","address":"10.1.20.200/24","partition":"Common","vlan":"private","allow-service":"all"}]'
 
 # net route
