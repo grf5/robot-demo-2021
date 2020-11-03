@@ -26,6 +26,13 @@ Perform BIG-IP Quick Check
     Verify All BIG-IP Ready States    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
     Check for BIG-IP Services Waiting to Restart    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
 
+Set the 'admin' user shell to bash
+    [Documentation]    Sets the admin user's default shell from tmsh to bash
+    set log level    trace
+    Change a User's Default Shell    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    username=admin    shell=bash
+    Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
+    Change a User's Default Shell    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    username=admin    shell=bash
+
 Verify SSH Connectivity
     [Documentation]    Logs into the BIG-IP via SSH, executes a BASH command and validates the expected response
     set log level    trace
