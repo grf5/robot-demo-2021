@@ -5,6 +5,7 @@ export PYTHONWARNINGS='ignore:Unverified HTTPS request'
 
 # Set the Robot Host IP as a variable
 export ROBOT_HOST_IP=`hostname -I`
+# 
 export ROBOT_HOST_IP="$(echo -e "${ROBOT_HOST_IP}" | tr -d '[:space:]')"
 
 # BIG-IP Devices
@@ -96,7 +97,7 @@ export SECONDARY_INTERFACE_DETAILS='[{"name":"1.1","description":"Configured by 
 # net self
 export PRIMARY_LOCAL_SELF_IP_LIST='[{"name":"public-ipv4-self-local","address":"10.20.0.248/24","partition":"Common","vlan":"public","allow-service":"all"},{"name":"private-ipv4-self-local","address":"10.10.30.247/24","partition":"Common","vlan":"private","allow-service":"all"},{"name":"ha-ipv4-self-local","address":"10.10.40.11/24","partition":"Common","vlan":"ha","allow-service":"all"}]'
 #export PRIMARY_FLOATING_SELF_IP_LIST='[{"name":"public-ipv4-self-floating","address":"10.1.10.200/24","partition":"Common","vlan":"public","allow-service":"all"},{"name":"private-ipv4-self-floating","address":"10.1.20.200/24","partition":"Common","vlan":"private","allow-service":"all"}]'
-export SECONDARY_LOCAL_SELF_IP_LIST='[{"name":"public-ipv4-self-local","address":"10.20.0.246/24","partition":"Common","vlan":"public","allow-service":"all"},{"name":"private-ipv4-self-local","address":"10.10.30.248/24","partition":"Common","vlan":"private","allow-service":"all"},{"name":"ha-ipv4-self-local","address":"10.10.40.31/24","partition":"Common","vlan":"ha","allow-service":"all"}]'
+export SECONDARY_LOCAL_SELF_IP_LIST='[{"name":"public-ipv4-self-local","address":"10.20.0.246/24","partition":"Common","vlan":"public","allow-service":"all"},{"name":"private-ipv4-self-local","address":"10.10.30.248/24","partition":"Common","vlan":"private","allow-service":"all"},{"name":"ha-ipv4-self-local","address":"10.10.40.1/24","partition":"Common","vlan":"ha","allow-service":"all"}]'
 #export SECONDARY_FLOATING_SELF_IP_LIST='[{"name":"public-ipv4-self-floating","address":"10.1.10.200/24","partition":"Common","vlan":"public","allow-service":"all"},{"name":"private-ipv4-self-floating","address":"10.1.20.200/24","partition":"Common","vlan":"private","allow-service":"all"}]'
 
 # net route
