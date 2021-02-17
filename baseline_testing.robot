@@ -673,9 +673,9 @@ Perform BIG-IP Quick Check before GTM Configuration
 Verify GTM Service is Provisioned
     [Documentation]    Verifies that the Global Traffic Manager (GTM) software is provisioned on the BIG-IPs
     set log level    trace
-    Wait until Keyword Succeeds    6x    10 seconds    Verify Module is Provisioned    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    module=GTM
+    Wait until Keyword Succeeds    6x    10 seconds    Verify Module is Provisioned    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    module=gtm
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    Wait until Keyword Succeeds    6x    10 seconds    Verify Module is Provisioned    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    module=GTM
+    Wait until Keyword Succeeds    6x    10 seconds    Verify Module is Provisioned    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    module=gtm
 
 GSLB - SSL and iQuery
   [Documentation]  Change SSL certificates, validate iquery sessions is established
