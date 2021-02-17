@@ -607,68 +607,6 @@ Verify BGP Advertised IPv6 Routes
         list should contain sub list    ${primary_ipv6_advertised_routes}    ${expected_ipv6_advertised_routes}
     END    
 
-Verify BGP Upstream Received IPv4 Routes
-    [Documentation]  Verifies that the upstream device (Nexus) is receiving the BGP routes
-    set log level  trace
-    ${BGP_PRIMARY_SINGLE_CONTEXT_IPv4_PEERS}    convert string to json    ${BGP_PRIMARY_SINGLE_CONTEXT_IPv4_PEERS}
-    FOR    ${current_bgp_peer}    IN    @{BGP_PRIMARY_SINGLE_CONTEXT_IPv4_PEERS}
-        ${peer_expected_advertised_routes}    get from dictionary    ${current_bgp_peer}    expected_advertised_routes
-        ${peer_management_ip}    get from dictionary    ${current_bgp_peer}    device_management_ip
-        ${peer_device_username}    get from dictionary    ${current_bgp_peer}    device_username
-        ${peer_device_password}    get from dictionary    ${current_bgp_peer}    device_password
-        ${peer_remote_peer_ip}    get from dictionary    ${current_bgp_peer}    local_peering_ip
-        ${peer_vrf}    get from dictionary    ${current_bgp_peer}    peer_vrf
-        ${peer_vdc}    get from dictionary    ${current_bgp_peer}    peer_vdc
-        ${ipv4_received_routes}    Get IPv4 Received Routes from Nexus Router    host=${peer_management_ip}    username=${peer_device_username}    password=${peer_device_password}    remote_bgp_peer_ip=${peer_remote_peer_ip}    remote_vrf=${peer_vrf}    peer_vdc=${peer_vdc}
-        ${expected_ipv4_advertised_routes}    get from dictionary    ${current_bgp_peer}    expected_advertised_routes    
-        list should contain sub list    ${ipv4_received_routes}    ${expected_ipv4_advertised_routes}
-    END    
-    Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    ${BGP_SECONDARY_SINGLE_CONTEXT_IPv4_PEERS}    convert string to json    ${BGP_SECONDARY_SINGLE_CONTEXT_IPv4_PEERS}
-    FOR    ${current_bgp_peer}    IN    @{BGP_SECONDARY_SINGLE_CONTEXT_IPv4_PEERS}
-        ${peer_expected_advertised_routes}    get from dictionary    ${current_bgp_peer}    expected_advertised_routes
-        ${peer_management_ip}    get from dictionary    ${current_bgp_peer}    device_management_ip
-        ${peer_device_username}    get from dictionary    ${current_bgp_peer}    device_username
-        ${peer_device_password}    get from dictionary    ${current_bgp_peer}    device_password
-        ${peer_remote_peer_ip}    get from dictionary    ${current_bgp_peer}    local_peering_ip
-        ${peer_vrf}    get from dictionary    ${current_bgp_peer}    peer_vrf
-        ${peer_vdc}    get from dictionary    ${current_bgp_peer}    peer_vdc
-        ${ipv4_received_routes}    Get IPv4 Received Routes from Nexus Router    host=${peer_management_ip}    username=${peer_device_username}    password=${peer_device_password}    remote_bgp_peer_ip=${peer_remote_peer_ip}    remote_vrf=${peer_vrf}    peer_vdc=${peer_vdc}    
-        ${expected_ipv4_advertised_routes}    get from dictionary    ${current_bgp_peer}    expected_advertised_routes    
-        list should contain sub list    ${ipv4_received_routes}    ${expected_ipv4_advertised_routes}
-    END    
-
-Verify BGP Upstream Received IPv6 Routes
-    [Documentation]  Verifies that the upstream device (Nexus) is receiving the expected BGP routes
-    set log level  trace
-    ${BGP_PRIMARY_SINGLE_CONTEXT_IPv6_PEERS}    convert string to json    ${BGP_PRIMARY_SINGLE_CONTEXT_IPv6_PEERS}
-    FOR    ${current_bgp_peer}    IN    @{BGP_PRIMARY_SINGLE_CONTEXT_IPv6_PEERS}
-        ${peer_expected_advertised_routes}    get from dictionary    ${current_bgp_peer}    expected_advertised_routes
-        ${peer_management_ip}    get from dictionary    ${current_bgp_peer}    device_management_ip
-        ${peer_device_username}    get from dictionary    ${current_bgp_peer}    device_username
-        ${peer_device_password}    get from dictionary    ${current_bgp_peer}    device_password
-        ${peer_remote_peer_ip}    get from dictionary    ${current_bgp_peer}    local_peering_ip
-        ${peer_vrf}    get from dictionary    ${current_bgp_peer}    peer_vrf
-        ${peer_vdc}    get from dictionary    ${current_bgp_peer}    peer_vdc
-        ${ipv6_received_routes}    Get IPv6 Received Routes from Nexus Router    host=${peer_management_ip}    username=${peer_device_username}    password=${peer_device_password}    remote_bgp_peer_ip=${peer_remote_peer_ip}    remote_vrf=${peer_vrf}    peer_vdc=${peer_vdc}    
-        ${expected_ipv6_advertised_routes}    get from dictionary    ${current_bgp_peer}    expected_advertised_routes    
-        list should contain sub list    ${ipv6_received_routes}    ${expected_ipv6_advertised_routes}
-    END    
-    Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    ${BGP_SECONDARY_SINGLE_CONTEXT_IPv6_PEERS}    convert string to json    ${BGP_SECONDARY_SINGLE_CONTEXT_IPv6_PEERS}
-    FOR    ${current_bgp_peer}    IN    @{BGP_SECONDARY_SINGLE_CONTEXT_IPv6_PEERS}
-        ${peer_expected_advertised_routes}    get from dictionary    ${current_bgp_peer}    expected_advertised_routes
-        ${peer_management_ip}    get from dictionary    ${current_bgp_peer}    device_management_ip
-        ${peer_device_username}    get from dictionary    ${current_bgp_peer}    device_username
-        ${peer_device_password}    get from dictionary    ${current_bgp_peer}    device_password
-        ${peer_remote_peer_ip}    get from dictionary    ${current_bgp_peer}    local_peering_ip
-        ${peer_vrf}    get from dictionary    ${current_bgp_peer}    peer_vrf
-        ${peer_vdc}    get from dictionary    ${current_bgp_peer}    peer_vdc
-        ${ipv6_received_routes}    Get IPv6 Received Routes from Nexus Router    host=${peer_management_ip}    username=${peer_device_username}    password=${peer_device_password}    remote_bgp_peer_ip=${peer_remote_peer_ip}    remote_vrf=${peer_vrf}    peer_vdc=${peer_vdc}    
-        ${expected_ipv6_advertised_routes}    get from dictionary    ${current_bgp_peer}    expected_advertised_routes    
-        list should contain sub list    ${ipv6_received_routes}    ${expected_ipv6_advertised_routes}
-    END    
-
 Log BGP Information
     [Documentation]  Logs the current status of the route domain's BGP sessions
     set log level  trace
