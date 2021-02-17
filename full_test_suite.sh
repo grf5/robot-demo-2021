@@ -183,6 +183,25 @@ export BGP_SECONDARY_SINGLE_CONTEXT_IPv6_REDIST_STATIC_ROUTE_MAP_NAME='IPv6Stati
 export BGP_SECONDARY_SINGLE_CONTEXT_IPv6_PEERS='[{"neighbor":"2001:200:0:4401::1","peer-group":"IPv6NorthPeerGroup","description":"Nexus","expected_advertised_routes":["2001:200:0:4401::/64"],"device_management_ip":"10.240.73.201","device_username":"netqa","device_password":"RobotR0cks","local_peering_ip":"2001:200:0:4401::6","peer_vrf":"SPOCSLBTestbedEnv4_179","peer_vdc":"dcr01sqsccc"},{"neighbor":"2001:200:0:4401::2","peer-group":"IPv6NorthPeerGroup","description":"Nexus","expected_advertised_routes":["2001:200:0:4401::/64"],"device_management_ip":"10.240.73.202","device_username":"netqa","device_password":"RobotR0cks","local_peering_ip":"2001:200:0:4401::6","peer_vrf":"SPOCSLBTestbedEnv4_179","peer_vdc":"dcr02sqsccc"}]'
 export BGP_SECONDARY_SINGLE_CONTEXT_IPv6_PREFIX_LISTS='[{"name":"IPv6ConnectedRoutesPL","entries":[{"sequence":"10","action":"permit","subnetString":"2001:200:0:4401::/64 le 128"}]},{"name":"IPv6DefaultPL","entries":[{"sequence":"10","action":"permit","subnetString":"::/0"}]},{"name":"IPv6StaticsPL","entries":[{"sequence":"10","action":"permit","subnetString":"2001:200:0:4404::/64"}]},{"name":"IPv6VirtualsPL","entries":[{"sequence":"10","action":"permit","subnetString":"2001:200:0:4201::/64 le 128"}]}]'
 
+# Non-default route domain GSLB
+export DNS_NON_DEFAULT_ROUTE_DOMAIN_DATACENTER_NAME='ROBOT-FRAMEWORK-DNS-NON-DEFAULT-ROUTE-DOMAIN-DATACENTER'
+export DNS_NON_DEFAULT_ROUTE_DOMAIN_DATACENTER_LOCATION='Lab'
+export DNS_NON_DEFAULT_ROUTE_DOMAIN_VLAN_NAME='ROBOT-FRAMEWORK-DNS-NON-DEFAULT-ROUTE-DOMAIN-VLAN'
+export DNS_NON_DEFAULT_ROUTE_DOMAIN_VLAN_TAG='2500'
+export DNS_NON_DEFAULT_ROUTE_DOMAIN_VIP_IPv4='10.1.10.10'
+export DNS_NON_DEFAULT_ROUTE_DOMAIN_VIP_MASK='255.255.255.255'
+export DNS_NON_DEFAULT_ROUTE_DOMAIN_VIP_IPv6='2001:f5:f5:2500:10:1:10:10'
+export DNS_NON_DEFAULT_ROUTE_DOMAIN_VIP_MASK='ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff'
+export DNS_NON_DEFAULT_ROUTE_DOMAIN_SYNC_GROUP_NAME='ROBOT-FRAMEWORK-DNS-SYNC-GROUP'
+export DNS_NON_DEFAULT_ROUTE_DOMAIN_BIGIP_SERVER_NAME='ROBOT-FRAMEWORK-LTM-DNS-SERVER'
+export DNS_NON_DEFAULT_ROUTE_DOMAIN_VIP_PREFIX='ROBOT-FRAMEWORK-NON-DEFAULT-ROUTE-DOMAIN-DNS-'
+# Primary:
+# these variables cannot be set to the management port IP address! GTM must sync in-band!
+export DNS_NON_DEFAULT_ROUTE_DOMAIN_PRIMARY_SYNC_SELF_IP='10.1.10.4'
+# Secondary:
+# these variables cannot be set to the management port IP address! GTM must sync in-band!
+export DNS_NON_DEFAULT_ROUTE_DOMAIN_SECONDARY_SYNC_SELF_IP='10.1.10.5'
+
 # Delete existing reports
 rm -f ./reports/*.html
 rm -f ./reports/*.xml
