@@ -51,8 +51,8 @@ Perform BIG-IP Quick Check
 Provision Software Modules on the BIG-IP
     [Documentation]  Sets the provisioning level on software modules in the BIG-IP
     set log level  trace
-    ${module_list}    evaluate    json.dumps(${MODULE_PROVISIONING})
-    FOR    ${current_module}    IN    @{MODULE_PROVISIONING}
+    ${module_list}    Convert String to JSON    ${MODULE_PROVISIONING}
+    FOR    ${current_module}    IN    @{module_list}
         Verify All BIG-IP Ready States    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}
         Check for BIG-IP Services Waiting to Restart    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}
         ${module}    get from dictionary    ${current_module}    module
@@ -60,7 +60,7 @@ Provision Software Modules on the BIG-IP
         Provision Module on the BIG-IP    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    module=${module}    provisioning_level=${provisioning_level}
     END
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    ${module_list}    evaluate    json.dumps(${MODULE_PROVISIONING})    json
+    ${module_list}    Convert String to JSON    ${MODULE_PROVISIONING}
     FOR    ${current_module}    IN    @{module_list}
         Verify All BIG-IP Ready States    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
         Check for BIG-IP Services Waiting to Restart    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
