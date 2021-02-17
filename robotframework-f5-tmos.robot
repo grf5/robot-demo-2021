@@ -41,8 +41,7 @@ Generate Token
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}
     ...    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
     Should Be Equal As Strings    ${api_response.status_code}    200
-    ${api_response_json}    set variable    ${api_response.json}
-    ${api_token}    Get From Dictionary    ${api_response_json}    token
+    ${api_token}    Get From Dictionary    ${api_response.json}    token
     ${api_token}    Get From Dictionary    ${api_token}    token
     [Teardown]    Delete All Sessions
     [Return]    ${api_token}
@@ -78,7 +77,6 @@ BIG-IP iControl TokenAuth GET
     &{api_headers}    Create Dictionary    Content-type=application/json    X-F5-Auth-Token=${api_token}
     ${api_response}    GET On Session    bigip-icontrol-get-tokenauth   ${api_uri}    headers=${api_headers}
     log    HTTP Response Code: ${api_response}
-    ${api_response.json}    set variable    ${api_response.json}
     log    ${api_response.json}    formatter=repr
     [Teardown]    Delete All Sessions
     [Return]    ${api_response}
@@ -91,7 +89,6 @@ BIG-IP iControl TokenAuth POST
     &{api_headers}    Create Dictionary    Content-type=application/json    X-F5-Auth-Token=${api_token}
     ${api_response}    POST On Session    bigip-icontrol-post-tokenauth   ${api_uri}    headers=${api_headers}    json=${api_payload}
     log    HTTP Response Code: ${api_response}
-    ${api_response.json}    set variable    ${api_response.json}
     log    ${api_response.json}    formatter=repr
     [Teardown]    Delete All Sessions
     [Return]    ${api_response}
@@ -104,7 +101,6 @@ BIG-IP iControl TokenAuth PUT
     &{api_headers}    Create Dictionary    Content-type=application/json    X-F5-Auth-Token=${api_token}
     ${api_response}    PUT On Session    bigip-icontrol-put-tokenauth   ${api_uri}    headers=${api_headers}    json=${api_payload}
     log    HTTP Response Code: ${api_response}
-    ${api_response.json}    set variable    ${api_response.json}
     log    ${api_response.json}    formatter=repr
     [Teardown]    Delete All Sessions
     [Return]    ${api_response}
@@ -117,7 +113,6 @@ BIG-IP iControl TokenAuth PATCH
     &{api_headers}    Create Dictionary    Content-type=application/json    X-F5-Auth-Token=${api_token}
     ${api_response}    PATCH On Session    bigip-icontrol-patch-tokenauth   ${api_uri}    headers=${api_headers}    json=${api_payload}
     log    HTTP Response Code: ${api_response}
-    ${api_response.json}    set variable    ${api_response.json}
     log    ${api_response.json}    formatter=repr
     [Teardown]    Delete All Sessions
     [Return]    ${api_response}
@@ -143,7 +138,6 @@ BIG-IP iControl BasicAuth GET
     &{api_headers}    Create Dictionary    Content-type=application/json
     ${api_response}    GET On Session    bigip-icontrol-get-basicauth   ${api_uri}    headers=${api_headers}
     log    HTTP Response Code: ${api_response}
-    ${api_response.json}    set variable    ${api_response.json}
     log    ${api_response.json}    formatter=repr
     [Teardown]    Delete All Sessions
     [Return]    ${api_response}
@@ -157,7 +151,6 @@ BIG-IP iControl BasicAuth POST
     &{api_headers}    Create Dictionary    Content-type=application/json
     ${api_response}    POST On Session    bigip-icontrol-post-basicauth   ${api_uri}    headers=${api_headers}    json=${api_payload}
     log    HTTP Response Code: ${api_response}
-    ${api_response.json}    set variable    ${api_response.json}
     log    ${api_response.json}    formatter=repr
     [Teardown]    Delete All Sessions
     [Return]    ${api_response}
@@ -182,7 +175,6 @@ BIG-IP iControl BasicAuth PUT
     &{api_headers}    Create Dictionary    Content-type=application/json
     ${api_response}    PUT On Session    bigip-icontrol-put-basicauth   ${api_uri}    headers=${api_headers}    json=${api_payload}
     log    HTTP Response Code: ${api_response}
-    ${api_response.json}    set variable    ${api_response.json}
     log    ${api_response.json}    formatter=repr
     [Teardown]    Delete All Sessions
     [Return]    ${api_response}
@@ -196,7 +188,6 @@ BIG-IP iControl BasicAuth PATCH
     &{api_headers}    Create Dictionary    Content-type=application/json
     ${api_response}    PATCH On Session    bigip-icontrol-patch-basicauth   ${api_uri}    headers=${api_headers}    json=${api_payload}
     log    HTTP Response Code: ${api_response}
-    ${api_response.json}    set variable    ${api_response.json}
     log    ${api_response.json}    formatter=repr
     [Teardown]    Delete All Sessions
     [Return]    ${api_response}
@@ -224,7 +215,6 @@ BIG-IP iControl NoAuth GET
     &{api_headers}    Create Dictionary    Content-type=application/json
     ${api_response}    GET On Session    bigip-icontrol-get-noauth   ${api_uri}    headers=${api_headers}
     log    HTTP Response Code: ${api_response}
-    ${api_response.json}    set variable    ${api_response.json}
     log    ${api_response.json}    formatter=repr
     [Teardown]    Delete All Sessions
     [Return]    ${api_response}
@@ -241,7 +231,6 @@ BIG-IP iControl NoAuth POST
     &{api_headers}    Create Dictionary    Content-type=application/json
     ${api_response}    POST On Session    bigip-icontrol-post-noauth   ${api_uri}    headers=${api_headers}    json=${api_payload}
     log    HTTP Response Code: ${api_response}
-    ${api_response.json}    set variable    ${api_response.json}
     log    ${api_response.json}    formatter=repr
     [Teardown]    Delete All Sessions
     [Return]    ${api_response}
@@ -258,7 +247,6 @@ BIG-IP iControl NoAuth PUT
     &{api_headers}    Create Dictionary    Content-type=application/json
     ${api_response}    PUT On Session    bigip-icontrol-put-noauth   ${api_uri}    headers=${api_headers}    json=${api_payload}
     log    HTTP Response Code: ${api_response}
-    ${api_response.json}    set variable    ${api_response.json}
     log    ${api_response.json}    formatter=repr
     [Teardown]    Delete All Sessions
     [Return]    ${api_response}
@@ -271,7 +259,6 @@ BIG-IP iControl NoAuth PATCH
     &{api_headers}    Create Dictionary    Content-type=application/json
     ${api_response}    PATCH On Session    bigip-icontrol-patch-noauth   ${api_uri}    headers=${api_headers}    json=${api_payload}
     log    HTTP Response Code: ${api_response}
-    ${api_response.json}    set variable    ${api_response.json}
     log    ${api_response.json}    formatter=repr
     [Teardown]    Delete All Sessions
     [Return]    ${api_response}
@@ -334,8 +321,7 @@ Get CM Self Device
     ${api_uri}    Set Variable    /mgmt/tm/cm/device
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
     Should Be Equal As Strings    ${api_response.status_code}    200
-    ${api_response_json}    to Json    ${api_response.text}
-    ${api_response_dict}    Convert to Dictionary    ${api_response_json}
+    ${api_response_dict}    Convert to Dictionary    ${api_response.json}
     ${items_list}    Get from Dictionary    ${api_response_dict}    items
     FOR    ${current_device}    IN    @{items_list}
         ${self_device_flag}    Get from Dictionary    ${current_device}    selfDevice
@@ -570,8 +556,8 @@ Verify Trust Sync Status 13.1.1.4
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}
     ${api_uri}    Set variable    /mgmt/tm/cm/sync-status
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
-    ${api_response_json}    to Json    ${api_response.text}
-    ${bigip_mode_entries}    Get from Dictionary    ${api_response_json}    entries
+    ${api_response.json}    to Json    ${api_response.text}
+    ${bigip_mode_entries}    Get from Dictionary    ${api_response.json}    entries
     ${bigip_mode_selflink}    Get from Dictionary    ${bigip_mode_entries}    https://localhost/mgmt/tm/cm/sync-status/0
     ${bigip_mode_nestedstats}    Get from Dictionary    ${bigip_mode_selflink}    nestedStats
     ${bigip_mode_sync_entries}    Get from Dictionary    ${bigip_mode_nestedstats}    entries
@@ -1542,7 +1528,6 @@ Create Static Route Configuration on the BIG-IP
     ${api_uri}    set variable    /mgmt/tm/net/route
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
     Should Be Equal As Strings    ${api_response.status_code}    200
-    ${api_response_json}    set variable    ${api_response.json}
     [Return]    ${api_response}
 
 Verify Static Route Configuration on the BIG-IP
@@ -1552,8 +1537,7 @@ Verify Static Route Configuration on the BIG-IP
     ${api_uri}    set variable    /mgmt/tm/net/route/~${partition}~${name}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
     should be equal as strings    ${api_response.status_code}    200
-    ${api_response_json}    set variable    ${api_response.json}
-    dictionary should contain sub dictionary    ${api_response_json}    ${verification_dict}
+    dictionary should contain sub dictionary    ${api_response.json}    ${verification_dict}
     [Return]    ${api_response}
 
 Create Static Default Route Configuration on the BIG-IP
@@ -1563,7 +1547,6 @@ Create Static Default Route Configuration on the BIG-IP
     ${api_uri}    set variable    /mgmt/tm/net/route
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
     Should Be Equal As Strings    ${api_response.status_code}    200
-    ${api_response_json}    set variable    ${api_response.json}
     [Return]    ${api_response}
 
 Verify Static Default Route Configuration on the BIG-IP
@@ -1573,8 +1556,7 @@ Verify Static Default Route Configuration on the BIG-IP
     ${api_uri}    set variable    /mgmt/tm/net/route/~${partition}~${name}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
     should be equal as strings    ${api_response.status_code}    200
-    ${api_response_json}    set variable    ${api_response.json}
-    dictionary should contain sub dictionary    ${api_response_json}    ${verification_dict}
+    dictionary should contain sub dictionary    ${api_response.json}    ${verification_dict}
     [Return]    ${api_response}
 
 Create Static IPv6 Default Route Configuration on the BIG-IP
@@ -1584,7 +1566,6 @@ Create Static IPv6 Default Route Configuration on the BIG-IP
     ${api_uri}    set variable    /mgmt/tm/net/route
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
     Should Be Equal As Strings    ${api_response.status_code}    200
-    ${api_response_json}    set variable    ${api_response.json}
     [Return]    ${api_response}
 
 Verify Static IPv6 Default Route Configuration on the BIG-IP
@@ -1594,8 +1575,7 @@ Verify Static IPv6 Default Route Configuration on the BIG-IP
     ${api_uri}    set variable    /mgmt/tm/net/route/~${partition}~${name}
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
     should be equal as strings    ${api_response.status_code}    200
-    ${api_response_json}    set variable    ${api_response.json}
-    dictionary should contain sub dictionary    ${api_response_json}    ${verification_dict}
+    dictionary should contain sub dictionary    ${api_response.json}    ${verification_dict}
     [Return]    ${api_response}
 
 Verify Static Route Presence in BIG-IP Route Table
@@ -1604,8 +1584,7 @@ Verify Static Route Presence in BIG-IP Route Table
     ${api_uri}    set variable    /mgmt/tm/net/route/stats
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
     should be equal as strings    ${api_response.status_code}    200
-    ${api_response_json}    set variable    ${api_response.json}
-    ${route_table_entries}    get from dictionary    ${api_response_json}    entries
+    ${route_table_entries}    get from dictionary    ${api_response.json}    entries
     log    ROUTE TABLE LIST: ${route_table_entries}
     ${selflink_name}    set variable    https://localhost/mgmt/tm/net/route/~${partition}~${name}/stats
     list should contain value    ${route_table_entries}    ${selflink_name}
@@ -1633,8 +1612,7 @@ Verify Static Route Removal in BIG-IP Route Table
     ${api_uri}    set variable    /mgmt/tm/net/route/stats
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
     should be equal as strings    ${api_response.status_code}    200
-    ${api_response_json}    set variable    ${api_response.json}
-    ${route_table_entries}    get from dictionary    ${api_response_json}    entries
+    ${route_table_entries}    get from dictionary    ${api_response.json}    entries
     log    ROUTE TABLE LIST: ${route_table_entries}
     ${selflink_name}    set variable    https://localhost/mgmt/tm/net/route/~${partition}~${name}/stats
     list should not contain value   ${route_table_entries}    ${selflink_name}
@@ -1646,8 +1624,7 @@ Display BIG-IP Static Route Configuration
     ${api_uri}    set variable    /mgmt/tm/net/route
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
     Should Be Equal As Strings    ${api_response.status_code}    200
-    ${api_response_json}    set variable    ${api_response.json}
-    log dictionary    ${api_response_json}
+    log dictionary    ${api_response.json}
     [Return]    ${api_response}
 
 #####################
@@ -2550,8 +2527,7 @@ Query NTP Server List
     ${api_uri}    set variable    /mgmt/tm/sys/ntp
     ${api_response}    BIG-IP iControl BasicAuth GET   bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
     Should Be Equal As Strings    ${api_response.status_code}    200
-    ${api_response_json}    set variable    ${api_response.json}
-    ${ntp_servers_configured}    Get from Dictionary    ${api_response_json}    servers
+    ${ntp_servers_configured}    Get from Dictionary    ${api_response.json}    servers
     ${ntp_servers_configured}    Convert to List    ${ntp_servers_configured}
     List Should Not Contain Duplicates    ${ntp_servers_configured}
     [Return]    ${ntp_servers_configured}
@@ -2563,8 +2539,7 @@ Verify NTP Server Associations
     ${api_uri}    set variable    /mgmt/tm/util/bash
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}  bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
     Should Be Equal As Strings    ${api_response.status_code}    200
-    ${api_response_json}    set variable    ${api_response.json}
-    ${ntpq_output}    Get from Dictionary    ${api_response_json}    commandResult
+    ${ntpq_output}    Get from Dictionary    ${api_response.json}    commandResult
     ${ntpq_output_start}    Set Variable    ${ntpq_output.find("===\n")}
     ${ntpq_output_clean}    Set Variable    ${ntpq_output[${ntpq_output_start}+4:]}
     ${ntpq_output_values_list}    Split String    ${ntpq_output_clean}
@@ -3175,8 +3150,7 @@ Ping Host from BIG-IP
     ${api_uri}    set variable    /mgmt/tm/util/ping
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
     Should Be Equal As Strings    ${api_response.status_code}    200
-    ${api_response_json}    set variable    ${api_response.json}
-    ${ping_output}    Get from Dictionary    ${api_response_json}    commandResult
+    ${ping_output}    Get from Dictionary    ${api_response.json}    commandResult
     log    ${ping_output}
     Should Contain    ${ping_output}    , 0% packet loss
     [Return]    ${api_response}
@@ -3188,8 +3162,7 @@ Ping IPv6 Host from BIG-IP
     ${api_uri}    set variable    /mgmt/tm/util/ping6
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
     Should Be Equal As Strings    ${api_response.status_code}    200
-    ${api_response_json}    set variable    ${api_response.json}
-    ${ping_output}    Get from Dictionary    ${api_response_json}    commandResult
+    ${ping_output}    Get from Dictionary    ${api_response.json}    commandResult
     log    ${ping_output}
     Should Contain    ${ping_output}    , 0% packet loss
     [Return]    ${api_response}
