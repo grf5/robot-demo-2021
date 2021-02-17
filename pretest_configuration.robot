@@ -151,13 +151,6 @@ Verify BIG-IP is ready before configuring VLANs
     Wait until Keyword Succeeds    30x    10 seconds    Verify All BIG-IP Ready States    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
     Wait until Keyword Succeeds    12x    15 seconds    Check for BIG-IP Services Waiting to Restart    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
 
-Reset Statistics on the BIG-IP
-    [Documentation]  Resets all interface, virtual, pool, node, etc statistics on the BIG-IP
-    set log level  trace
-    Reset All Statistics        bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}
-    Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    Reset All Statistics        bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
-
 Create the Inside VLAN on the BIG-IP
     [Documentation]  Creates the uplink/outside VLAN on the BIG-IP
     set log level  trace
@@ -250,13 +243,6 @@ Gather All BIG-IP Interface Configurations via API
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
     ${secondary_interface_configurations}    List all BIG-IP Interfaces    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
     log    ${secondary_interface_configurations}
-
-Reset Statistics on the BIG-IP
-    [Documentation]  Resets all interface, virtual, pool, node, etc statistics on the BIG-IP
-    set log level  trace
-    Reset All Statistics        bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}
-    Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    Reset All Statistics        bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
 
 Get List of BIG-IP Interfaces
     [Documentation]  Simply logs a list of all detected BIG-IP interfaces (https://support.f5.com/csp/article/K14107)
@@ -365,3 +351,10 @@ Create Default Static Routes on the BIG-IP
     ${route_gateway}    get from dictionary    ${SECONDARY_STATIC_DEFAULT_ROUTE}    gw
     ${route_description}    get from dictionary    ${SECONDARY_STATIC_DEFAULT_ROUTE}    description
     Create Static Default Route Configuration on the BIG-IP    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    partition=${route_partition}    gateway=${route_gateway}    description=${route_description}
+
+Reset Statistics on the BIG-IP
+    [Documentation]  Resets all interface, virtual, pool, node, etc statistics on the BIG-IP
+    set log level  trace
+    Reset All Statistics        bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}
+    Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
+    Reset All Statistics        bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
