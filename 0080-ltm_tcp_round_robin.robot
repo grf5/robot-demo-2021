@@ -53,7 +53,7 @@ Verify TCP DNS Round-Robin Test Pool
 Add the TCP DNS Round-Robin Test Nodes to Pool
     [Documentation]  Populates the pool object with the pool members (also referred to as nodes or back-end servers)
     set log level  trace
-    ${TCP_ROUND_ROBIN_POOL_MEMBERS}    to json    ${TCP_ROUND_ROBIN_POOL_MEMBERS}
+    ${TCP_ROUND_ROBIN_POOL_MEMBERS}    evaluate    json.dumps(${TCP_ROUND_ROBIN_POOL_MEMBERS})   json
     FOR    ${current_pool_member}    IN    @{TCP_ROUND_ROBIN_POOL_MEMBERS}
        ${pool_member_name}    Get From Dictionary    ${current_pool_member}    address
        ${pool_member_address}    Get From Dictionary    ${current_pool_member}    address

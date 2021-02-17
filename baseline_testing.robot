@@ -336,7 +336,7 @@ Configure BGP IPv6 Neighbor Timers
 Create the IPv4 Peers
     [Documentation]  Creates the IPv4 BGP Peers
     set log level  trace
-    ${ipv4_peer_list}    to json    ${BGP_PRIMARY_SINGLE_CONTEXT_IPv4_PEERS}
+    ${ipv4_peer_list}    evaluate    json.dumps(${BGP_PRIMARY_SINGLE_CONTEXT_IPv4_PEERS})    json
     :FOR    ${current_neighbor}    IN    @{ipv4_peer_list}
     \    ${neighbor_host}    get from dictionary    ${current_neighbor}    neighbor
     \    ${neighbor_peer_group}    get from dictionary    ${current_neighbor}    peer-group
@@ -348,7 +348,7 @@ Create the IPv4 Peers
     \    Configure BGP Neighbor Description    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    local_as_number=${BGP_PRIMARY_SINGLE_CONTEXT_IPv4_PEER_GROUP_LOCAL_AS}    route_domain_id=${BGP_PRIMARY_SINGLE_CONTEXT_ROUTE_DOMAIN_ID}    neighbor=${neighbor_host}    description=${neighbor_description}    
     \    Verify BGP Neighbor Description    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    local_as_number=${BGP_PRIMARY_SINGLE_CONTEXT_IPv4_PEER_GROUP_LOCAL_AS}    route_domain_id=${BGP_PRIMARY_SINGLE_CONTEXT_ROUTE_DOMAIN_ID}    neighbor=${neighbor_host}    description=${neighbor_description}    
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    ${ipv4_peer_list}    to json    ${BGP_SECONDARY_SINGLE_CONTEXT_IPv4_PEERS}
+    ${ipv4_peer_list}    evaluate    json.dumps(${BGP_SECONDARY_SINGLE_CONTEXT_IPv4_PEERS})    json
     :FOR    ${current_neighbor}    IN    @{ipv4_peer_list}
     \    ${neighbor_host}    get from dictionary    ${current_neighbor}    neighbor
     \    ${neighbor_peer_group}    get from dictionary    ${current_neighbor}    peer-group
@@ -426,7 +426,7 @@ Apply the Inbound IPv6 Route-Map to the Neighbor Peer-Group
 Create the IPv6 Peers
     [Documentation]  Creates the IPv6 BGP Peers and activates the neighbor on the BIG-IP
     set log level  trace
-    ${ipv6_peer_list}    to json    ${BGP_PRIMARY_SINGLE_CONTEXT_IPv6_PEERS}
+    ${ipv6_peer_list}    evaluate    json.dumps(${BGP_PRIMARY_SINGLE_CONTEXT_IPv6_PEERS})    json
     :FOR    ${current_neighbor}    IN    @{ipv6_peer_list}
     \    ${neighbor_host}    get from dictionary    ${current_neighbor}    neighbor
     \    ${neighbor_peer_group}    get from dictionary    ${current_neighbor}    peer-group
@@ -440,7 +440,7 @@ Create the IPv6 Peers
     \    Disable the Graceful Restart BGP IPv6 Neighbor Capability    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    local_as_number=${BGP_PRIMARY_SINGLE_CONTEXT_IPv4_PEER_GROUP_LOCAL_AS}    neighbor=${neighbor_host}    route_domain_id=${BGP_PRIMARY_SINGLE_CONTEXT_ROUTE_DOMAIN_ID}
     \    Verify Disable the Graceful Restart BGP IPv6 Neighbor Capability    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    local_as_number=${BGP_PRIMARY_SINGLE_CONTEXT_IPv4_PEER_GROUP_LOCAL_AS}    neighbor=${neighbor_host}    route_domain_id=${BGP_PRIMARY_SINGLE_CONTEXT_ROUTE_DOMAIN_ID}
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    ${ipv6_peer_list}    to json    ${BGP_SECONDARY_SINGLE_CONTEXT_IPv6_PEERS}
+    ${ipv6_peer_list}    evaluate    json.dumps(${BGP_SECONDARY_SINGLE_CONTEXT_IPv6_PEERS})    json
     :FOR    ${current_neighbor}    IN    @{ipv6_peer_list}
     \    ${neighbor_host}    get from dictionary    ${current_neighbor}    neighbor
     \    ${neighbor_peer_group}    get from dictionary    ${current_neighbor}    peer-group
@@ -458,14 +458,14 @@ Create ZebOS Global Static Routes
     # ip route 44.51.0.0/24 Null
     [Documentation]  Creates a static route in the ZebOS routing daemon using the 'ip route' command on the BIG-IP
     set log level  trace
-    ${zebos_static_routes_list}    to json    ${BGP_PRIMARY_SINGLE_CONTEXT_IPv4_STATIC_ROUTES}
+    ${zebos_static_routes_list}    evaluate    json.dumps(${BGP_PRIMARY_SINGLE_CONTEXT_IPv4_STATIC_ROUTES})
     :FOR    ${current_route}    IN    @{zebos_static_routes_list}
     \    ${network}    get from dictionary    ${current_route}    network
     \    ${gateway}    get from dictionary    ${current_route}    gateway
     \    Create ZebOS Static Route on the BIG-IP    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    network=${network}    gateway=${gateway}    route_domain_id=${BGP_PRIMARY_SINGLE_CONTEXT_ROUTE_DOMAIN_ID}
     \    Verify ZebOS Static Route on the BIG-IP    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    network=${network}    gateway=${gateway}    route_domain_id=${BGP_PRIMARY_SINGLE_CONTEXT_ROUTE_DOMAIN_ID}
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    ${zebos_static_routes_list}    to json    ${BGP_SECONDARY_SINGLE_CONTEXT_IPv4_STATIC_ROUTES}
+    ${zebos_static_routes_list}    evaluate    json.dumps(${BGP_SECONDARY_SINGLE_CONTEXT_IPv4_STATIC_ROUTES})
     :FOR    ${current_route}    IN    @{zebos_static_routes_list}
     \    ${network}    get from dictionary    ${current_route}    network
     \    ${gateway}    get from dictionary    ${current_route}    gateway
@@ -475,14 +475,14 @@ Create ZebOS Global Static Routes
 Create the IPv4 Prefix Lists
     [Documentation]  Creates a BGP IPv4 prefix-list using the 'ip prefix-list' command on the BIG-IP
     set log level  trace
-    ${BGP_PRIMARY_SINGLE_CONTEXT_IPv4_PREFIX_LISTS}    to json    ${BGP_PRIMARY_SINGLE_CONTEXT_IPv4_PREFIX_LISTS}
+    ${BGP_PRIMARY_SINGLE_CONTEXT_IPv4_PREFIX_LISTS}    evaluate    json.dumps(${BGP_PRIMARY_SINGLE_CONTEXT_IPv4_PREFIX_LISTS})
     :FOR    ${current_prefix_list}    IN    @{BGP_PRIMARY_SINGLE_CONTEXT_IPv4_PREFIX_LISTS}
     \    ${name}    get from dictionary    ${current_prefix_list}    name
     \    ${entries}    get from dictionary    ${current_prefix_list}    entries
     \    Create IPv4 Prefix List    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    prefix_list_name=${name}    entries_list=${entries}    route_domain_id=${BGP_PRIMARY_SINGLE_CONTEXT_ROUTE_DOMAIN_ID}
     \    Verify IPv4 Prefix List    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    prefix_list_name=${name}    entries_list=${entries}    route_domain_id=${BGP_PRIMARY_SINGLE_CONTEXT_ROUTE_DOMAIN_ID}
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    ${BGP_SECONDARY_SINGLE_CONTEXT_IPv4_PREFIX_LISTS}    to json    ${BGP_SECONDARY_SINGLE_CONTEXT_IPv4_PREFIX_LISTS}
+    ${BGP_SECONDARY_SINGLE_CONTEXT_IPv4_PREFIX_LISTS}    evaluate    json.dumps(${BGP_SECONDARY_SINGLE_CONTEXT_IPv4_PREFIX_LISTS})
     :FOR    ${current_prefix_list}    IN    @{BGP_SECONDARY_SINGLE_CONTEXT_IPv4_PREFIX_LISTS}
     \    ${name}    get from dictionary    ${current_prefix_list}    name
     \    ${entries}    get from dictionary    ${current_prefix_list}    entries

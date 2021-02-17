@@ -42,16 +42,16 @@ ${DSC_GROUP_NAME}                       %{DSC_GROUP_NAME}
 Perform BIG-IP Quick Check
     [Documentation]  Verifies that key BIG-IP services are in a ready state
     set log level  trace
-    Wait until Keyword Succeeds    3x    5 seconds    Verify All BIG-IP Ready States    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}
-    Wait until Keyword Succeeds    3x    5 seconds    Check for BIG-IP Services Waiting to Restart    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}
+    Wait until Keyword Succeeds    30x    5 seconds    Verify All BIG-IP Ready States    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}
+    Wait until Keyword Succeeds    30x    5 seconds    Check for BIG-IP Services Waiting to Restart    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    Wait until Keyword Succeeds    3x    5 seconds    Verify All BIG-IP Ready States    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
-    Wait until Keyword Succeeds    3x    5 seconds    Check for BIG-IP Services Waiting to Restart    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
+    Wait until Keyword Succeeds    30x    5 seconds    Verify All BIG-IP Ready States    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
+    Wait until Keyword Succeeds    30x    5 seconds    Check for BIG-IP Services Waiting to Restart    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
 
 Provision Software Modules on the BIG-IP
     [Documentation]  Sets the provisioning level on software modules in the BIG-IP
     set log level  trace
-    ${module_list}    to json    ${MODULE_PROVISIONING}
+    ${module_list}    evaluate    json.loads(${MODULE_PROVISIONING})    json
     FOR    ${current_module}    IN    @{module_list}
         Verify All BIG-IP Ready States    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}
         Check for BIG-IP Services Waiting to Restart    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}
@@ -60,7 +60,7 @@ Provision Software Modules on the BIG-IP
         Provision Module on the BIG-IP    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    module=${module}    provisioning_level=${provisioning_level}
     END
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    ${module_list}    to json    ${MODULE_PROVISIONING}
+    ${module_list}    evaluate    json.loads(${MODULE_PROVISIONING})    json
     FOR    ${current_module}    IN    @{module_list}
         Verify All BIG-IP Ready States    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
         Check for BIG-IP Services Waiting to Restart    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
@@ -81,7 +81,7 @@ Perform BIG-IP Post-Provision Check
 Verify Module Provisioning
     [Documentation]  Verifies that the software modules are provisioned as expected on the BIG-IP
     set log level  trace
-    ${module_list}    to json    ${MODULE_PROVISIONING}
+    ${module_list}    evaluate    json.loads(${MODULE_PROVISIONING})
     FOR    ${current_module}    IN    @{module_list}
         Verify All BIG-IP Ready States    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}
         Check for BIG-IP Services Waiting to Restart    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}
@@ -90,7 +90,7 @@ Verify Module Provisioning
         Verify Module is Provisioned  bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    module=${module}
     END
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    ${module_list}    to json    ${MODULE_PROVISIONING}
+    ${module_list}    evaluate    json.loads(${MODULE_PROVISIONING})    json
     FOR    ${current_module}    IN    @{module_list}
         Verify All BIG-IP Ready States    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
         Check for BIG-IP Services Waiting to Restart    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
@@ -134,7 +134,7 @@ Verify BIG-IP Hostnames
 Create Management Route for NTP Servers
     [Documentation]  Routes NTP traffic through the management network
     set log level  trace
-    ${defined_ntp_server_list}    to json    ${NTP_SERVER_LIST}
+    ${defined_ntp_server_list}    evaluate    json.loads(${NTP_SERVER_LIST})    json
     FOR    ${current_ntp_server}    IN    @{defined_ntp_server_list}
         Create Management Network Route    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    name=${current_ntp_server}    network=${current_ntp_server}    gateway=${MGMT_NETWORK_GATEWAY}
     END
@@ -285,7 +285,7 @@ Gather Interface Media Capabilities
 Configure F5 BIG-IP Data Plane Interfaces
     [Documentation]  Configures the BIG-IP interfaces (not including the management interface)
     set log level  trace
-    ${INTERFACE_LIST}    to json    ${PRIMARY_INTERFACE_DETAILS}
+    ${INTERFACE_LIST}    evaluate    json.loads(${PRIMARY_INTERFACE_DETAILS})    json
     FOR    ${current_interface}    IN    @{INTERFACE_LIST}
        ${current_interface_name}    get from dictionary    ${current_interface}    name
        ${current_interface_description}    get from dictionary    ${current_interface}    description
@@ -297,7 +297,7 @@ Configure F5 BIG-IP Data Plane Interfaces
        run keyword if    '${current_interface_lldpadmin}'=='disable'   Disable BIG-IP LLDP on Interface    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}   interface_name=${current_interface_name}
     END
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    ${INTERFACE_LIST}    to json    ${SECONDARY_INTERFACE_DETAILS}
+    ${INTERFACE_LIST}    evaluate    json.loads(${SECONDARY_INTERFACE_DETAILS})    json
     FOR    ${current_interface}    IN    @{INTERFACE_LIST}
        ${current_interface_name}    get from dictionary    ${current_interface}    name
        ${current_interface_description}    get from dictionary    ${current_interface}    description
@@ -312,7 +312,7 @@ Configure F5 BIG-IP Data Plane Interfaces
 Create BIG-IP Non-Floating Self-IP Addresses
     [Documentation]  Creates the non-floating self-IP addresses (similar to device-local IPs in HSRP/VRRP)
     set log level  trace
-    ${SELF_IP_LIST}    to json    ${PRIMARY_LOCAL_SELF_IP_LIST}
+    ${SELF_IP_LIST}    evaluate    json.loads(${PRIMARY_LOCAL_SELF_IP_LIST})    json
     FOR    ${current_self_address}   IN    @{SELF_IP_LIST}
        ${self_ip_name}    get from dictionary    ${current_self_address}    name
        ${self_ip_address}    get from dictionary    ${current_self_address}    address
