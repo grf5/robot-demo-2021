@@ -673,7 +673,7 @@ Create ZebOS Route-Map
         ${sequence}    get from dictionary    ${current_entry}    sequence    
         ${action}    get from dictionary    ${current_entry}    action
         ${match_statement}    get from dictionary    ${current_entry}    match
-        ${bgp_commands}    set variable if    '${match_statement' == 'all'    configure terminal,route-map ${route_map_name} ${action} ${sequence},end,copy running-config startup-config    configure terminal,route-map ${route_map_name} ${action} ${sequence},match ${match_statement},end,copy running-config startup-config
+        ${bgp_commands}    set variable if    '${match_statement}' == 'all'    configure terminal,route-map ${route_map_name} ${action} ${sequence},end,copy running-config startup-config    configure terminal,route-map ${route_map_name} ${action} ${sequence},match ${match_statement},end,copy running-config startup-config
         ${api_response}    Run BGP Commands on BIG-IP    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    commands=${bgp_commands}    route_domain_id=${route_domain_id}
     END
     [Return]    ${api_response}
