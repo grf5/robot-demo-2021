@@ -82,7 +82,7 @@ Perform BIG-IP Post-Provision Check
 Verify Module Provisioning
     [Documentation]  Verifies that the software modules are provisioned as expected on the BIG-IP
     set log level  trace
-    ${module_list}    ${MODULE_PROVISIONING}
+    ${module_list}    convert string to json    ${MODULE_PROVISIONING}
     FOR    ${current_module}    IN    @{module_list}
         Verify All BIG-IP Ready States    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}
         Check for BIG-IP Services Waiting to Restart    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}
