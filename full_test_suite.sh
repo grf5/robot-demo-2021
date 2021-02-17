@@ -192,7 +192,8 @@ printf "####################################\n"
 start_time=`date`
 
 # Execute tests in order via this array
-tests=('pretest_configuration' 'baseline_testing' 'monitoring' 'network' 'administration' 'services')
+tests=('pretest_configuration')
+# 'baseline_testing' 'monitoring' 'network' 'administration' 'services'
 
 # Cycle through list of tests and create a per-test report in /reports
 for current_test in "${tests[@]}"
