@@ -4,9 +4,7 @@
 export PYTHONWARNINGS='ignore:Unverified HTTPS request'
 
 # Set the Robot Host IP as a variable
-export ROBOT_HOST_IP=`hostname -I`
-# 
-export ROBOT_HOST_IP="$(echo -e "${ROBOT_HOST_IP}" | tr -d '[:space:]')"
+export ROBOT_HOST_IP='10.1.1.7'
 
 # BIG-IP Devices
 export PRIMARY_HOSTNAME='bigip-a.lab.local'
