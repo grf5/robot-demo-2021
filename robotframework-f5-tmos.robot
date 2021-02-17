@@ -17,7 +17,7 @@ Retrieve BIG-IP Login Page
     [Documentation]  Tests connectivity and availability of the BIG-IP web UI login page
     [Arguments]    ${bigip_host}
     RequestsLibrary.Create Session    webui    https://${bigip_host}
-    ${api_response}    get request    webui    /tmui/login.jsp
+    ${api_response}    GET On Session    webui    /tmui/login.jsp
     Should Be Equal As Strings    ${api_response.status_code}    200
     Log    Web UI HTTP RESPONSE: ${api_response.text}
     should contain    ${api_response.text}    <meta name="description" content="BIG-IP&reg; Configuration Utility" />
@@ -76,7 +76,7 @@ BIG-IP iControl TokenAuth GET
     log    iControl GET Variables: HOST: ${bigip_host} URI: ${api_uri} AUTH-TOKEN: ${api_token}
     RequestsLibrary.Create Session    bigip-icontrol-get-tokenauth    https://${bigip_host}
     &{api_headers}    Create Dictionary    Content-type=application/json    X-F5-Auth-Token=${api_token}
-    ${api_response}    get request    bigip-icontrol-get-tokenauth   ${api_uri}    headers=${api_headers}
+    ${api_response}    GET On Session    bigip-icontrol-get-tokenauth   ${api_uri}    headers=${api_headers}
     log    HTTP Response Code: ${api_response}
     ${api_response.json}    to json    ${api_response.content}
     log    ${api_response.json}    formatter=repr
@@ -89,7 +89,7 @@ BIG-IP iControl TokenAuth POST
     log    iControl POST Variables: HOST: ${bigip_host} URI: ${api_uri} PAYLOAD: ${api_payload} AUTH-TOKEN: ${api_token}
     RequestsLibrary.Create Session    bigip-icontrol-post-tokenauth    https://${bigip_host}
     &{api_headers}    Create Dictionary    Content-type=application/json    X-F5-Auth-Token=${api_token}
-    ${api_response}    post request    bigip-icontrol-post-tokenauth   ${api_uri}    headers=${api_headers}    json=${api_payload}
+    ${api_response}    POST On Session    bigip-icontrol-post-tokenauth   ${api_uri}    headers=${api_headers}    json=${api_payload}
     log    HTTP Response Code: ${api_response}
     ${api_response.json}    to json    ${api_response.content}
     log    ${api_response.json}    formatter=repr
@@ -102,7 +102,7 @@ BIG-IP iControl TokenAuth PUT
     log    iControl PUT Variables: HOST: ${bigip_host} URI: ${api_uri} PAYLOAD: ${api_payload} AUTH-TOKEN: ${api_token}
     RequestsLibrary.Create Session    bigip-icontrol-put-tokenauth    https://${bigip_host}
     &{api_headers}    Create Dictionary    Content-type=application/json    X-F5-Auth-Token=${api_token}
-    ${api_response}    put request    bigip-icontrol-put-tokenauth   ${api_uri}    headers=${api_headers}    json=${api_payload}
+    ${api_response}    PUT On Session    bigip-icontrol-put-tokenauth   ${api_uri}    headers=${api_headers}    json=${api_payload}
     log    HTTP Response Code: ${api_response}
     ${api_response.json}    to json    ${api_response.content}
     log    ${api_response.json}    formatter=repr
@@ -115,7 +115,7 @@ BIG-IP iControl TokenAuth PATCH
     log    iControl PATCH Variables: HOST: ${bigip_host} URI: ${api_uri} PAYLOAD: ${api_payload} AUTH-TOKEN: ${api_token}
     RequestsLibrary.Create Session    bigip-icontrol-patch-tokenauth    https://${bigip_host}
     &{api_headers}    Create Dictionary    Content-type=application/json    X-F5-Auth-Token=${api_token}
-    ${api_response}    patch request    bigip-icontrol-patch-tokenauth   ${api_uri}    headers=${api_headers}    json=${api_payload}
+    ${api_response}    PATCH On Session    bigip-icontrol-patch-tokenauth   ${api_uri}    headers=${api_headers}    json=${api_payload}
     log    HTTP Response Code: ${api_response}
     ${api_response.json}    to json    ${api_response.content}
     log    ${api_response.json}    formatter=repr
@@ -141,7 +141,7 @@ BIG-IP iControl BasicAuth GET
     log    iControl GET Variables: HOST: ${bigip_host} URI: ${api_uri}
     RequestsLibrary.Create Session    bigip-icontrol-get-basicauth    https://${bigip_host}    auth=${api_auth}
     &{api_headers}    Create Dictionary    Content-type=application/json
-    ${api_response}    get request    bigip-icontrol-get-basicauth   ${api_uri}    headers=${api_headers}
+    ${api_response}    GET On Session    bigip-icontrol-get-basicauth   ${api_uri}    headers=${api_headers}
     log    HTTP Response Code: ${api_response}
     ${api_response.json}    to json    ${api_response.content}
     log    ${api_response.json}    formatter=repr
@@ -155,7 +155,7 @@ BIG-IP iControl BasicAuth POST
     log    iControl POST Variables: HOST: ${bigip_host} URI: ${api_uri} PAYLOAD: ${api_payload}
     RequestsLibrary.Create Session    bigip-icontrol-post-basicauth    https://${bigip_host}		auth=${api_auth}
     &{api_headers}    Create Dictionary    Content-type=application/json
-    ${api_response}    post request    bigip-icontrol-post-basicauth   ${api_uri}    headers=${api_headers}    json=${api_payload}
+    ${api_response}    POST On Session    bigip-icontrol-post-basicauth   ${api_uri}    headers=${api_headers}    json=${api_payload}
     log    HTTP Response Code: ${api_response}
     ${api_response.json}    to json    ${api_response.content}
     log    ${api_response.json}    formatter=repr
@@ -169,7 +169,7 @@ BIG-IP iControl BasicAuth POST without Verification
     log    iControl POST Variables: HOST: ${bigip_host} URI: ${api_uri} PAYLOAD: ${api_payload}
     RequestsLibrary.Create Session    bigip-icontrol-post-basicauth    https://${bigip_host}		auth=${api_auth}
     &{api_headers}    Create Dictionary    Content-type=application/json
-    ${api_response}    post request    bigip-icontrol-post-basicauth   ${api_uri}    headers=${api_headers}    json=${api_payload}
+    ${api_response}    POST On Session    bigip-icontrol-post-basicauth   ${api_uri}    headers=${api_headers}    json=${api_payload}
     [Teardown]    Delete All Sessions
     [Return]
 
@@ -180,7 +180,7 @@ BIG-IP iControl BasicAuth PUT
     log    iControl PUT Variables: HOST: ${bigip_host} URI: ${api_uri} PAYLOAD: ${api_payload}
     RequestsLibrary.Create Session    bigip-icontrol-put-basicauth    https://${bigip_host}		auth=${api_auth}
     &{api_headers}    Create Dictionary    Content-type=application/json
-    ${api_response}    put request    bigip-icontrol-put-basicauth   ${api_uri}    headers=${api_headers}    json=${api_payload}
+    ${api_response}    PUT On Session    bigip-icontrol-put-basicauth   ${api_uri}    headers=${api_headers}    json=${api_payload}
     log    HTTP Response Code: ${api_response}
     ${api_response.json}    to json    ${api_response.content}
     log    ${api_response.json}    formatter=repr
@@ -194,7 +194,7 @@ BIG-IP iControl BasicAuth PATCH
     log    iControl PATCH Variables: HOST: ${bigip_host} URI: ${api_uri} PAYLOAD: ${api_payload}
     RequestsLibrary.Create Session    bigip-icontrol-patch-basicauth    https://${bigip_host}		auth=${api_auth}
     &{api_headers}    Create Dictionary    Content-type=application/json
-    ${api_response}    patch request    bigip-icontrol-patch-basicauth   ${api_uri}    headers=${api_headers}    json=${api_payload}
+    ${api_response}    PATCH On Session    bigip-icontrol-patch-basicauth   ${api_uri}    headers=${api_headers}    json=${api_payload}
     log    HTTP Response Code: ${api_response}
     ${api_response.json}    to json    ${api_response.content}
     log    ${api_response.json}    formatter=repr
@@ -222,7 +222,7 @@ BIG-IP iControl NoAuth GET
     return from keyword if    "${api_uri}" == "${EMPTY}"
     RequestsLibrary.Create Session    bigip-icontrol-get-noauth    https://${bigip_host}
     &{api_headers}    Create Dictionary    Content-type=application/json
-    ${api_response}    get request    bigip-icontrol-get-noauth   ${api_uri}    headers=${api_headers}
+    ${api_response}    GET On Session    bigip-icontrol-get-noauth   ${api_uri}    headers=${api_headers}
     log    HTTP Response Code: ${api_response}
     ${api_response.json}    to json    ${api_response.content}
     log    ${api_response.json}    formatter=repr
@@ -239,7 +239,7 @@ BIG-IP iControl NoAuth POST
     return from keyword if    ${payload_length} == 0
     RequestsLibrary.Create Session    bigip-icontrol-post-noauth    https://${bigip_host}
     &{api_headers}    Create Dictionary    Content-type=application/json
-    ${api_response}    post request    bigip-icontrol-post-noauth   ${api_uri}    headers=${api_headers}    json=${api_payload}
+    ${api_response}    POST On Session    bigip-icontrol-post-noauth   ${api_uri}    headers=${api_headers}    json=${api_payload}
     log    HTTP Response Code: ${api_response}
     ${api_response.json}    to json    ${api_response.content}
     log    ${api_response.json}    formatter=repr
@@ -256,7 +256,7 @@ BIG-IP iControl NoAuth PUT
     return from keyword if    ${payload_length} == 0
     RequestsLibrary.Create Session    bigip-icontrol-put-noauth    https://${bigip_host}
     &{api_headers}    Create Dictionary    Content-type=application/json
-    ${api_response}    put request    bigip-icontrol-put-noauth   ${api_uri}    headers=${api_headers}    json=${api_payload}
+    ${api_response}    PUT On Session    bigip-icontrol-put-noauth   ${api_uri}    headers=${api_headers}    json=${api_payload}
     log    HTTP Response Code: ${api_response}
     ${api_response.json}    to json    ${api_response.content}
     log    ${api_response.json}    formatter=repr
@@ -269,7 +269,7 @@ BIG-IP iControl NoAuth PATCH
     log    iControl PATCH Variables: HOST: ${bigip_host} URI: ${api_uri} PAYLOAD: ${api_payload}
     RequestsLibrary.Create Session    bigip-icontrol-patch-noauth    https://${bigip_host}
     &{api_headers}    Create Dictionary    Content-type=application/json
-    ${api_response}    patch request    bigip-icontrol-patch-noauth   ${api_uri}    headers=${api_headers}    json=${api_payload}
+    ${api_response}    PATCH On Session    bigip-icontrol-patch-noauth   ${api_uri}    headers=${api_headers}    json=${api_payload}
     log    HTTP Response Code: ${api_response}
     ${api_response.json}    to json    ${api_response.content}
     log    ${api_response.json}    formatter=repr
