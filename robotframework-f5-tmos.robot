@@ -3123,11 +3123,11 @@ Save a UCS on the BIG-IP
     [Return]    ${api_response}
 
 Load a UCS on the BIG-IP
-    [Documentation]  Loads a configuration backup to a BIG-IP (https://support.f5.com/csp/article/K4423)
+    [Documentation]  Loads a configuration backup to a BIG-IP (https://support.f5.com/csp/article/K4423) *** MAY TIMEOUT DUE TO SERVICE RESTART WHEN API CALL IS MADE - THIS IS EXPECTED ***
     [Arguments]    ${bigip_host}   ${bigip_username}    ${bigip_password}    ${ucs_filename}
     ${api_payload}    create dictionary    command=load    name=${ucs_filename}
     ${api_uri}    set variable    /mgmt/tm/sys/ucs
-    ${api_response}    Run Keyword And Expect Error    BIG-IP iControl BasicAuth POST without Verification     bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
+    ${api_response}    Run Keyword And Continue On Failure    BIG-IP iControl BasicAuth POST without Verification     bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
     [Return]    ${api_response}
 
 ################
