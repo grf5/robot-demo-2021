@@ -315,7 +315,7 @@ Create BIG-IP Non-Floating Self-IP Addresses
        Verify BIG-IP Non-floating Self IP Address    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    name=${self_ip_name}    address=${self_ip_address}    partition=${self_ip_partition}
     END
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    ${SELF_IP_LIST}    to json    ${SECONDARY_LOCAL_SELF_IP_LIST}
+    ${SELF_IP_LIST}    convert string to json    ${SECONDARY_LOCAL_SELF_IP_LIST}
     FOR    ${current_self_address}   IN    @{SELF_IP_LIST}
        ${self_ip_name}    get from dictionary    ${current_self_address}    name
        ${self_ip_address}    get from dictionary    ${current_self_address}    address
@@ -329,7 +329,7 @@ Create BIG-IP Non-Floating Self-IP Addresses
 # Create BIG-IP Floating Self-IP Addresses
 #     [Documentation]  Creates the floating IP addresses on the BIG-IP, which are IPs that follow the active device in a cluster
 #     set log level  trace
-#     ${SELF_IP_LIST}    to json    ${PRIMARY_FLOATING_SELF_IP_LIST}
+#     ${SELF_IP_LIST}    convert string to json    ${PRIMARY_FLOATING_SELF_IP_LIST}
 #     FOR    ${current_self_address}   IN    @{SELF_IP_LIST}
 #        ${self_ip_name}    get from dictionary    ${current_self_address}    name
 #        ${self_ip_address}    get from dictionary    ${current_self_address}    address
@@ -340,7 +340,7 @@ Create BIG-IP Non-Floating Self-IP Addresses
 #        Verify BIG-IP Floating Self IP Address    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    name=${self_ip_name}    address=${self_ip_address}    partition=${self_ip_partition}
 #     END
 #     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-#     ${SELF_IP_LIST}    to json    ${SECONDARY_FLOATING_SELF_IP_LIST}
+#     ${SELF_IP_LIST}    convert string to json    ${SECONDARY_FLOATING_SELF_IP_LIST}
 #     FOR    ${current_self_address}   IN    @{SELF_IP_LIST}
 #        ${self_ip_name}    get from dictionary    ${current_self_address}    name
 #        ${self_ip_address}    get from dictionary    ${current_self_address}    address
@@ -354,13 +354,13 @@ Create BIG-IP Non-Floating Self-IP Addresses
 Create Default Static Routes on the BIG-IP
     [Documentation]  Creates default static routes on the BIG-IP
     set log level  trace
-    ${PRIMARY_STATIC_DEFAULT_ROUTE}    to json    ${PRIMARY_STATIC_DEFAULT_ROUTE}
+    ${PRIMARY_STATIC_DEFAULT_ROUTE}    convert string to json    ${PRIMARY_STATIC_DEFAULT_ROUTE}
     ${route_partition}    get from dictionary    ${PRIMARY_STATIC_DEFAULT_ROUTE}    partition
     ${route_gateway}    get from dictionary    ${PRIMARY_STATIC_DEFAULT_ROUTE}    gw
     ${route_description}    get from dictionary    ${PRIMARY_STATIC_DEFAULT_ROUTE}    description
     Create Static Default Route Configuration on the BIG-IP    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    partition=${route_partition}    gateway=${route_gateway}    description=${route_description}
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    ${SECONDARY_STATIC_DEFAULT_ROUTE}    to json    ${SECONDARY_STATIC_DEFAULT_ROUTE}
+    ${SECONDARY_STATIC_DEFAULT_ROUTE}    conver string to json    ${SECONDARY_STATIC_DEFAULT_ROUTE}
     ${route_partition}    get from dictionary    ${SECONDARY_STATIC_DEFAULT_ROUTE}    partition
     ${route_gateway}    get from dictionary    ${SECONDARY_STATIC_DEFAULT_ROUTE}    gw
     ${route_description}    get from dictionary    ${SECONDARY_STATIC_DEFAULT_ROUTE}    description
