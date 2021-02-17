@@ -1,6 +1,7 @@
 *** Settings ***
 Documentation    This suite configures the BIG-IPs in preparation for testing
 Resource    robotframework-f5-tmos.robot
+Library    JSONLibrary
 
 *** Variables ***
 ${PRIMARY_HOSTNAME}                     %{PRIMARY_HOSTNAME}
@@ -81,7 +82,7 @@ Perform BIG-IP Post-Provision Check
 Verify Module Provisioning
     [Documentation]  Verifies that the software modules are provisioned as expected on the BIG-IP
     set log level  trace
-    ${module_list}    evaluate    json.dumps(${MODULE_PROVISIONING})
+    ${module_list}    ${MODULE_PROVISIONING}
     FOR    ${current_module}    IN    @{module_list}
         Verify All BIG-IP Ready States    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}
         Check for BIG-IP Services Waiting to Restart    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}
@@ -90,7 +91,7 @@ Verify Module Provisioning
         Verify Module is Provisioned  bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    module=${module}
     END
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    ${module_list}    evaluate    json.dumps(${MODULE_PROVISIONING})    json
+    ${module_list}    convert string to json    ${MODULE_PROVISIONING}
     FOR    ${current_module}    IN    @{module_list}
         Verify All BIG-IP Ready States    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
         Check for BIG-IP Services Waiting to Restart    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
@@ -134,7 +135,7 @@ Verify BIG-IP Hostnames
 Create Management Route for NTP Servers
     [Documentation]  Routes NTP traffic through the management network
     set log level  trace
-    ${defined_ntp_server_list}    evaluate    json.dumps(${NTP_SERVER_LIST})    json
+    ${defined_ntp_server_list}    convert string to json    ${NTP_SERVER_LIST}
     FOR    ${current_ntp_server}    IN    @{defined_ntp_server_list}
         Create Management Network Route    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    name=${current_ntp_server}    network=${current_ntp_server}    gateway=${MGMT_NETWORK_GATEWAY}
     END
@@ -285,7 +286,7 @@ Gather Interface Media Capabilities
 Configure F5 BIG-IP Data Plane Interfaces
     [Documentation]  Configures the BIG-IP interfaces (not including the management interface)
     set log level  trace
-    ${INTERFACE_LIST}    evaluate    json.dumps(${PRIMARY_INTERFACE_DETAILS})    json
+    ${INTERFACE_LIST}    convert string to json    ${PRIMARY_INTERFACE_DETAILS}
     FOR    ${current_interface}    IN    @{INTERFACE_LIST}
        ${current_interface_name}    get from dictionary    ${current_interface}    name
        ${current_interface_description}    get from dictionary    ${current_interface}    description
@@ -297,7 +298,7 @@ Configure F5 BIG-IP Data Plane Interfaces
        run keyword if    '${current_interface_lldpadmin}'=='disable'   Disable BIG-IP LLDP on Interface    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}   interface_name=${current_interface_name}
     END
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    ${INTERFACE_LIST}    evaluate    json.dumps(${SECONDARY_INTERFACE_DETAILS})    json
+    ${INTERFACE_LIST}    convert string to json    ${SECONDARY_INTERFACE_DETAILS}
     FOR    ${current_interface}    IN    @{INTERFACE_LIST}
        ${current_interface_name}    get from dictionary    ${current_interface}    name
        ${current_interface_description}    get from dictionary    ${current_interface}    description
@@ -312,7 +313,7 @@ Configure F5 BIG-IP Data Plane Interfaces
 Create BIG-IP Non-Floating Self-IP Addresses
     [Documentation]  Creates the non-floating self-IP addresses (similar to device-local IPs in HSRP/VRRP)
     set log level  trace
-    ${SELF_IP_LIST}    evaluate    json.dumps(${PRIMARY_LOCAL_SELF_IP_LIST})    json
+    ${SELF_IP_LIST}    convert string to json    ${PRIMARY_LOCAL_SELF_IP_LIST}
     FOR    ${current_self_address}   IN    @{SELF_IP_LIST}
        ${self_ip_name}    get from dictionary    ${current_self_address}    name
        ${self_ip_address}    get from dictionary    ${current_self_address}    address

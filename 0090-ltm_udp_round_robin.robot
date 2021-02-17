@@ -54,7 +54,7 @@ Verify UDP DNS Round-Robin Test Pool
 Add the UDP DNS Round-Robin Test Nodes to Pool
     [Documentation]  Populates the pool object with the pool members (also referred to as nodes or back-end servers)
     set log level  trace
-    ${UDP_ROUND_ROBIN_POOL_MEMBERS}    evaluate    json.dumps(${UDP_ROUND_ROBIN_POOL_MEMBERS})    json
+    ${UDP_ROUND_ROBIN_POOL_MEMBERS}    convert string to json    ${UDP_ROUND_ROBIN_POOL_MEMBERS})    json
     FOR    ${current_pool_member}    IN    @{UDP_ROUND_ROBIN_POOL_MEMBERS}
        ${pool_member_name}    get from dictionary    ${current_pool_member}    address
        ${pool_member_address}    get from dictionary    ${current_pool_member}    address

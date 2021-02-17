@@ -61,7 +61,6 @@ export UDP_ROUND_ROBIN_POOL_MONITOR='/Common/gateway_icmp'
 export NTP_SERVER_LIST='["0.pool.ntp.org","1.pool.ntp.org"]'
 
 # sys provision
-export MODULE_PROVISIONING='[{"module":"ltm","provisioningLevel":"nominal"},{"module":"gtm","provisioningLevel":"nominal"}]'
 
 # sys snmp
 export SNMPv2_TRAP_HOST='{"v2Traps":[{"name":"ROBOT_FRAMEWORK_HOST","host":"$ROBOT_HOST_IP","community":"robot"}]}'

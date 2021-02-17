@@ -21,12 +21,12 @@ Test Static Routing
   [Documentation]  Remove default Gateway from device configuration. Choose the IP address or subnet that is not reachable from device. Create Static route towards chosen IP. Test that the connection can be established. Remove the route and check that the destination is unreachable. 
   set log level  trace
   Display BIG-IP Static Route Configuration   bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}
-  ${default_route}    evaluate    json.dumps(${PRIMARY_STATIC_DEFAULT_ROUTE})
+  ${default_route}    convert string to json    ${PRIMARY_STATIC_DEFAULT_ROUTE})
   ${default_gateway}    get from dictionary    ${default_route}    gw
   wait until keyword succeeds    4x    15 seconds    Ping Host from BIG-IP    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    host=${default_gateway}
   Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
   Display BIG-IP Static Route Configuration   bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
-  ${default_route}    evaluate    json.dumps(${SECONDARY_STATIC_DEFAULT_ROUTE})
+  ${default_route}    convert string to json    ${SECONDARY_STATIC_DEFAULT_ROUTE})
   ${default_gateway}    get from dictionary    ${default_route}    gw
   wait until keyword succeeds    4x    15 seconds    Ping Host from BIG-IP    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    host=${default_gateway}
 
