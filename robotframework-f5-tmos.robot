@@ -2746,8 +2746,7 @@ Verify All BIG-IP Ready States
     ${api_uri}    set variable    /mgmt/tm/sys/ready    
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}
     Should Be Equal As Strings    ${api_response.status_code}    200
-    ${api_response_dict}    set variable    ${api_response.json}
-    ${ready_states}    get from dictionary    ${api_response_dict}    entries
+    ${ready_states}    get from dictionary    ${api_response.json}    entries
     ${ready_states}    get from dictionary    ${ready_states}    https://localhost/mgmt/tm/sys/ready/0
     ${ready_states}    get from dictionary    ${ready_states}    nestedStats
     ${ready_states}    get from dictionary    ${ready_states}    entries
