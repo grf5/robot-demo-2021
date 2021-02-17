@@ -23,7 +23,7 @@ Perform BIG-IP Quick Check
     Wait until Keyword Succeeds    12x    15 seconds    Check for BIG-IP Services Waiting to Restart    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
 
 Load the BIG-IP Configuration with Base Provisioning
-    [Documentation]  Loads the UCS that has a default configuration but with AFM and GTM provisioned to nominal level (saves time when restarting during development)
+    [Documentation]  Loads the UCS that has licensing and mgmt only
     set log level  trace
     Load a UCS on the BIG-IP    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    ucs_filename=${PRIMARY_BASE_UCS_FILENAME}
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
