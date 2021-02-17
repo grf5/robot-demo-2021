@@ -182,8 +182,6 @@ export BGP_SECONDARY_SINGLE_CONTEXT_IPv6_REDIST_CONNECTED_ROUTE_MAP_NAME='IPv6Co
 export BGP_SECONDARY_SINGLE_CONTEXT_IPv6_REDIST_STATIC_ROUTE_MAP_NAME='IPv6StaticRM'
 export BGP_SECONDARY_SINGLE_CONTEXT_IPv6_PEERS='[{"neighbor":"2001:200:0:4401::1","peer-group":"IPv6NorthPeerGroup","description":"Nexus","expected_advertised_routes":["2001:200:0:4401::/64"],"device_management_ip":"10.240.73.201","device_username":"netqa","device_password":"RobotR0cks","local_peering_ip":"2001:200:0:4401::6","peer_vrf":"SPOCSLBTestbedEnv4_179","peer_vdc":"dcr01sqsccc"},{"neighbor":"2001:200:0:4401::2","peer-group":"IPv6NorthPeerGroup","description":"Nexus","expected_advertised_routes":["2001:200:0:4401::/64"],"device_management_ip":"10.240.73.202","device_username":"netqa","device_password":"RobotR0cks","local_peering_ip":"2001:200:0:4401::6","peer_vrf":"SPOCSLBTestbedEnv4_179","peer_vdc":"dcr02sqsccc"}]'
 export BGP_SECONDARY_SINGLE_CONTEXT_IPv6_PREFIX_LISTS='[{"name":"IPv6ConnectedRoutesPL","entries":[{"sequence":"10","action":"permit","subnetString":"2001:200:0:4401::/64 le 128"}]},{"name":"IPv6DefaultPL","entries":[{"sequence":"10","action":"permit","subnetString":"::/0"}]},{"name":"IPv6StaticsPL","entries":[{"sequence":"10","action":"permit","subnetString":"2001:200:0:4404::/64"}]},{"name":"IPv6VirtualsPL","entries":[{"sequence":"10","action":"permit","subnetString":"2001:200:0:4201::/64 le 128"}]}]'
-#test=DCNETARCH-SLB-0120_BGP_in_a_single_routing_context; $robot_fullpath --noncritical non_critical  --outputdir ./reports -o $test.xml -l $test.log.html -r $test.report.html ./bin/$test.robot
-
 
 # Delete existing reports
 rm -f ./reports/*.html
@@ -195,7 +193,7 @@ printf "####################################\n"
 start_time=`date`
 
 # Execute tests in order via this array
-tests=('reset_environment' 'pretest_configuration' 'baseline_testing')
+tests=('pretest_configuration' 'baseline_testing' 'monitoring' 'network' 'administration' 'services')
 
 # Cycle through list of tests and create a per-test report in /reports
 for current_test in "${tests[@]}"
