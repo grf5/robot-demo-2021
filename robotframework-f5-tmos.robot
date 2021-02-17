@@ -2530,6 +2530,7 @@ Create Management Network Route
 Configure NTP Server List
     [Documentation]  Declaratively sets the list of NTP servers on a BIG-IP (https://support.f5.com/csp/article/K13380)
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${ntp_server_list}
+    ${ntp_server_list_payload}    convert string to json    ${ntp_server_list}
     ${api_payload}    create dictionary    servers    ${ntp_server_list_payload}
     ${api_uri}    set variable    /mgmt/tm/sys/ntp
     ${api_response}    BIG-IP iControl BasicAuth PATCH  bigip_host=${bigip_host}    bigip_username=${bigip_username}   bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
