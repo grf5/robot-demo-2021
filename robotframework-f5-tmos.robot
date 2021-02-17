@@ -6,6 +6,7 @@ Library    RequestsLibrary
 Library    String
 Library    SnmpLibrary
 Library    SSHLibrary  30 seconds
+Library    Json
 
 *** Keywords ***
 
@@ -2315,7 +2316,7 @@ Retrieve Firewall Address List
 Add Rule to Firewall Policy
     [Documentation]  Creates a new rule in an AFM firewall policy (https://techdocs.f5.com/kb/en-us/products/big-ip-afm/manuals/product/network-firewall-policies-implementations-13-0-0.html)
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${policy_name}    ${rule}    ${partition}=Common
-    ${rule}    to json    ${rule}
+    ${rule}    Convert to JSON    ${rule}
     ${api_uri}    set variable    /mgmt/tm/security/firewall/policy/~${partition}~${policy_name}/rules
     ${api_payload}    set variable    ${rule}
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
@@ -2498,9 +2499,9 @@ Enable BIG-IP Management Interface DHCP
 Create BIG-IP HA Group
     [Documentation]  Creates an HA group on the BIG-IP, which is a group of devices and objects that are used to create an HA score for score-based HA (See https://devcentral.f5.com/s/articles/configure-ha-groups-on-big-ip-26678)
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${ha_group_name}    ${active_bonus}=10    ${clusters}=[]    ${description}="Created by Robot Framework"    ${state}=enabled     ${pools}=[]    ${trunks}=[]    
-    ${pools}    to json    ${pools}
-    ${clusters}    to json    ${clusters}
-    ${trunks}    to json    ${trunks}
+    ${pools}    convert to json    ${pools}
+    ${clusters}    convert to json    ${clusters}
+    ${trunks}    convert to json    ${trunks}
     ${api_payload}    create dictionary    kind=tm:sys:ha-group:ha-groupstate    name=${ha_group_name}    activeBonus=${${active_bonus}}    description=${description}    pools=${pools}    clusters=${clusters}    trunks=${trunks}    
     run keyword if    '${state}' == 'disabled'    set to dictionary    ${api_payload}    disabled=${true}
     run keyword if    '${state}' == 'enabled'    set to dictionary    ${api_payload}    enabled=${true}
@@ -2529,7 +2530,7 @@ Create Management Network Route
 Configure NTP Server List
     [Documentation]  Declaratively sets the list of NTP servers on a BIG-IP (https://support.f5.com/csp/article/K13380)
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${ntp_server_list}
-    ${ntp_server_list_payload}    to json    ${ntp_server_list}
+    ${ntp_server_list_payload}    convert to json    ${ntp_server_list}
     ${api_payload}    create dictionary    servers    ${ntp_server_list_payload}
     ${api_uri}    set variable    /mgmt/tm/sys/ntp
     ${api_response}    BIG-IP iControl BasicAuth PATCH  bigip_host=${bigip_host}    bigip_username=${bigip_username}   bigip_password=${bigip_password}    api_uri=${api_uri}    api_payload=${api_payload}
