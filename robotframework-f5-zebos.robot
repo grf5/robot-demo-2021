@@ -95,7 +95,7 @@ Show Route Domain BGP Status
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${route_domain_id}=0
     ${bgp_commands}    set variable    show ip bgp,show bgp,show bgp neighbors,show bgp ipv4 neighbors,show bgp ipv6 neighbors
     ${api_response}    Run BGP Commands on BIG-IP    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    commands=${bgp_commands}    route_domain_id=${route_domain_id}
-    ${bgp_status}    get from dictionary    ${api_response.json}    commandResult
+    ${bgp_status}    get from dictionary    ${api_response.json()}    commandResult
     [Return]    ${bgp_status}
 
 Retrieve BGP State for Peer
@@ -103,7 +103,7 @@ Retrieve BGP State for Peer
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${peer_address}    ${route_domain_id}=0
     ${bgp_commands}    set variable    show ip bgp neighbors ${peer_address}
     ${api_response}    Run BGP Commands on BIG-IP    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    commands=${bgp_commands}    route_domain_id=${route_domain_id}
-    ${bgp_state}       get from dictionary    ${api_response.json}    commandResult
+    ${bgp_state}       get from dictionary    ${api_response.json()}    commandResult
     ${bgp_state}       fetch from right    ${bgp_state}    BGP state =${SPACE}
     ${bgp_state}       fetch from left    ${bgp_state}    ,
     [Return]    ${bgp_state}
@@ -113,7 +113,7 @@ Retrieve BGP Peer Advertised IPv4 Routes
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${peer_address}    ${route_domain_id}=0
     ${bgp_commands}    set variable    show ip bgp neighbors ${peer_address} advertised-routes
     ${api_response}    Run BGP Commands on BIG-IP    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    commands=${bgp_commands}    route_domain_id=${route_domain_id}
-    ${peer_adv_routes_raw}    get from dictionary    ${api_response.json}    commandResult
+    ${peer_adv_routes_raw}    get from dictionary    ${api_response.json()}    commandResult
     ${peer_adv_routes_raw}    get regexp matches    ${peer_adv_routes_raw}    (?:[0-9]{1,3}\.){3}[0-9]{1,3}\/[0-9]{1,2}
     ${peer_adv_routes}    create list
     FOR   ${current_adv_route}   IN    @{peer_adv_routes_raw}
@@ -131,7 +131,7 @@ Retrieve BGP Peer Advertised IPv4 Routes in CIDR Format
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${peer_address}    ${route_domain_id}=0
     ${bgp_commands}    set variable    show ip bgp neighbors ${peer_address} advertised-routes
     ${api_response}    Run BGP Commands on BIG-IP    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    commands=${bgp_commands}    route_domain_id=${route_domain_id}
-    ${peer_adv_routes}    get from dictionary    ${api_response.json}    commandResult
+    ${peer_adv_routes}    get from dictionary    ${api_response.json()}    commandResult
     ${peer_adv_routes}    get regexp matches    ${peer_adv_routes}    (?:[0-9]{1,3}\.){3}[0-9]{1,3}\/[0-9]{1,2}
     [Return]    ${peer_adv_routes}
     
@@ -140,7 +140,7 @@ Retrieve BGP Peer Advertised IPv6 Routes
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${peer_address}    ${route_domain_id}=0
     ${bgp_commands}    set variable    show bgp ipv6 neighbors ${peer_address} advertised-routes
     ${api_response}    Run BGP Commands on BIG-IP    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    commands=${bgp_commands}    route_domain_id=${route_domain_id}
-    ${peer_adv_routes}    get from dictionary    ${api_response.json}    commandResult
+    ${peer_adv_routes}    get from dictionary    ${api_response.json()}    commandResult
     ${peer_adv_routes}    get regexp matches    ${peer_adv_routes}    (([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))\/[0-9]{1,3}
     [Return]    ${peer_adv_routes}
 
@@ -170,7 +170,7 @@ Verify ZebOS Logging Destination
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${route_domain_id}=0    ${log_file}=/var/log/zebos.log
     ${bgp_commands}    set variable    show running-config | grep -e "^ log file /"
     ${api_response}    Run BGP Commands on BIG-IP    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    commands=${bgp_commands}    route_domain_id=${route_domain_id}
-    ${log_file_configuration}    get from dictionary    ${api_response.json}    commandResult
+    ${log_file_configuration}    get from dictionary    ${api_response.json()}    commandResult
     should contain    ${log_file_configuration}    log file ${log_file}
     [Return]    ${log_file_configuration}
     
@@ -422,7 +422,7 @@ Retrieve BGP AS Configuration
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${local_as_number}    ${route_domain_id}=0
     ${bgp_commands}    set variable    show run bgp | sed -n '/router bgp ${local_as_number}/,/^!/p'
     ${api_response}    Run BGP Commands on BIG-IP    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    commands=${bgp_commands}    route_domain_id=${route_domain_id}
-    ${bgp_configuration}    get from dictionary    ${api_response.json}    commandResult
+    ${bgp_configuration}    get from dictionary    ${api_response.json()}    commandResult
     [Return]    ${bgp_configuration}
 
 Retrieve BGP AS Global Configuration
@@ -430,7 +430,7 @@ Retrieve BGP AS Global Configuration
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${local_as_number}    ${route_domain_id}=0
     ${bgp_commands}    set variable    show running-config bgp | sed -n '/router bgp ${local_as_number}/,/^ \!/p' 
     ${api_response}    Run BGP Commands on BIG-IP    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    commands=${bgp_commands}    route_domain_id=${route_domain_id}
-    ${bgp_configuration}    get from dictionary    ${api_response.json}    commandResult
+    ${bgp_configuration}    get from dictionary    ${api_response.json()}    commandResult
     [Return]    ${bgp_configuration}
 
 Retrieve BGP AS IPv4 Address-Family Configuration
@@ -438,7 +438,7 @@ Retrieve BGP AS IPv4 Address-Family Configuration
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${local_as_number}    ${route_domain_id}=0
     ${bgp_commands}    set variable    show running-config bgp | sed -n '/router bgp ${local_as_number}/,/^\!/p' | sed -n '/^ address-family ipv4/,/exit-address-family/p' 
     ${api_response}    Run BGP Commands on BIG-IP    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    commands=${bgp_commands}    route_domain_id=${route_domain_id}
-    ${bgp_configuration}    get from dictionary    ${api_response.json}    commandResult
+    ${bgp_configuration}    get from dictionary    ${api_response.json()}    commandResult
     [Return]    ${bgp_configuration}
 
 Retrieve BGP AS IPv6 Address-Family Configuration
@@ -446,7 +446,7 @@ Retrieve BGP AS IPv6 Address-Family Configuration
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${local_as_number}    ${route_domain_id}=0
     ${bgp_commands}    set variable    show running-config bgp | sed -n '/router bgp ${local_as_number}/,/^\!/p' | sed -n '/^ address-family ipv6/,/exit-address-family/p' 
     ${api_response}    Run BGP Commands on BIG-IP    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    commands=${bgp_commands}    route_domain_id=${route_domain_id}
-    ${bgp_configuration}    get from dictionary    ${api_response.json}    commandResult
+    ${bgp_configuration}    get from dictionary    ${api_response.json()}    commandResult
     [Return]    ${bgp_configuration}
 
 Verify BGP IPv4 Neighbor Peer-Group
@@ -608,7 +608,7 @@ Verify ZebOS Static Route on the BIG-IP
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${network}    ${gateway}    ${route_domain_id}=0
     ${bgp_commands}    set variable    show running-config ip route
     ${api_response}    Run BGP Commands on BIG-IP    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    commands=${bgp_commands}    route_domain_id=${route_domain_id}
-    ${bgp_configuration}    get from dictionary    ${api_response.json}    commandResult
+    ${bgp_configuration}    get from dictionary    ${api_response.json()}    commandResult
     should contain    ${bgp_configuration}    ip route ${network} ${gateway}
     [Return]    ${bgp_configuration}
 
@@ -634,7 +634,7 @@ Verify IPv4 Prefix List
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${prefix_list_name}    ${entries_list}    ${route_domain_id}=0
     ${bgp_commands}    set variable    show running-config prefix-list
     ${api_response}    Run BGP Commands on BIG-IP    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    commands=${bgp_commands}    route_domain_id=${route_domain_id}
-    ${prefix_list_configuration}    get from dictionary    ${api_response.json}    commandResult
+    ${prefix_list_configuration}    get from dictionary    ${api_response.json()}    commandResult
     FOR    ${current_entry}    IN    @{entries_list}
         ${sequence}    get from dictionary    ${current_entry}    sequence    
         ${action}    get from dictionary    ${current_entry}    action
@@ -658,7 +658,7 @@ Verify IPv6 Prefix List
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${prefix_list_name}    ${entries_list}    ${route_domain_id}=0
     ${bgp_commands}    set variable    show running-config ipv6 prefix-list
     ${api_response}    Run BGP Commands on BIG-IP    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    commands=${bgp_commands}    route_domain_id=${route_domain_id}
-    ${prefix_list_configuration}    get from dictionary    ${api_response.json}    commandResult
+    ${prefix_list_configuration}    get from dictionary    ${api_response.json()}    commandResult
     FOR    ${current_entry}    IN    @{entries_list}
         ${sequence}    get from dictionary    ${current_entry}    sequence    
         ${action}    get from dictionary    ${current_entry}    action
@@ -682,7 +682,7 @@ Verify ZebOS Route-Map
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${route_map_name}    ${route_map_entries_dictionary}    ${route_domain_id}=0
     ${bgp_commands}    set variable    show running-config route-map
     ${api_response}    Run BGP Commands on BIG-IP    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    commands=${bgp_commands}    route_domain_id=${route_domain_id}
-    ${route_map_configuration}    get from dictionary    ${api_response.json}    commandResult
+    ${route_map_configuration}    get from dictionary    ${api_response.json()}    commandResult
     FOR    ${current_entry}    IN    @{route_map_entries_dictionary}
         ${sequence}    get from dictionary    ${current_entry}    sequence    
         ${action}    get from dictionary    ${current_entry}    action
@@ -709,41 +709,41 @@ Retrieve BGP IPv4 Summary from BIG-IP
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${route_domain_id}    
     ${bgp_commands}    set variable    show bgp ipv4 summary
     ${api_response}    Run BGP Commands on BIG-IP    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    commands=${bgp_commands}    route_domain_id=${route_domain_id}
-    ${command_output}    get from dictionary    ${api_response.json}    commandResult
+    ${command_output}    get from dictionary    ${api_response.json()}    commandResult
     [Return]    ${command_output}
 
 Retrieve BGP IPv6 Summary from BIG-IP
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${route_domain_id}    
     ${bgp_commands}    set variable    show bgp ipv6 summary
     ${api_response}    Run BGP Commands on BIG-IP    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    commands=${bgp_commands}    route_domain_id=${route_domain_id}
-    ${command_output}    get from dictionary    ${api_response.json}    commandResult
+    ${command_output}    get from dictionary    ${api_response.json()}    commandResult
     [Return]    ${command_output}
 
 Retrieve BGP IPv4 Status from BIG-IP
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${route_domain_id}
     ${bgp_commands}    set variable    show ip bgp
     ${api_response}    Run BGP Commands on BIG-IP    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    commands=${bgp_commands}    route_domain_id=${route_domain_id}
-    ${command_output}    get from dictionary    ${api_response.json}    commandResult
+    ${command_output}    get from dictionary    ${api_response.json()}    commandResult
     [Return]    ${command_output}
 
 Retrieve BGP IPv6 Status from BIG-IP
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${route_domain_id}
     ${bgp_commands}    set variable    show bgp ipv6
     ${api_response}    Run BGP Commands on BIG-IP    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    commands=${bgp_commands}    route_domain_id=${route_domain_id}
-    ${command_output}    get from dictionary    ${api_response.json}    commandResult
+    ${command_output}    get from dictionary    ${api_response.json()}    commandResult
     [Return]    ${command_output}
 
 Retrieve ZebOS IPv4 Routing Table from BIG-IP
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${route_domain_id}
     ${bgp_commands}    set variable    show ip route
     ${api_response}    Run BGP Commands on BIG-IP    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    commands=${bgp_commands}    route_domain_id=${route_domain_id}
-    ${command_output}    get from dictionary    ${api_response.json}    commandResult
+    ${command_output}    get from dictionary    ${api_response.json()}    commandResult
     [Return]    ${command_output}
 
 Retrieve ZebOS IPv6 Routing Table from BIG-IP
     [Arguments]    ${bigip_host}    ${bigip_username}    ${bigip_password}    ${route_domain_id}
     ${bgp_commands}    set variable    show ipv6 route
     ${api_response}    Run BGP Commands on BIG-IP    bigip_host=${bigip_host}    bigip_username=${bigip_username}    bigip_password=${bigip_password}    commands=${bgp_commands}    route_domain_id=${route_domain_id}
-    ${command_output}    get from dictionary    ${api_response.json}    commandResult
+    ${command_output}    get from dictionary    ${api_response.json()}    commandResult
     [Return]    ${command_output}
  
