@@ -26,8 +26,8 @@ export SECONDARY_HTTP_USERNAME='admin'
 export SECONDARY_HTTP_PASSWORD='f5r0b0t!'
 
 # Base provisioning UCS (reset to this before test)
-export PRIMARY_BASE_UCS_FILENAME='/var/local/ucs/licensed.ucs'
-export SECONDARY_BASE_UCS_FILENAME='/var/local/ucs/licensed.ucs'
+export PRIMARY_BASE_UCS_FILENAME='/var/local/ucs/provisioned.ucs'
+export SECONDARY_BASE_UCS_FILENAME='/var/local/ucs/provisioned.ucs'
 
 # cm device-group
 export PRIMARY_HA_IP_ADDRESS='10.1.30.4'
