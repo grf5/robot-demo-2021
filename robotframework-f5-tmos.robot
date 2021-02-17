@@ -127,7 +127,7 @@ BIG-IP iControl TokenAuth DELETE
     log    iControl DELETE Variables: HOST: ${bigip_host} URI: ${api_uri} AUTH-TOKEN: ${api_token}
     RequestsLibrary.Create Session    bigip-icontrol-delete-tokenauth    https://${bigip_host}
     &{api_headers}    Create Dictionary    Content-type=application/json    X-F5-Auth-Token=${api_token}
-    ${api_response}    delete request    bigip-icontrol-delete-tokenauth   ${api_uri}    headers=${api_headers}
+    ${api_response}    Delete On Session    bigip-icontrol-delete-tokenauth   ${api_uri}    headers=${api_headers}
     log    HTTP Response Code: ${api_response}
     log    API Response (should be null for successful delete operations): ${api_response.content}
     [Teardown]    Delete All Sessions
@@ -204,7 +204,7 @@ BIG-IP iControl BasicAuth DELETE
     log    iControl DELETE Variables: HOST: ${bigip_host} URI: ${api_uri}
     RequestsLibrary.Create Session    bigip-icontrol-delete-basicauth    https://${bigip_host}		auth=${api_auth}
     &{api_headers}    Create Dictionary    Content-type=application/json
-    ${api_response}    delete request    bigip-icontrol-delete-basicauth   ${api_uri}    headers=${api_headers}
+    ${api_response}    Delete On Session    bigip-icontrol-delete-basicauth   ${api_uri}    headers=${api_headers}
     log    HTTP Response Code: ${api_response}
     log    API Response (should be null for successful delete operations): ${api_response.content}
     [Teardown]    Delete All Sessions
@@ -276,7 +276,7 @@ BIG-IP iControl NoAuth DELETE
     log    iControl DELETE Variables: HOST: ${bigip_host} URI: ${api_uri}
     RequestsLibrary.Create Session    bigip-icontrol-delete-noauth    https://${bigip_host}
     ${api_headers}    Create Dictionary    Content-type=application/json
-    ${api_response}    delete request    bigip-icontrol-delete-noauth   ${api_uri}    headers=${api_headers}
+    ${api_response}    Delete On Session    bigip-icontrol-delete-noauth   ${api_uri}    headers=${api_headers}
     log    HTTP Response Code: ${api_response}
     log    API Response (should be null for successful delete operations): ${api_response.content}
     [Teardown]    Delete All Sessions
