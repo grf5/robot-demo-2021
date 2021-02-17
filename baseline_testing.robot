@@ -620,11 +620,11 @@ Show Route Domain BGP Configuration
     [Documentation]  Records the full ZebOS routing daemon configuration
     set log level  trace
     ${bgp_configuration}    Show Route Domain ZebOS Configuration    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    route_domain_id=${BGP_PRIMARY_SINGLE_CONTEXT_ROUTE_DOMAIN_ID}
-    ${bgp_configuration_text}    get from dictionary    ${bgp_configuration.json}    commandResult
+    ${bgp_configuration_text}    get from dictionary    ${bgp_configuration.json()}    commandResult
     log    ${bgp_configuration_text}
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
     ${bgp_configuration}    Show Route Domain ZebOS Configuration    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    route_domain_id=${BGP_SECONDARY_SINGLE_CONTEXT_ROUTE_DOMAIN_ID}
-    ${bgp_configuration_text}    get from dictionary    ${bgp_configuration.json}    commandResult
+    ${bgp_configuration_text}    get from dictionary    ${bgp_configuration.json()}    commandResult
     log    ${bgp_configuration_text}
 
 Show AS Configuration Sections
@@ -633,16 +633,16 @@ Show AS Configuration Sections
     ${bgp_full_as_config}    Retrieve BGP AS Configuration    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    local_as_number=${BGP_PRIMARY_SINGLE_CONTEXT_IPv4_PEER_GROUP_LOCAL_AS}    route_domain_id=${BGP_PRIMARY_SINGLE_CONTEXT_ROUTE_DOMAIN_ID}
     log    \n**** BGP Full AS Config:\n${bgp_full_as_config}
     ${bgp_global_as_config}    Retrieve BGP AS Global Configuration    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    local_as_number=${BGP_PRIMARY_SINGLE_CONTEXT_IPv4_PEER_GROUP_LOCAL_AS}    route_domain_id=${BGP_PRIMARY_SINGLE_CONTEXT_ROUTE_DOMAIN_ID}
-    log    \n**** BGP Global AS Config:\n ${bgp_global_as_config}
+    log    \n**** BGP Global AS Config:\n${bgp_global_as_config}
     ${bgp_ipv6_as_config}    Retrieve BGP AS IPv6 Address-Family Configuration    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    local_as_number=${BGP_PRIMARY_SINGLE_CONTEXT_IPv4_PEER_GROUP_LOCAL_AS}    route_domain_id=${BGP_PRIMARY_SINGLE_CONTEXT_ROUTE_DOMAIN_ID}
-    log    \n**** BGP AS IPv6 Config:\n ${bgp_ipv6_as_config}
+    log    \n**** BGP AS IPv6 Config:\n${bgp_ipv6_as_config}
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
     ${bgp_full_as_config}    Retrieve BGP AS Configuration    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    local_as_number=${BGP_SECONDARY_SINGLE_CONTEXT_IPv4_PEER_GROUP_LOCAL_AS}    route_domain_id=${BGP_SECONDARY_SINGLE_CONTEXT_ROUTE_DOMAIN_ID}
-    log    \n**** BGP Full AS Config:\n ${bgp_full_as_config}
+    log    \n**** BGP Full AS Config:\n${bgp_full_as_config}
     ${bgp_global_as_config}    Retrieve BGP AS Global Configuration    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    local_as_number=${BGP_SECONDARY_SINGLE_CONTEXT_IPv4_PEER_GROUP_LOCAL_AS}    route_domain_id=${BGP_SECONDARY_SINGLE_CONTEXT_ROUTE_DOMAIN_ID}
-    log    \n**** BGP Global AS Config:\n ${bgp_global_as_config}
+    log    \n**** BGP Global AS Config:\n${bgp_global_as_config}
     ${bgp_ipv6_as_config}    Retrieve BGP AS IPv6 Address-Family Configuration    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    local_as_number=${BGP_SECONDARY_SINGLE_CONTEXT_IPv4_PEER_GROUP_LOCAL_AS}    route_domain_id=${BGP_SECONDARY_SINGLE_CONTEXT_ROUTE_DOMAIN_ID}
-    log    \n**** BGP AS IPv6 Config:\n ${bgp_ipv6_as_config}
+    log    \n**** BGP AS IPv6 Config:\n${bgp_ipv6_as_config}
     
 Verify NTP Configuration
     [Documentation]  Validates the configuration of NTP servers on the BIG-IP

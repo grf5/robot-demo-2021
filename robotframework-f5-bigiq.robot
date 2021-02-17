@@ -12,7 +12,7 @@ Import a BIG-IP Cluster into the BIG-IQ
     ${api_uri}    set variable    /mgmt/cm/global/tasks/device-discovery-import-controller
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigiq_host}    bigip_username=${bigiq_username}    bigip_password=${bigiq_password}    api_uri=${api_uri}    api_payload=${api_payload}
     Should Be Equal As Strings    ${api_response.status_code}    200
-    [Return]    ${api_response.json}
+    [Return]    ${api_response.json()}
     
 Verify BIG-IQ Import Task Completion
     [Documentation]  Checks a task status for FINISHED for a BIG-IQ import task
@@ -20,9 +20,9 @@ Verify BIG-IQ Import Task Completion
     ${api_uri}    set variable    ${bigiq_bigip_import_task_url}
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigiq_host}    bigip_username=${bigiq_username}    bigip_password=${bigiq_password}    api_uri=${api_uri}
     Should Be Equal As Strings    ${api_response.status_code}    200
-    ${task_status}    get from dictionary    ${api_response.json}    status
+    ${task_status}    get from dictionary    ${api_response.json()}    status
     Should be Equal As Strings    ${task_status}    FINISHED
-    [Return]    ${api_response.json}
+    [Return]    ${api_response.json()}
      
 Get BIG-IQ Snapshot Names    
     [Documentation]  Retrieves a list of available snapshots on the BIG-IQ for a particular module
@@ -30,7 +30,7 @@ Get BIG-IQ Snapshot Names
     ${api_uri}    /mgmt/cm/${module}/working-config/snapshots    
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigiq_host}    bigip_username=${bigiq_username}    bigip_password=${bigiq_password}
     should be equal as strings    ${api_response.status_code}    200
-    [Return]    ${api_response.json}
+    [Return]    ${api_response.json()}
 
 Resolve BIG-IQ List of Devices in BIG-IP Cluster    
     [Documentation]  Lists all of the BIG-IP devices in a BIG-IQ device cluster
@@ -38,7 +38,7 @@ Resolve BIG-IQ List of Devices in BIG-IP Cluster
     ${api_uri}    /mgmt/shared/resolver/device-groups/cm-bigip-cluster_${bigip_cluster_name}/devices
     ${api_response}    BIG-IP iControl BasicAuth GET    bigip_host=${bigiq_host}    bigip_username=${bigiq_username}    bigip_password=${bigiq_password}    api_uri=${api_uri}
     Should Be Equal As Strings    ${api_response.status_code}    200
-    [Return]    ${api_response.json}
+    [Return]    ${api_response.json()}
 
 Create Node on BIG-IQ
     [Documentation]  Creates a node object on the BIG-IQ for deployment on a BIG-IP (https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-local-traffic-and-network-implementations-6-1-0.html}
@@ -47,7 +47,7 @@ Create Node on BIG-IQ
     ${api_payload}     create dictionary    name=${name}    partition=${partition}    description=${description}    address=${address}    deviceReference=${device_reference}
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigiq_host}    bigip_username=${bigiq_username}    bigip_password=${bigiq_password}    api_uri=${api_uri}    api_payload=${api_payload}
     Should Be Equal As Strings    ${api_response.status_code}    200
-    [Return]    ${api_response.json}
+    [Return]    ${api_response.json()}
 
 Create Pool on BIG-IQ
     [Documentation]  Creates a pool object on the BIG-IQ for configuration on a BIG-IP (https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-local-traffic-and-network-implementations-6-1-0.html)
@@ -56,7 +56,7 @@ Create Pool on BIG-IQ
     ${api_payload}    create dictionary    name=${name}    partition=${partition}    description=${description}    deviceReference=${device_reference}
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigiq_host}    bigip_username=${bigiq_username}    bigip_password=${bigiq_password}    api_uri=${api_uri}    api_payload=${api_payload}
     Should Be Equal As Strings    ${api_response.status_code}    200
-    [Return]    ${api_response.json}
+    [Return]    ${api_response.json()}
 
 Populate Pool on BIG-IQ
     [Documentation]  Creates a pool member within an existing pool using an existing node (https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-local-traffic-and-network-implementations-6-1-0.html)
@@ -66,7 +66,7 @@ Populate Pool on BIG-IQ
     ${api_payload}    create dictionary    name=${pool_member_name}:${pool_member_port}    partition=${partition}    description=${description}    port=${pool_member_port}    nodeReference=${nodeReference}    
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigiq_host}    bigip_username=${bigiq_username}    bigip_password=${bigiq_password}    api_uri=${api_uri}    api_payload=${api_payload}
     Should Be Equal As Strings    ${api_response.status_code}    200
-    [Return]    ${api_response.json}
+    [Return]    ${api_response.json()}
     
 Create Virtual Server on BIG-IQ    
     [Documentation]  Creates a virtual server using an existing pool on the BIG-IQ for deployment on a BIG-IP (https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-local-traffic-and-network-implementations-6-1-0.html)
@@ -75,7 +75,7 @@ Create Virtual Server on BIG-IQ
     ${api_payload}    create dictionary    name=${name}    partition=${partition}    description=${description}    ipProtocol=${ip_protocol}    destinationAddress=${destination_address}    mask=${mask}    destinationPort=${destination_port}   sourceAddress=${source_address}    sourceAddressTranslation=${source_address_translation}    deviceReference=${device_reference}    poolReference=${pool_reference}
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigiq_host}    bigip_username=${bigiq_username}    bigip_password=${bigiq_password}    api_uri=${api_uri}    api_payload=${api_payload}
     Should Be Equal As Strings    ${api_response.status_code}    200
-    [Return]    ${api_response.json}
+    [Return]    ${api_response.json()}
 
 Deploy BIG-IQ LTM Configuration
     [Documentation]  Deploys an LTM configuration to a BIG-IP using BIG-IQ
@@ -84,7 +84,7 @@ Deploy BIG-IQ LTM Configuration
     ${api_payload}    create dictionary    skipVerifyConfig=${skip_verify_config}    skipDistribution=${skip_distribution}    name=${name}    deviceReferences=${device_references}    objectsToDeployReferences=${objects_to_deploy_references}    deploySpecifiedObjectsOnly=${deploy_specified_objects_only}
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigiq_host}    bigip_username=${bigiq_username}    bigip_password=${bigiq_password}    api_uri=${api_uri}    api_payload=${api_payload}
     Should Be Equal As Strings    ${api_response.status_code}    200
-    [Return]    ${api_response.json}
+    [Return]    ${api_response.json()}
 
 Restore an LTM Snapshot on the BIG-IQ
     [Documentation]  Reverts to a snapshot of a module configuration on the BIG-IP via BIG-IQ
@@ -93,4 +93,4 @@ Restore an LTM Snapshot on the BIG-IQ
     ${api_payload}    create dictionary     name=${name}    snapshotReference=${snapshot_reference}
     ${api_response}    BIG-IP iControl BasicAuth POST    bigip_host=${bigiq_host}    bigip_username=${bigiq_username}    bigip_password=${bigiq_password}    api_uri=${api_uri}    api_payload=${api_payload}
     Should Be Equal As Strings    ${api_response.status_code}    200
-    [Return]    ${api_response.json}
+    [Return]    ${api_response.json()}
