@@ -80,6 +80,19 @@ ${BGP_SECONDARY_SINGLE_CONTEXT_IPv6_REDIST_CONNECTED_ROUTE_MAP_NAME}    %{BGP_SE
 ${BGP_SECONDARY_SINGLE_CONTEXT_IPv6_REDIST_STATIC_ROUTE_MAP_NAME}    %{BGP_SECONDARY_SINGLE_CONTEXT_IPv6_REDIST_STATIC_ROUTE_MAP_NAME}
 ${BGP_SECONDARY_SINGLE_CONTEXT_IPv6_PEERS}    %{BGP_SECONDARY_SINGLE_CONTEXT_IPv6_PEERS}
 ${BGP_SECONDARY_SINGLE_CONTEXT_IPv6_PREFIX_LISTS}    %{BGP_SECONDARY_SINGLE_CONTEXT_IPv6_PREFIX_LISTS} 
+${DNS_NON_DEFAULT_ROUTE_DOMAIN_DATACENTER_NAME}    %{DNS_NON_DEFAULT_ROUTE_DOMAIN_DATACENTER_NAME}
+${DNS_NON_DEFAULT_ROUTE_DOMAIN_DATACENTER_LOCATION}    %{DNS_NON_DEFAULT_ROUTE_DOMAIN_DATACENTER_LOCATION}
+${DNS_NON_DEFAULT_ROUTE_DOMAIN_VLAN_NAME}    %{DNS_NON_DEFAULT_ROUTE_DOMAIN_VLAN_NAME}
+${DNS_NON_DEFAULT_ROUTE_DOMAIN_VLAN_TAG}    %{DNS_NON_DEFAULT_ROUTE_DOMAIN_VLAN_TAG}
+${DNS_NON_DEFAULT_ROUTE_DOMAIN_VIP_PREFIX}    %{DNS_NON_DEFAULT_ROUTE_DOMAIN_VIP_PREFIX}
+${DNS_NON_DEFAULT_ROUTE_DOMAIN_VIP_IPv4}    %{DNS_NON_DEFAULT_ROUTE_DOMAIN_VIP_IPv4}
+${DNS_NON_DEFAULT_ROUTE_DOMAIN_VIP_MASK}    %{DNS_NON_DEFAULT_ROUTE_DOMAIN_VIP_MASK}
+${DNS_NON_DEFAULT_ROUTE_DOMAIN_VIP_IPv6}    %{DNS_NON_DEFAULT_ROUTE_DOMAIN_VIP_IPv6}
+${DNS_NON_DEFAULT_ROUTE_DOMAIN_VIP_MASK}    %{DNS_NON_DEFAULT_ROUTE_DOMAIN_VIP_MASK}
+${DNS_NON_DEFAULT_ROUTE_DOMAIN_SYNC_GROUP_NAME}    %{DNS_NON_DEFAULT_ROUTE_DOMAIN_SYNC_GROUP_NAME}
+${DNS_NON_DEFAULT_ROUTE_DOMAIN_BIGIP_SERVER_NAME}    %{DNS_NON_DEFAULT_ROUTE_DOMAIN_BIGIP_SERVER_NAME}
+${DNS_NON_DEFAULT_ROUTE_DOMAIN_PRIMARY_SYNC_SELF_IP}    %{DNS_NON_DEFAULT_ROUTE_DOMAIN_PRIMARY_SYNC_SELF_IP}
+${DNS_NON_DEFAULT_ROUTE_DOMAIN_SECONDARY_SYNC_SELF_IP}    %{DNS_NON_DEFAULT_ROUTE_DOMAIN_SECONDARY_SYNC_SELF_IP}
 
 *** Test Cases ***
 Perform BIG-IP Quick Check
@@ -686,17 +699,40 @@ Verify NTP Operation
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
     Wait until Keyword Succeeds    12x    10 seconds    Verify NTP Server Associations    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}
 
+Perform BIG-IP Quick Check before GTM Configuration
+    [Documentation]    Verifies the ready status of services on the BIG-IP
+    set log level    trace
+    Wait until Keyword Succeeds    50x    5 seconds    Verify All BIG-IP Ready States    bigip_host=${BIGIP_PRIMARY_MGMT_IP}    bigip_username=${HTTP_USERNAME}    bigip_password=${HTTP_PASSWORD}
+    Wait until Keyword Succeeds    50x    5 seconds    Check for BIG-IP Services Waiting to Restart    bigip_host=${BIGIP_PRIMARY_MGMT_IP}    bigip_username=${HTTP_USERNAME}    bigip_password=${HTTP_PASSWORD}
+    Return from Keyword If    '${BIGIP_SECONDARY_MGMT_IP}' == 'false'
+    Wait until Keyword Succeeds    50x    5 seconds    Verify All BIG-IP Ready States    bigip_host=${BIGIP_SECONDARY_MGMT_IP}    bigip_username=${HTTP_USERNAME}    bigip_password=${HTTP_PASSWORD}
+    Wait until Keyword Succeeds    50x    5 seconds    Check for BIG-IP Services Waiting to Restart    bigip_host=${BIGIP_SECONDARY_MGMT_IP}    bigip_username=${HTTP_USERNAME}    bigip_password=${HTTP_PASSWORD}
+
+Verify GTM Service is Provisioned
+    [Documentation]    Verifies that the Global Traffic Manager (GTM) software is provisioned on the BIG-IPs
+    set log level    trace
+    Wait until Keyword Succeeds    6x    10 seconds    Verify GTM is Provisioned    bigip_host=${BIGIP_PRIMARY_MGMT_IP}    bigip_username=${HTTP_USERNAME}    bigip_password=${HTTP_PASSWORD}
+    Return from Keyword If    '${BIGIP_SECONDARY_MGMT_IP}' == 'false'
+    Wait until Keyword Succeeds    6x    10 seconds    Verify GTM is Provisioned    bigip_host=${BIGIP_SECONDARY_MGMT_IP}    bigip_username=${HTTP_USERNAME}    bigip_password=${HTTP_PASSWORD}
+
 GSLB - SSL and iQuery
+  [Documentation]  Change SSL certificates, validate iquery sessions is established
 
 GSLB - Pool Creation
+  [Documentation]  created pool, in different partitions
 
 GSLB - Wide IP Creation
+  [Documentation]  created wide IP, in different partitions
 
 GSLB - Datacenter Creation
+  [Documentation]  create Datacenters in common partition and validate sync across sync group
 
 GSLB - Server and Virtual Server Creation
+  [Documentation]  create server, virtual servers in common partition and validate sync across sync group
 
 GSLB - Local and Anycast Listeners Creation
+  [Documentation]  create and validate anycast and local listeners
 
 GSLB - Create Zones and test authoritative DNS functionality
+  [Documentation]  Add new Zones to ZoneRunner and verify DNS response to added Zones
 
