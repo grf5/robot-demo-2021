@@ -20,8 +20,8 @@ ${SECONDARY_SCF_FILENAME}    %{SECONDARY_SCF_FILENAME}
 
 *** Test Cases ***
 Record the Text Configuration on the BIG-IP
-    [Documentation]    Retrieves the BIG-IP text configuration for recording
-    set log level    trace
+    [Documentation]  Retrieves the BIG-IP text configuration for recording
+    set log level  trace
     Save an SCF on the BIG-IP    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    scf_filename=${PRIMARY_SCF_FILENAME}
     Wait until Keyword Succeeds    3x    5 seconds    Open Connection    ${PRIMARY_MGMT_IP}
     Log In    ${PRIMARY_SSH_USERNAME}    ${PRIMARY_SSH_PASSWORD}

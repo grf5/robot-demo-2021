@@ -36,25 +36,25 @@ export DSC_GROUP_NAME='robot_framework_failover_group'
 
 # ltm virtual - tcp round robin
 export TCP_ROUND_ROBIN_VIP_NAME='tcp_round_robin_vs'
-export TCP_ROUND_ROBIN_VIP_ADDRESS='198.19.160.5'
+export TCP_ROUND_ROBIN_VIP_ADDRESS='10.1.10.5'
 export TCP_ROUND_ROBIN_VIP_MASK='255.255.255.255'
 export TCP_ROUND_ROBIN_VIP_PORT='80'
 export TCP_ROUND_ROBIN_VIP_PROTOCOL='tcp'
 export TCP_ROUND_ROBIN_VIP_SNAT_TYPE='automap'
 export TCP_ROUND_ROBIN_POOL_NAME='tcp_round_robin_pool'
-export TCP_ROUND_ROBIN_POOL_MEMBERS='[{"address":"198.19.208.21","port":"80"},{"address":"198.19.208.22","port":"80"},{"address":"198.19.208.23","port":"80"},{"address":"198.19.208.24","port":"80"},{"address":"198.19.208.25","port":"80"},{"address":"198.19.208.26","port":"80"},{"address":"198.19.208.27","port":"80"},{"address":"198.19.208.28","port":"80"},{"address":"198.19.208.29","port":"80"},{"address":"198.19.208.30","port":"80"}]'
+export TCP_ROUND_ROBIN_POOL_MEMBERS='[{"address":"10.1.20.21","port":"80"},{"address":"10.1.20.22","port":"80"},{"address":"10.1.20.23","port":"80"},{"address":"10.1.20.24","port":"80"},{"address":"10.1.20.25","port":"80"},{"address":"10.1.20.26","port":"80"},{"address":"10.1.20.27","port":"80"},{"address":"10.1.20.28","port":"80"},{"address":"10.1.20.29","port":"80"},{"address":"10.1.20.30","port":"80"}]'
 export TCP_ROUND_ROBIN_POOL_MONITOR='/Common/gateway_icmp'
 
 # ltm virtual - udp round robin
 export UDP_ROUND_ROBIN_VIP_NAME='udp_dns_round_robin_vs'
 export UDP_ROUND_ROBIN_VIP_PARTITION='Common'
-export UDP_ROUND_ROBIN_VIP_ADDRESS='198.19.160.2'
+export UDP_ROUND_ROBIN_VIP_ADDRESS='10.1.10.2'
 export UDP_ROUND_ROBIN_VIP_MASK='255.255.255.255'
 export UDP_ROUND_ROBIN_VIP_PORT='53'
 export UDP_ROUND_ROBIN_VIP_PROTOCOL='udp'
 export UDP_ROUND_ROBIN_VIP_SNAT_TYPE='automap'
 export UDP_ROUND_ROBIN_POOL_NAME='udp_dns_round_robin_pool'
-export UDP_ROUND_ROBIN_POOL_MEMBERS='[{"address":"198.19.208.21","port":"53"},{"address":"198.19.208.22","port":"53"},{"address":"198.19.208.23","port":"53"},{"address":"198.19.208.24","port":"53"},{"address":"198.19.208.25","port":"53"},{"address":"198.19.208.26","port":"53"},{"address":"198.19.208.27","port":"53"},{"address":"198.19.208.28","port":"53"},{"address":"198.19.208.29","port":"53"},{"address":"198.19.208.30","port":"53"}]'
+export UDP_ROUND_ROBIN_POOL_MEMBERS='[{"address":"10.1.20.21","port":"53"},{"address":"10.1.20.22","port":"53"},{"address":"10.1.20.23","port":"53"},{"address":"10.1.20.24","port":"53"},{"address":"10.1.20.25","port":"53"},{"address":"10.1.20.26","port":"53"},{"address":"10.1.20.27","port":"53"},{"address":"10.1.20.28","port":"53"},{"address":"10.1.20.29","port":"53"},{"address":"10.1.20.30","port":"53"}]'
 export UDP_ROUND_ROBIN_POOL_MONITOR='/Common/gateway_icmp'
 
 # sys ntp
@@ -118,6 +118,73 @@ export HA_VLAN_TAG='4091'
 export HA_VLAN_TAGGED='False'
 export HA_INTERFACE_NAME='1.3'
 
+# bgp peering
+export BGP_PRIMARY_SINGLE_CONTEXT_ROUTE_DOMAIN_ID='0'
+export BGP_PRIMARY_SINGLE_CONTEXT_ROUTE_DOMAIN_NAME='0'
+export BGP_PRIMARY_SINGLE_CONTEXT_GRACEFUL_RESTART_TIME='120'
+export BGP_PRIMARY_SINGLE_CONTEXT_IPv4_REDIST_KERNEL_ROUTE_MAP_NAME='IPv4RHIRM'
+export BGP_PRIMARY_SINGLE_CONTEXT_IPv4_REDIST_CONNECTED_ROUTE_MAP_NAME='IPv4ConnectedRM'
+export BGP_PRIMARY_SINGLE_CONTEXT_IPv4_REDIST_STATIC_ROUTE_MAP_NAME='IPv4StaticRM'
+export BGP_PRIMARY_SINGLE_CONTEXT_IPv4_PEER_GROUP_NAME='IPv4NorthPeerGroup'
+export BGP_PRIMARY_SINGLE_CONTEXT_IPv4_PEER_GROUP_LOCAL_AS='65479'
+export BGP_PRIMARY_SINGLE_CONTEXT_IPv4_PEER_GROUP_REMOTE_AS='65179'
+export BGP_PRIMARY_SINGLE_CONTEXT_IPv4_PEER_GROUP_UPDATE_SOURCE='uplink'
+export BGP_PRIMARY_SINGLE_CONTEXT_IPv4_PEER_GROUP_TIMERS_KEEPALIVE='1'
+export BGP_PRIMARY_SINGLE_CONTEXT_IPv4_PEER_GROUP_TIMERS_HOLD='12'
+export BGP_PRIMARY_SINGLE_CONTEXT_IPv4_ROUTE_MAP_IN='IPv4InboundRM'
+export BGP_PRIMARY_SINGLE_CONTEXT_IPv4_ROUTE_MAP_OUT='IPv4OutboundRM'
+export BGP_PRIMARY_SINGLE_CONTEXT_IPv4_PEERS='[{"neighbor":"10.1.10.1","peer-group":"IPv4NorthPeerGroup","description":"Nexus","expected_advertised_routes":["10.1.20.0/21"],"device_management_ip":"10.240.73.201","device_username":"netqa","device_password":"RobotR0cks","local_peering_ip":"10.1.10.5","peer_vrf":"SPOCSLBTestbedEnv4_179","peer_vdc":"dcr01sqsccc"},{"neighbor":"10.1.10.2","peer-group":"IPv4NorthPeerGroup","description":"Nexus","expected_advertised_routes":["10.1.20.0/21"],"device_management_ip":"10.240.73.202","device_username":"netqa","device_password":"RobotR0cks","local_peering_ip":"10.1.10.5","peer_vrf":"SPOCSLBTestbedEnv4_179","peer_vdc":"dcr02sqsccc"}]'
+export BGP_PRIMARY_SINGLE_CONTEXT_IPv4_STATIC_ROUTES='[{"network":"10.1.0.0/16","gateway":"Null"}]'
+export BGP_PRIMARY_SINGLE_CONTEXT_IPv4_PREFIX_LISTS='[{"name":"IPv4ConnectedRoutesPL","entries":[{"sequence":"10","action":"permit","subnetString":"10.1.20.0/21"}]},{"name":"IPv4DefaultPL","entries":[{"sequence":"10","action":"permit","subnetString":"0.0.0.0/0"}]},{"name":"IPv4StaticsPL","entries":[{"sequence":"10","action":"permit","subnetString":"10.1.0.0/16"}]},{"name":"IPv4VirtualsPL","entries":[{"sequence":"10","action":"permit","subnetString":"10.1.10.0/19 le 32"}]}]'
+export BGP_PRIMARY_SINGLE_CONTEXT_IPv4_ROUTE_MAPS='[{"name":"IPv4InboundRM","entries":[{"action":"permit","sequence":"10","match":"ip address prefix-list IPv4DefaultPL"},{"action":"deny","sequence":"9999","match":"all"}]},{"name":"IPv4OutboundRM","entries":[{"action":"permit","sequence":"10","match":"ip address prefix-list IPv4ConnectedRoutesPL"},{"action":"permit","sequence":"20","match":"ip address prefix-list IPv4VirtualsPL"},{"action":"permit","sequence":"30","match":"ip address prefix-list IPv4StaticsPL"},{"action":"deny","sequence":"9999","match":"all"}]},{"name":"IPv4RHIRM","entries":[{"action":"permit","sequence":"10","match":"ip address prefix-list IPv4VirtualsPL"},{"action":"deny","sequence":"9999","match":"all"}]},{"name":"IPv4ConnectedRM","entries":[{"action":"permit","sequence":"10","match":"ip address prefix-list IPv4ConnectedRoutesPL"},{"action":"deny","sequence":"9999","match":"all"}]},{"name":"IPv4StaticRM","entries":[{"action":"permit","sequence":"10","match":"ip address prefix-list IPv4StaticRoutesPL"},{"action":"deny","sequence":"9999","match":"all"}]},{"name":"IPv6InboundRM","entries":[{"action":"permit","sequence":"10","match":"ip address prefix-list IPv6DefaultPL"},{"action":"deny","sequence":"9999","match":"all"}]},{"name":"IPv6RHIRM","entries":[{"action":"permit","sequence":"10","match":"ipv6 address prefix-list IPv6VirtualsPL"},{"action":"deny","sequence":"9999","match":"all"}]},{"name":"IPv6ConnectedRM","entries":[{"action":"permit","sequence":"10","match":"ipv6 address prefix-list IPv6ConnectedRoutesPL"},{"action":"deny","sequence":"9999","match":"all"}]},{"name":"IPv6StaticRM","entries":[{"action":"permit","sequence":"10","match":"ip address prefix-list IPv6StaticRoutesPL"},{"action":"deny","sequence":"9999","match":"all"}]}]'
+export BGP_PRIMARY_SINGLE_CONTEXT_IPv6_PEER_GROUP_NAME='IPv6NorthPeerGroup'
+export BGP_PRIMARY_SINGLE_CONTEXT_IPv6_PEER_GROUP_DESCRIPTION='N5696Q-A'
+export BGP_PRIMARY_SINGLE_CONTEXT_IPv6_PEER_GROUP_LOCAL_AS='65479'
+export BGP_PRIMARY_SINGLE_CONTEXT_IPv6_PEER_GROUP_REMOTE_AS='65179'
+export BGP_PRIMARY_SINGLE_CONTEXT_IPv6_PEER_GROUP_UPDATE_SOURCE='uplink'
+export BGP_PRIMARY_SINGLE_CONTEXT_IPv6_PEER_GROUP_TIMERS_KEEPALIVE='1'
+export BGP_PRIMARY_SINGLE_CONTEXT_IPv6_PEER_GROUP_TIMERS_HOLD='12'
+export BGP_PRIMARY_SINGLE_CONTEXT_IPv6_PEER_GROUP_ROUTE_MAP_IN='IPv6InboundRM'
+export BGP_PRIMARY_SINGLE_CONTEXT_IPv6_REDIST_KERNEL_ROUTE_MAP_NAME='IPv6RHIRM'
+export BGP_PRIMARY_SINGLE_CONTEXT_IPv6_REDIST_CONNECTED_ROUTE_MAP_NAME='IPv6ConnectedRM'
+export BGP_PRIMARY_SINGLE_CONTEXT_IPv6_REDIST_STATIC_ROUTE_MAP_NAME='IPv6StaticRM'
+export BGP_PRIMARY_SINGLE_CONTEXT_IPv6_PEERS='[{"neighbor":"2001:200:0:4401::1","peer-group":"IPv6NorthPeerGroup","description":"Nexus","expected_advertised_routes":["2001:200:0:4401::/64"],"device_management_ip":"10.240.73.201","device_username":"netqa","device_password":"RobotR0cks","local_peering_ip":"2001:200:0:4401::5","peer_vrf":"SPOCSLBTestbedEnv4_179","peer_vdc":"dcr01sqsccc"},{"neighbor":"2001:200:0:4401::2","peer-group":"IPv6NorthPeerGroup","description":"Nexus","expected_advertised_routes":["2001:200:0:4401::/64"],"device_management_ip":"10.240.73.202","device_username":"netqa","device_password":"RobotR0cks","local_peering_ip":"2001:200:0:4401::5","peer_vrf":"SPOCSLBTestbedEnv4_179","peer_vdc":"dcr02sqsccc"}]'
+export BGP_PRIMARY_SINGLE_CONTEXT_IPv6_PREFIX_LISTS='[{"name":"IPv6ConnectedRoutesPL","entries":[{"sequence":"10","action":"permit","subnetString":"2001:200:0:4401::/64 le 128"}]},{"name":"IPv6DefaultPL","entries":[{"sequence":"10","action":"permit","subnetString":"::/0"}]},{"name":"IPv6StaticsPL","entries":[{"sequence":"10","action":"permit","subnetString":"2001:200:0:4404::/64"}]},{"name":"IPv6VirtualsPL","entries":[{"sequence":"10","action":"permit","subnetString":"2001:200:0:4201::/64 le 128"}]}]'
+# Secondary:
+export BGP_SECONDARY_SINGLE_CONTEXT_ROUTE_DOMAIN_ID='0'
+export BGP_SECONDARY_SINGLE_CONTEXT_ROUTE_DOMAIN_NAME='0'
+export BGP_SECONDARY_SINGLE_CONTEXT_GRACEFUL_RESTART_TIME='120'
+export BGP_SECONDARY_SINGLE_CONTEXT_IPv4_REDIST_KERNEL_ROUTE_MAP_NAME='IPv4RHIRM'
+export BGP_SECONDARY_SINGLE_CONTEXT_IPv4_REDIST_CONNECTED_ROUTE_MAP_NAME='IPv4ConnectedRM'
+export BGP_SECONDARY_SINGLE_CONTEXT_IPv4_REDIST_STATIC_ROUTE_MAP_NAME='IPv4StaticRM'
+export BGP_SECONDARY_SINGLE_CONTEXT_IPv4_PEER_GROUP_NAME='IPv4NorthPeerGroup'
+export BGP_SECONDARY_SINGLE_CONTEXT_IPv4_PEER_GROUP_LOCAL_AS='65479'
+export BGP_SECONDARY_SINGLE_CONTEXT_IPv4_PEER_GROUP_REMOTE_AS='65179'
+export BGP_SECONDARY_SINGLE_CONTEXT_IPv4_PEER_GROUP_UPDATE_SOURCE='uplink'
+export BGP_SECONDARY_SINGLE_CONTEXT_IPv4_PEER_GROUP_TIMERS_KEEPALIVE='1'
+export BGP_SECONDARY_SINGLE_CONTEXT_IPv4_PEER_GROUP_TIMERS_HOLD='12'
+export BGP_SECONDARY_SINGLE_CONTEXT_IPv4_ROUTE_MAP_IN='IPv4InboundRM'
+export BGP_SECONDARY_SINGLE_CONTEXT_IPv4_ROUTE_MAP_OUT='IPv4OutboundRM'
+export BGP_SECONDARY_SINGLE_CONTEXT_IPv4_PEERS='[{"neighbor":"10.1.10.1","peer-group":"IPv4NorthPeerGroup","description":"Nexus","expected_advertised_routes":["10.1.20.0/21"],"device_management_ip":"10.240.73.201","device_username":"netqa","device_password":"RobotR0cks","local_peering_ip":"10.1.10.6","peer_vrf":"SPOCSLBTestbedEnv4_179","peer_vdc":"dcr01sqsccc"},{"neighbor":"10.1.10.2","peer-group":"IPv4NorthPeerGroup","description":"Nexus","expected_advertised_routes":["10.1.20.0/21"],"device_management_ip":"10.240.73.202","device_username":"netqa","device_password":"RobotR0cks","local_peering_ip":"10.1.10.6","peer_vrf":"SPOCSLBTestbedEnv4_179","peer_vdc":"dcr02sqsccc"}]'
+export BGP_SECONDARY_SINGLE_CONTEXT_IPv4_STATIC_ROUTES='[{"network":"10.1.0.0/16","gateway":"Null"}]'
+export BGP_SECONDARY_SINGLE_CONTEXT_IPv4_PREFIX_LISTS='[{"name":"IPv4ConnectedRoutesPL","entries":[{"sequence":"10","action":"permit","subnetString":"10.1.20.0/21"}]},{"name":"IPv4DefaultPL","entries":[{"sequence":"10","action":"permit","subnetString":"0.0.0.0/0"}]},{"name":"IPv4StaticsPL","entries":[{"sequence":"10","action":"permit","subnetString":"10.1.0.0/16"}]},{"name":"IPv4VirtualsPL","entries":[{"sequence":"10","action":"permit","subnetString":"10.1.10.0/19 le 32"}]}]'
+export BGP_SECONDARY_SINGLE_CONTEXT_IPv4_ROUTE_MAPS='[{"name":"IPv4InboundRM","entries":[{"action":"permit","sequence":"10","match":"ip address prefix-list IPv4DefaultPL"},{"action":"deny","sequence":"9999","match":"all"}]},{"name":"IPv4OutboundRM","entries":[{"action":"permit","sequence":"10","match":"ip address prefix-list IPv4ConnectedRoutesPL"},{"action":"permit","sequence":"20","match":"ip address prefix-list IPv4VirtualsPL"},{"action":"permit","sequence":"30","match":"ip address prefix-list IPv4StaticsPL"},{"action":"deny","sequence":"9999","match":"all"}]},{"name":"IPv4RHIRM","entries":[{"action":"permit","sequence":"10","match":"ip address prefix-list IPv4VirtualsPL"},{"action":"deny","sequence":"9999","match":"all"}]},{"name":"IPv4ConnectedRM","entries":[{"action":"permit","sequence":"10","match":"ip address prefix-list IPv4ConnectedRoutesPL"},{"action":"deny","sequence":"9999","match":"all"}]},{"name":"IPv4StaticRM","entries":[{"action":"permit","sequence":"10","match":"ip address prefix-list IPv4StaticRoutesPL"},{"action":"deny","sequence":"9999","match":"all"}]},{"name":"IPv6InboundRM","entries":[{"action":"permit","sequence":"10","match":"ip address prefix-list IPv6DefaultPL"},{"action":"deny","sequence":"9999","match":"all"}]},{"name":"IPv6RHIRM","entries":[{"action":"permit","sequence":"10","match":"ipv6 address prefix-list IPv6VirtualsPL"},{"action":"deny","sequence":"9999","match":"all"}]},{"name":"IPv6ConnectedRM","entries":[{"action":"permit","sequence":"10","match":"ipv6 address prefix-list IPv6ConnectedRoutesPL"},{"action":"deny","sequence":"9999","match":"all"}]},{"name":"IPv6StaticRM","entries":[{"action":"permit","sequence":"10","match":"ip address prefix-list IPv6StaticRoutesPL"},{"action":"deny","sequence":"9999","match":"all"}]}]'
+export BGP_SECONDARY_SINGLE_CONTEXT_IPv6_PEER_GROUP_NAME='IPv6NorthPeerGroup'
+export BGP_SECONDARY_SINGLE_CONTEXT_IPv6_PEER_GROUP_DESCRIPTION='N5696Q-B'
+export BGP_SECONDARY_SINGLE_CONTEXT_IPv6_PEER_GROUP_LOCAL_AS='65479'
+export BGP_SECONDARY_SINGLE_CONTEXT_IPv6_PEER_GROUP_REMOTE_AS='65179'
+export BGP_SECONDARY_SINGLE_CONTEXT_IPv6_PEER_GROUP_UPDATE_SOURCE='uplink'
+export BGP_SECONDARY_SINGLE_CONTEXT_IPv6_PEER_GROUP_TIMERS_KEEPALIVE='1'
+export BGP_SECONDARY_SINGLE_CONTEXT_IPv6_PEER_GROUP_TIMERS_HOLD='12'
+export BGP_SECONDARY_SINGLE_CONTEXT_IPv6_PEER_GROUP_ROUTE_MAP_IN='IPv6InboundRM'
+export BGP_SECONDARY_SINGLE_CONTEXT_IPv6_REDIST_KERNEL_ROUTE_MAP_NAME='IPv6RHIRM'
+export BGP_SECONDARY_SINGLE_CONTEXT_IPv6_REDIST_CONNECTED_ROUTE_MAP_NAME='IPv6ConnectedRM'
+export BGP_SECONDARY_SINGLE_CONTEXT_IPv6_REDIST_STATIC_ROUTE_MAP_NAME='IPv6StaticRM'
+export BGP_SECONDARY_SINGLE_CONTEXT_IPv6_PEERS='[{"neighbor":"2001:200:0:4401::1","peer-group":"IPv6NorthPeerGroup","description":"Nexus","expected_advertised_routes":["2001:200:0:4401::/64"],"device_management_ip":"10.240.73.201","device_username":"netqa","device_password":"RobotR0cks","local_peering_ip":"2001:200:0:4401::6","peer_vrf":"SPOCSLBTestbedEnv4_179","peer_vdc":"dcr01sqsccc"},{"neighbor":"2001:200:0:4401::2","peer-group":"IPv6NorthPeerGroup","description":"Nexus","expected_advertised_routes":["2001:200:0:4401::/64"],"device_management_ip":"10.240.73.202","device_username":"netqa","device_password":"RobotR0cks","local_peering_ip":"2001:200:0:4401::6","peer_vrf":"SPOCSLBTestbedEnv4_179","peer_vdc":"dcr02sqsccc"}]'
+export BGP_SECONDARY_SINGLE_CONTEXT_IPv6_PREFIX_LISTS='[{"name":"IPv6ConnectedRoutesPL","entries":[{"sequence":"10","action":"permit","subnetString":"2001:200:0:4401::/64 le 128"}]},{"name":"IPv6DefaultPL","entries":[{"sequence":"10","action":"permit","subnetString":"::/0"}]},{"name":"IPv6StaticsPL","entries":[{"sequence":"10","action":"permit","subnetString":"2001:200:0:4404::/64"}]},{"name":"IPv6VirtualsPL","entries":[{"sequence":"10","action":"permit","subnetString":"2001:200:0:4201::/64 le 128"}]}]'
+#test=DCNETARCH-SLB-0120_BGP_in_a_single_routing_context; $robot_fullpath --noncritical non_critical  --outputdir ./reports -o $test.xml -l $test.log.html -r $test.report.html ./bin/$test.robot
+
+
 # Delete existing reports
 rm -f ./reports/*.html
 rm -f ./reports/*.xml
@@ -128,7 +195,7 @@ printf "####################################\n"
 start_time=`date`
 
 # Execute tests in order via this array
-tests=('000a-reset_environment' '0010-basic_connectivity' '0011-disable_gui_wizard' '0019-sys_provision' '0020-sys_global_settings' '0025-sys_snmp' '0030-ntp' '0040-net_interface' '0050-net_vlan' '0060-net_self' '0065-net_route' '0070-cm_clustering' '0080-ltm_tcp_round_robin' '0090-ltm_udp_round_robin')
+tests=('reset_environment' 'pretest_configuration' 'baseline_testing')
 
 # Cycle through list of tests and create a per-test report in /reports
 for current_test in "${tests[@]}"
