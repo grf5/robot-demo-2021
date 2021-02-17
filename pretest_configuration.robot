@@ -51,7 +51,8 @@ Perform BIG-IP Quick Check
 Provision Software Modules on the BIG-IP
     [Documentation]  Sets the provisioning level on software modules in the BIG-IP
     set log level  trace
-    FOR    ${current_module}    IN    @{module_list}
+    ${module_list}    evaluate    json.loads(${MODULE_PROVISIONING})
+    FOR    ${current_module}    IN    @{MODULE_PROVISIONING}
         Verify All BIG-IP Ready States    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}
         Check for BIG-IP Services Waiting to Restart    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}
         ${module}    get from dictionary    ${current_module}    module
