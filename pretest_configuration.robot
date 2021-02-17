@@ -360,9 +360,8 @@ Create Default Static Routes on the BIG-IP
     ${route_description}    get from dictionary    ${PRIMARY_STATIC_DEFAULT_ROUTE}    description
     Create Static Default Route Configuration on the BIG-IP    bigip_host=${PRIMARY_MGMT_IP}    bigip_username=${PRIMARY_HTTP_USERNAME}    bigip_password=${PRIMARY_HTTP_PASSWORD}    partition=${route_partition}    gateway=${route_gateway}    description=${route_description}
     Return from Keyword If    '${SECONDARY_MGMT_IP}' == 'false'
-    ${SECONDARY_STATIC_DEFAULT_ROUTE}    conver string to json    ${SECONDARY_STATIC_DEFAULT_ROUTE}
+    ${SECONDARY_STATIC_DEFAULT_ROUTE}    convert string to json    ${SECONDARY_STATIC_DEFAULT_ROUTE}
     ${route_partition}    get from dictionary    ${SECONDARY_STATIC_DEFAULT_ROUTE}    partition
     ${route_gateway}    get from dictionary    ${SECONDARY_STATIC_DEFAULT_ROUTE}    gw
     ${route_description}    get from dictionary    ${SECONDARY_STATIC_DEFAULT_ROUTE}    description
     Create Static Default Route Configuration on the BIG-IP    bigip_host=${SECONDARY_MGMT_IP}    bigip_username=${SECONDARY_HTTP_USERNAME}    bigip_password=${SECONDARY_HTTP_PASSWORD}    partition=${route_partition}    gateway=${route_gateway}    description=${route_description}
-
